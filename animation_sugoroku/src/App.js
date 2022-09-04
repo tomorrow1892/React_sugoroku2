@@ -1,35 +1,36 @@
 import logo from './logo.svg';
-import './App.css';
+//import './App.css';
 import Icon from './components/Icon';
 import Dice from './components/Dice';
 import ZdogTest from './components/ZdogTest';
-
+import { Grid, Button } from "@mui/material";
+import { blue } from '@mui/material/colors';
+import { Link as Scroll } from 'react-scroll';
 function App() {
 
   return (
-    <div>
-      <Dice></Dice>
-      <Icon></Icon>
-    </div>
+    <>
+      {/* <div>
+        <Dice></Dice>
+        <Icon></Icon>
+      </div> */}
+      <Grid container>
+        <Grid item xs={2}>
+          <div style={{"backgroundColor":"cyan","height":"100vh"}}>
+          <Button variant="outlined">Material-UI ボタン</Button>
+          </div>
+        </Grid>
+        <Grid item xs={4}>
+          <div style={{"positon":"absolute","top":"1000px"}}>
+            ああああ
+          </div>
+        </Grid>
+      </Grid>
+
+    </>
+
   )
- /* return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  ); */
+
 }
 
 export default App;
