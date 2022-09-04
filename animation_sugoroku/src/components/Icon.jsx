@@ -47,7 +47,7 @@ export default class Icon extends React.Component {
     render() {
         return (
             <>
-                <img src={cat} alt="コマ" ref={(e) => { this.coma = e; }} style={{ position: "absolute", top: 1000, left: this.state.positionX, width: 50, height: 50}} />
+                <img src={cat} alt="コマ" ref={(e) => { this.coma = e; }} style={{ position: "absolute", top: 100, left: this.state.positionX, width: 50, height: 50}} />
                 <button onClick={(e) => {this.moveComa(3)}}>移動</button>
             </>
         )
