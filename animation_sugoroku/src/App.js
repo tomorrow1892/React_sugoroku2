@@ -6,27 +6,15 @@ import ZdogTest from './components/ZdogTest';
 import { Grid, Button } from "@mui/material";
 import { blue } from '@mui/material/colors';
 import { Link as Scroll } from 'react-scroll';
+import Dice2 from './components/Dice2';
+import Menu from './components/Menu';
+import RequestTest from './components/RequestTest';
 function App() {
 
   return (
     <>
-      {/* <div>
-        <Dice></Dice>
-        <Icon></Icon>
-      </div> */}
-      <Grid container>
-        <Grid item xs={2}>
-          <div style={{"backgroundColor":"cyan","height":"100vh"}}>
-          <Button variant="outlined">Material-UI ボタン</Button>
-          </div>
-        </Grid>
-        <Grid item xs={4}>
-          <div style={{"positon":"absolute","top":"1000px"}}>
-            ああああ
-          </div>
-        </Grid>
-      </Grid>
-
+      <RequestTest></RequestTest>
+      <Menu></Menu>
     </>
 
   )
