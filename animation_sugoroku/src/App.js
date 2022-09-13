@@ -1,35 +1,24 @@
 import logo from './logo.svg';
-import './App.css';
+//import './App.css';
 import Icon from './components/Icon';
 import Dice from './components/Dice';
 import ZdogTest from './components/ZdogTest';
-
+import { Grid, Button } from "@mui/material";
+import { blue } from '@mui/material/colors';
+import { Link as Scroll } from 'react-scroll';
+import Dice2 from './components/Dice2';
+import Menu from './components/Menu';
+import RequestTest from './components/RequestTest';
 function App() {
 
   return (
-    <div>
-      <Dice></Dice>
-      <Icon></Icon>
-    </div>
+    <>
+      <RequestTest></RequestTest>
+      <Menu></Menu>
+    </>
+
   )
- /* return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  ); */
+
 }
 
 export default App;
