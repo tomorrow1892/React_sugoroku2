@@ -23,7 +23,7 @@ export default class PlayerList extends React.Component {
                             <>
              
                             <Grid item xs={10}>
-                                <Card sx={{ margin: 2,border:5,borderColor: 'primary.main' ,boxShadow:2}} key={player.name} style={{ "backgroundColor": "white" }}>
+                                <Card sx={{ margin: 2,border:3,borderColor: 'primary.main' ,boxShadow:2}} key={player.name} style={{ "backgroundColor": "white" }}>
                                     <CardHeader
                                         avatar={<Avatar  sx={{ width: 50, height: 50 ,bgcolor: 'background.paper'}}><img src={`${player.icon}`} style={{width:40}} /></Avatar>}
                                         title={player.name}

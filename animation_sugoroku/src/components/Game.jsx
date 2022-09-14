@@ -54,6 +54,7 @@ export default class Game extends React.Component {
                     <Grid item xs>
                         <div style={{ "textAlign": "center","backgroundColor":"#F3F1FA" ,"height":"100vh"}}>
                             <Masu top={100} left={100}> </Masu>
+                            <Masu top={150} left={400}></Masu>
                         </div>
                     </Grid>
                 </Grid>

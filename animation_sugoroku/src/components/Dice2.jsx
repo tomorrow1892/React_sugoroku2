@@ -2,7 +2,7 @@ import "./css/dice.css";
 
 import React from "react";
 import { render } from "react-dom";
-
+import {Button} from "@mui/material";
 import Image1 from "./img/1dice.jpeg";
 import "./img/2dice.jpeg";
 import "./img/3dice.jpeg";
@@ -50,9 +50,9 @@ export default class DiceImage extends React.Component {
         />
         </div>
         
-        <button type="button" onClick={(e) => this.changeDice(e)}>
+        <Button variant="contained" color="success" onClick={(e) => this.changeDice(e)}>
           サイコロを振る
-        </button>
+        </Button>
       </div>
     );
   }
