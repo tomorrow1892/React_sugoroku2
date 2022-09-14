@@ -9,6 +9,7 @@ import dog from './img/dog.png';
 import hamster from './img/hamster.png';
 import hiyoko from './img/hiyoko.png';
 import penguin from './img/penguin.png';
+import Masu from './Masu';
 // import PlayerStatus from './PlayerStatus';
 const {PlayerStatus} = require('./PlayerStatus');
 
@@ -45,13 +46,15 @@ export default class Game extends React.Component {
     render() {
         return (
             <>
-            <button type="button" onClick={() => this.setPlayerName(0,"tomorrow")}> 状態変更</button>
+            <Button onClick={() => this.setPlayerName(0,"tomorrow")}> 状態変更</Button>
                 <Grid container>
                     <Grid item xs={2}>
                        <Menu playerList={this.state.playerList}></Menu>
                     </Grid>
                     <Grid item xs>
-                        <div style={{ "textAlign": "center","backgroundColor":"green" ,"height":"100vh"}}></div>
+                        <div style={{ "textAlign": "center","backgroundColor":"#F3F1FA" ,"height":"100vh"}}>
+                            <Masu top={100} left={100}> </Masu>
+                        </div>
                     </Grid>
                 </Grid>
             </>
