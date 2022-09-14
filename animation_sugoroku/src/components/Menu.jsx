@@ -20,7 +20,7 @@ export default class Menu extends React.Component {
                     <Dice2></Dice2>
                 </div>
                 <div>
-                    <PlayerList></PlayerList>
+                    <PlayerList playerList= {this.props.playerList}></PlayerList>
                 </div>
 
             </div>
