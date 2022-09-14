@@ -13,27 +13,17 @@ export default class Menu extends React.Component {
     }
     render() {
         return (
-            <>
-                <Grid container>
-                    <Grid item xs={2}>
-                        <div style={{ "backgroundColor": "cyan", "height": "100vh" }}>
-                            {/* <Button variant="outlined">Material-UI ボタン</Button> */}
-                            <div style={{ "textAlign": "center" ,"height":"30vh"}}>
-                                <Dice2></Dice2>
-                            </div>
-                            <div >
-                            <PlayerList></PlayerList>
-                            </div>
 
-                        </div>
-                    </Grid>
-                    <Grid item xs>
-                        <div style={{ "textAlign": "center","backgroundColor":"green" ,"height":"100vh"}}></div>
-                    </Grid>
-                    
+            <div style={{ "backgroundColor": "cyan", "height": "100vh" }}>
+                {/* <Button variant="outlined">Material-UI ボタン</Button> */}
+                <div style={{ "textAlign": "center", "height": "30vh" }}>
+                    <Dice2></Dice2>
+                </div>
+                <div>
+                    <PlayerList></PlayerList>
+                </div>
 
-                </Grid>
-            </>
+            </div>
 
         )
     }
