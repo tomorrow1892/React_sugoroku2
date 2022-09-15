@@ -15,7 +15,7 @@ export default class Masu extends React.Component {
         return (
             <>
             <Box sx={{bgcolor:"#FFFFFF",border: 3,borderRadius:2,width: 100,height:100,position:"relative",top:this.props.top,left:this.props.left}} >
-                <Box ><div style={{"font-size":"100%"}}>いのししと触れ合う</div></Box>
+                <Box ><div style={{"fontSize":"100%"}}>いのししと触れ合う</div></Box>
                 <Box sx={{borderRadius:2, bgcolor:"#FF0033"}}>2マス進む</Box>
             </Box>
             </>

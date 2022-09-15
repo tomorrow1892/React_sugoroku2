@@ -46,6 +46,7 @@ export default class Game extends React.Component {
     render() {
         return (
             <>
+            
             <Button onClick={() => this.setPlayerName(0,"tomorrow")}> 状態変更</Button>
                 <Grid container>
                     <Grid item xs={2}>

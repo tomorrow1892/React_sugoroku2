@@ -9,12 +9,16 @@ import { Link as Scroll } from 'react-scroll';
 import Dice2 from './components/Dice2';
 import Game from './components/Game';
 import RequestTest from './components/RequestTest';
+import Canvas from './components/Canvas'
 function App() {
 
   return (
     <>
+    {/* <Canvas></Canvas> */}
+    {/* <ZdogTest></ZdogTest> */}
       <RequestTest></RequestTest>
       <Game></Game>
+      
     </>
 
   )

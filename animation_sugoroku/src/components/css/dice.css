@@ -2,3 +2,143 @@
     width: 60%;
     height: auto;
 }
+
+/* サイコロの面の設定 */
+        /* 1 */
+        
+        .dice3d .item:nth-child(1) {
+            transform: translate3d(0, -50px, 0) rotateX(-90deg);
+            background: url(../img/1dice.jpeg) no-repeat center center / 100% 100%;
+            border-radius: 20px;
+        }
+
+        /* 2 */
+        
+        .dice3d .item:nth-child(2) {
+            transform: translate3d(0, 0, 50px);
+            background: url(../img/2dice.jpeg) no-repeat center center / 100% 100%;
+            border-radius: 20px;
+        }
+
+        /* 3 */
+        
+        .dice3d .item:nth-child(3) {
+            transform: translate3d(50px, 0, 0) rotateY(90deg);
+            background: url(../img/3dice.jpeg) no-repeat center center / 100% 100%;
+            border-radius: 20px;
+        }
+
+        /* 4 */
+        
+        .dice3d .item:nth-child(4) {
+            transform: translate3d(-50px, 0, 0) rotateY(-90deg);
+            background: url(../img/4dice.jpeg) no-repeat center center / 100% 100%;
+            border-radius: 20px;
+        }
+
+        /* 5 */
+        
+        .dice3d .item:nth-child(5) {
+            transform: translate3d(0, 0, -50px) rotateY(180deg);
+            background: url(../img/5dice.jpeg) no-repeat center center / 100% 100%;
+            border-radius: 20px;
+        }
+
+        /* 6 */
+        
+        .dice3d .item:nth-child(6) {
+          transform: translate3d(0, 50px, 0) rotateX(-90deg);
+            background: url(../img/6dice.jpeg) no-repeat center center / 100% 100%;
+            border-radius: 20px;
+        }
+
+
+
+
+
+        .diceContent {
+            width: 80%;
+            height: 80%;
+            margin:20px auto;
+            
+            top: 10%;
+            background: #333;
+            border-radius: 20px;
+            position: relative;
+        }
+        
+        #diceBtn,
+        #diceBtn1 {
+            position: absolute;
+            width: 150px;
+            height: 30px;
+            bottom: 20px;
+            left: 50%;
+            transform: translate(-50%);
+            border-radius: 10px;
+        }
+        
+        #dice2d {
+            position: absolute;
+            width: 120px;
+            top: 70px;
+            left: 50%;
+            transform: translate(-50%);
+            border-radius: 20px;
+        }
+        
+        .dice3d {
+            margin: 30px auto 0;
+            width: 100px;
+            height: 100px;
+            transform-style: preserve-3d;
+            animation: rotate-animation .5s linear infinite;
+        }
+        
+        .dice3d {
+            display: none;
+            position: absolute;
+            top: 20%;
+            left: 35%;
+        }
+        
+        .dice3d .item {
+            position: absolute;
+            left: 0;
+            right: 0;
+            border: 1px solid #333;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+        }
+        
+        
+        
+        @keyframes rotate-animation {
+            from {
+                transform: rotate3d(1, 1, 1, 0deg);
+            }
+        
+            25% {
+                transform: rotate3d(1, 1, 1, 90deg);
+            }
+        
+            50% {
+                transform: rotate3d(1, 1, 1, 180deg);
+            }
+        
+            75% {
+                transform: rotate3d(1, 1, 1, 270deg);
+            }
+        
+            to {
+                transform: rotate3d(1, 1, 1, 360deg);
+            }
+        }
+        
+        /* @media (max-width: 480px) {
+        input {
+          margin: 1em 1em;
+          transform: scale(1.3);
+        }
+        } */

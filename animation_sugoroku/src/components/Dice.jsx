@@ -290,8 +290,7 @@ export default class Dice extends React.Component {
     render() {
         return (
             <>
-                <canvas width="400" height="400"></canvas>
-
+            
                 <button onClick={(e) => {console.log(this.dice);this.rollDice(this.randomItem(this.rotate)); }}>Roll</button>
             </>
         );

@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import React from 'react';
 //import anime from '../lib/anime';
 import Zdog from 'zdog';
+import {Illustration,Shape} from 'react-zdog';
 
 export default class ZdogTest extends React.Component {
 
@@ -26,10 +27,9 @@ export default class ZdogTest extends React.Component {
 
     render() {
         return (
-            <>
-            {/* <canvas className="zdog-canvas"></canvas> */}
-            <button onClick={(e)=>{ this.rend(); }}>描画</button>
-            </>
+            <Illustration zoom={8}>
+            <Shape stroke={20} color="lightblue" rotate={{ x: Math.PI }} />
+          </Illustration>
         )
     }
 }

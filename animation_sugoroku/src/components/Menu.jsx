@@ -18,6 +18,7 @@ export default class Menu extends React.Component {
                 {/* <Button variant="outlined">Material-UI ボタン</Button> */}
                 <div style={{ "textAlign": "center", "height": "30vh" }}>
                     <Dice2></Dice2>
+
                 </div>
                 <div>
                     <PlayerList playerList= {this.props.playerList}></PlayerList>

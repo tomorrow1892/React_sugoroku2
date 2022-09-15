@@ -20,10 +20,10 @@ export default class PlayerList extends React.Component {
                     <ul>
                         {/* <img src={require(`${this.props.playerList[0].icon}`).default} /> */}
                         {this.props.playerList.map(player => (
-                            <>
+                            <div key={player.name}>
              
                             <Grid item xs={10}>
-                                <Card sx={{ margin: 2,border:3,borderColor: 'primary.main' ,boxShadow:2}} key={player.name} style={{ "backgroundColor": "white" }}>
+                                <Card sx={{ margin: 2,border:3,borderColor: 'primary.main' ,boxShadow:2}} style={{ "backgroundColor": "white" }}>
                                     <CardHeader
                                         avatar={<Avatar  sx={{ width: 50, height: 50 ,bgcolor: 'background.paper'}}><img src={`${player.icon}`} style={{width:40}} /></Avatar>}
                                         title={player.name}
@@ -32,7 +32,7 @@ export default class PlayerList extends React.Component {
                                 </Card>
                             </Grid>
     
-                            </>
+                            </div>
                             
                         ))}
                     </ul>
