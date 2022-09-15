@@ -26,10 +26,10 @@ export default class Game extends React.Component {
      
         this.playerList = new Array();
         this.playerList.push(new Player("nakahashi",0,cat));
-        this.playerList.push(new Player("horie",0,dog));
-        this.playerList.push(new Player("sakai",0,hamster));
-        this.playerList.push(new Player("hukusima",0,hiyoko));
-        this.playerList.push(new Player("matsumoto",0,penguin));
+        this.playerList.push(new Player("horie",20,dog));
+        this.playerList.push(new Player("sakai",10,hamster));
+        this.playerList.push(new Player("hukusima",50,hiyoko));
+        this.playerList.push(new Player("matsumoto",100,penguin));
         this.state={
            playerList: this.playerList
         }
@@ -47,13 +47,14 @@ export default class Game extends React.Component {
         return (
             <>
             
-            <Button onClick={() => this.setPlayerName(0,"tomorrow")}> 状態変更</Button>
+           
                 <Grid container>
                     <Grid item xs={2}>
                        <Menu playerList={this.state.playerList}></Menu>
                     </Grid>
                     <Grid item xs>
-                        <div style={{ "textAlign": "center","backgroundColor":"#F3F1FA" ,"height":"100vh"}}>
+                        <div style={{ "textAlign": "center","backgroundColor":"#F3F1FA" ,"height":"100%"}}>
+                        <Button onClick={() => this.setPlayerName(0,"tomorrow")}> てすと</Button>
                             <Masu top={100} left={100}> </Masu>
                             <Masu top={150} left={400}></Masu>
                         </div>

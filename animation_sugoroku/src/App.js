@@ -14,9 +14,7 @@ function App() {
 
   return (
     <>
-    {/* <Canvas></Canvas> */}
-    {/* <ZdogTest></ZdogTest> */}
-      <RequestTest></RequestTest>
+      {/* <RequestTest></RequestTest> */}
       <Game></Game>
       
     </>

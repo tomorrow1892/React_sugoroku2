@@ -14,13 +14,12 @@ export default class Menu extends React.Component {
     render() {
         return (
 
-            <div style={{ "backgroundColor": "cyan", "height": "100vh" }}>
-                {/* <Button variant="outlined">Material-UI ボタン</Button> */}
+            <div style={{ "backgroundColor": "	#FFFFE0",  "height": "100%" }}>
                 <div style={{ "textAlign": "center", "height": "30vh" }}>
                     <Dice2></Dice2>
 
                 </div>
-                <div>
+                <div style={{"height": "70vh"}}>
                     <PlayerList playerList= {this.props.playerList}></PlayerList>
                 </div>
 

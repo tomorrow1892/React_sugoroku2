@@ -110,7 +110,7 @@ export default class DiceImage extends React.Component {
         case 5: dice2d.src = dice5Img; break;
         case 6: dice2d.src = dice6Img; break;
       }
-      
+
       dice2d.style.display = "block";
       dice3d.style.display = "none";
     }
@@ -119,27 +119,29 @@ export default class DiceImage extends React.Component {
   render() {
     return (
       <>
-        <div className="diceContent">
+        <div className="diceContent" >
+          <div className="inner">
+            <img
+              id="dice2d"
+              src={dice1Img}
+              alt="出目1"
+              ref={this.dice2dRef}
+              className="diceImage"
+            />
+            <div className="dice3d" style={{ "display": "none" }} ref={this.dice3dRef}>
+              <div className="item"></div>
+              <div className="item"></div>
+              <div className="item"></div>
+              <div className="item"></div>
+              <div className="item"></div>
+              <div className="item"></div>
+            </div>
 
-          <img
-          id="dice2d"
-            src={dice1Img}
-            alt="出目1"
-            ref={this.dice2dRef}
-            className="diceImage"
-          />
-          <div className="dice3d" style={{ "display": "none" }}ref={this.dice3dRef}>
-            <div className="item"></div>
-            <div className="item"></div>
-            <div className="item"></div>
-            <div className="item"></div>
-            <div className="item"></div>
-            <div className="item"></div>
+            <Button id="diceBtn" ref={this.diceBtnRef}  variant="contained" color="success" onClick={() => this.changeDice()}>
+              サイコロを振る
+            </Button>
           </div>
 
-          <Button ref={this.diceBtnRef} variant="contained" color="success" onClick={() => this.changeDice()}>
-            サイコロを振る
-          </Button>
         </div>
       </>
 
