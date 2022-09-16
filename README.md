@@ -1,5 +1,13 @@
 # React_sugoroku2
 
+##テスト方法(9/16)
+- ローカルでMiraiSugorouku2を立ち上げて，ゲーム設定画面で設定をしてゲーム開始ボタンを押す．
+- ゲーム画面のuriからsugorokuIdを見る(http://localhost:2289/game/25　の25のところがsugorokuId)
+- Reactのすごろくゲームを npm start で立ち上げる
+- localhost:3000/{sugorokuId} にアクセス(localhost:/3000/25　など)
+- プレイヤーの設定などが反映されてるはず
+
+
 ## 今後の方針
 - 盤面
 - 処理
