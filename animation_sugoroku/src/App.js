@@ -9,7 +9,7 @@ import { Link as Scroll } from 'react-scroll';
 import Dice2 from './components/Dice2';
 import Game from './components/Game';
 import RequestTest from './components/RequestTest';
-import Canvas from './components/Canvas'
+
 import { Route,Routes,useParams } from 'react-router-dom';
 
 function App() {

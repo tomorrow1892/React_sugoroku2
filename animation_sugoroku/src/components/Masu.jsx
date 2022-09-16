@@ -14,10 +14,10 @@ export default class Masu extends React.Component {
     render() {
         return (
             <>
-            <Box sx={{bgcolor:"#FFFFFF",border: 3,borderRadius:2,width: 100,height:100,position:"relative",top:this.props.top,left:this.props.left}} >
-                <Box ><div style={{"fontSize":"100%"}}>いのししと触れ合う</div></Box>
-                <Box sx={{borderRadius:2, bgcolor:"#FF0033"}}>2マス進む</Box>
-            </Box>
+            <Card sx={{bgcolor:"#FFFFFF",border: 3,borderRadius:2,width: 100,height:100,position:"absolute",top:this.props.top,left:this.props.left}} >
+                <Card><div style={{"fontSize":"100%"}}>{this.props.masu.title}</div></Card>
+                <Card sx={{borderRadius:2, bgcolor:"#FF0033"}}>2マス進む</Card>
+            </Card>
             </>
         )
     }

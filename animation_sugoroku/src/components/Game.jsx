@@ -11,26 +11,27 @@ import hiyoko from './img/hiyoko.png';
 import penguin from './img/penguin.png';
 import zo from './img/zo.png';
 import Masu from './Masu';
+import Board from "./Board";
 
 
 // import PlayerStatus from './PlayerStatus';
-const {PlayerStatus} = require('./PlayerStatus');
+const { PlayerStatus } = require('./PlayerStatus');
 
 //環境変数
 const BACKEND_HOST = "http://localhost:2289";
 
 //プレイヤーのステータスを持つオブジェクト
-function Player(playerId,sugorokuId,icon,name,order,point,position,isGoaled,isBreak){
-    this.playerId=playerId;
-    this.sugorokuId=sugorokuId;
-    this.icon=icon;
-    this.name=name;
-    this.order=order;
+function Player(playerId, sugorokuId, icon, name, order, point, position, isGoaled, isBreak) {
+    this.playerId = playerId;
+    this.sugorokuId = sugorokuId;
+    this.icon = icon;
+    this.name = name;
+    this.order = order;
     this.point = point;
     this.position = position;
-    this.isGoaled=isGoaled;
+    this.isGoaled = isGoaled;
     this.isBreak = isBreak;
-    
+
 }
 
 
@@ -42,32 +43,37 @@ export default class Game extends React.Component {
         super(props);
         //バックエンドからゲーム設定を受け取ってstateにセットする
         const sugorokuInfo = this.requestSugorokuInfo(this.props.sid);
-        this.playerList = new Array();
-        sugorokuInfo.players.forEach(player=>{
+        //プレイヤー設定
+        const playerList = new Array();
+        sugorokuInfo.players.forEach(player => {
             let iconImg;
             switch (player.icon) {
-                case "dog":iconImg=dog; break;
-                case "cat":iconImg=cat; break;
-                case "hiyoko":iconImg=hiyoko; break;
-                case "hamster":iconImg=hamster; break;
-                case "zo":iconImg=zo; break;
-                case "penguin":iconImg=penguin; break;
+                case "dog": iconImg = dog; break;
+                case "cat": iconImg = cat; break;
+                case "hiyoko": iconImg = hiyoko; break;
+                case "hamster": iconImg = hamster; break;
+                case "zo": iconImg = zo; break;
+                case "penguin": iconImg = penguin; break;
                 default: break;
             }
             //オブジェクトを生成してリストに入れる
-            this.playerList.push(new Player(player.playerId,player.sugorokuId,
-                iconImg,player.name,player.order,player.points,player.posision,player.isGoaled,player.isBreak));
+            playerList.push(new Player(player.playerId, player.sugorokuId,
+                iconImg, player.name, player.order, player.points, player.posision, player.isGoaled, player.isBreak));
         })
 
-        this.state={
-           playerList: this.playerList
+        const masuList = [...sugorokuInfo.squares];
+        console.log(masuList);
+
+        this.state = {
+            playerList: playerList,
+            masuList: masuList
         }
 
     }
     //すごろくの初期状態を取得する
     requestSugorokuInfo(sugorokuId) {
         var xhr = new XMLHttpRequest();
-        var URI = BACKEND_HOST + "/api/sugorokuInfo?sugorokuId=" + sugorokuId ;
+        var URI = BACKEND_HOST + "/api/sugorokuInfo?sugorokuId=" + sugorokuId;
         xhr.open("GET", URI, false);
         xhr.send();
         var response = JSON.parse(xhr.responseText);
@@ -78,16 +84,15 @@ export default class Game extends React.Component {
     render() {
         return (
             <>
-   
+
                 <Grid container>
                     <Grid item xs={2}>
-                       <Menu playerList={this.state.playerList}></Menu>
+                        <Menu playerList={this.state.playerList}></Menu>
                     </Grid>
                     <Grid item xs>
-                        <div style={{ "textAlign": "center","backgroundColor":"#F3F1FA" ,"height":"100%"}}>
-                        <Button onClick={() => this.requestSugorokuInfo(this.props.sid)}> 何らかのテストボタン</Button>
-                            <Masu top={100} left={100}> </Masu>
-                            <Masu top={150} left={400}></Masu>
+                        <div style={{  "position": "relative" ,"textAlign": "center", "backgroundColor": "#F3F1FA", "height": "100%" }}>
+                            <Button onClick={() => this.requestSugorokuInfo(this.props.sid)}> 何らかのテストボタン</Button>
+                            <Board style={{}} masuList={this.state.masuList}></Board>
                         </div>
                     </Grid>
                 </Grid>
