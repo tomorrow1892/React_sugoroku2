@@ -1,16 +1,16 @@
 
 import React from 'react';
 import anime from '../lib/anime.js';
-
-import cat from './img/1.png';
+import {Avatar} from '@mui/material';
 
 
 export default class Icon extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            positionX: 30
+        this.state ={
+            positionX:this.props.x,
+            positionY:this.props.y
         }
     }
 
@@ -47,7 +47,10 @@ export default class Icon extends React.Component {
     render() {
         return (
             <>
-                <img src={cat} alt="コマ" ref={(e) => { this.coma = e; }} style={{ position: "absolute", top: 100, left: this.state.positionX, width: 50, height: 50}} />
+          
+          <Avatar ref={(e) => { this.coma = e; }} sx={{boxShadow:3, border: 2,borderColor:"#9933DD", width: 50, height: 50, bgcolor: 'background.paper' ,position: "absolute", top:this.state.positionY, left: this.state.positionX,zIndex:100} }>
+            <img src={this.props.iconImg} alt="コマ"  style={{ width: 40}} />
+            </Avatar>
                 <button onClick={(e) => {this.moveComa(3)}}>移動</button>
             </>
         )

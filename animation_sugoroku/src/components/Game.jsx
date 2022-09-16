@@ -92,7 +92,7 @@ export default class Game extends React.Component {
                     <Grid item xs>
                         <div style={{  "position": "relative" ,"textAlign": "center", "backgroundColor": "#F3F1FA", "height": "100%" }}>
                             <Button onClick={() => this.requestSugorokuInfo(this.props.sid)}> 何らかのテストボタン</Button>
-                            <Board style={{}} masuList={this.state.masuList}></Board>
+                            <Board style={{}} masuList={this.state.masuList} playerList={this.state.playerList}></Board>
                         </div>
                     </Grid>
                 </Grid>
