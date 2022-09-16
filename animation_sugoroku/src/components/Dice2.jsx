@@ -71,22 +71,14 @@ import dice5Img from "./img/5dice.jpeg";
 import dice6Img from "./img/6dice.jpeg";
 
 export default class DiceImage extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
     this.state = {
       diceState: false
     };
-    this.im = "./img/1dice.jpeg";
     this.dice2dRef = React.createRef();
     this.dice3dRef = React.createRef();
-    this.dice3Ref = React.createRef();
-    this.dice4Ref = React.createRef();
-    this.dice5Ref = React.createRef();
-    this.dice6Ref = React.createRef();
     this.diceBtnRef = React.createRef();
-    this.dice6Ref = React.createRef();
-
-
   }
 
   changeDice() {
@@ -101,7 +93,6 @@ export default class DiceImage extends React.Component {
       dicebtn.textContent = "サイコロを振る";
       let max = 6;
       let rand = Math.floor(Math.random() * max) + 1;
-      // let index = 2;
       switch (rand) {
         case 1: dice2d.src = dice1Img; break;
         case 2: dice2d.src = dice2Img; break;
@@ -110,9 +101,10 @@ export default class DiceImage extends React.Component {
         case 5: dice2d.src = dice5Img; break;
         case 6: dice2d.src = dice6Img; break;
       }
-
       dice2d.style.display = "block";
       dice3d.style.display = "none";
+      //この下にマス移動などの処理を書く
+
     }
   }
 

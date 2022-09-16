@@ -1,5 +1,5 @@
 
-import { Grid, Button } from "@mui/material";
+import { Grid, Button, iconButtonClasses } from "@mui/material";
 import React from "react";
 import Dice2 from './Dice2';
 import PlayerList from './PlayerList';
@@ -9,52 +9,83 @@ import dog from './img/dog.png';
 import hamster from './img/hamster.png';
 import hiyoko from './img/hiyoko.png';
 import penguin from './img/penguin.png';
+import zo from './img/zo.png';
 import Masu from './Masu';
+
+
 // import PlayerStatus from './PlayerStatus';
 const {PlayerStatus} = require('./PlayerStatus');
 
+//環境変数
+const BACKEND_HOST = "http://localhost:2289";
 
-function Player(name,point,icon){
-    this.name= name;
+//プレイヤーのステータスを持つオブジェクト
+function Player(playerId,sugorokuId,icon,name,order,point,position,isGoaled,isBreak){
+    this.playerId=playerId;
+    this.sugorokuId=sugorokuId;
+    this.icon=icon;
+    this.name=name;
+    this.order=order;
     this.point = point;
-    this.icon = icon;
+    this.position = position;
+    this.isGoaled=isGoaled;
+    this.isBreak = isBreak;
+    
 }
+
+
+
+
 export default class Game extends React.Component {
 
     constructor(props) {
         super(props);
-     
+        //バックエンドからゲーム設定を受け取ってstateにセットする
+        const sugorokuInfo = this.requestSugorokuInfo(this.props.sid);
         this.playerList = new Array();
-        this.playerList.push(new Player("nakahashi",0,cat));
-        this.playerList.push(new Player("horie",20,dog));
-        this.playerList.push(new Player("sakai",10,hamster));
-        this.playerList.push(new Player("hukusima",50,hiyoko));
-        this.playerList.push(new Player("matsumoto",100,penguin));
+        sugorokuInfo.players.forEach(player=>{
+            let iconImg;
+            switch (player.icon) {
+                case "dog":iconImg=dog; break;
+                case "cat":iconImg=cat; break;
+                case "hiyoko":iconImg=hiyoko; break;
+                case "hamster":iconImg=hamster; break;
+                case "zo":iconImg=zo; break;
+                case "penguin":iconImg=penguin; break;
+                default: break;
+            }
+            //オブジェクトを生成してリストに入れる
+            this.playerList.push(new Player(player.playerId,player.sugorokuId,
+                iconImg,player.name,player.order,player.points,player.posision,player.isGoaled,player.isBreak));
+        })
+
         this.state={
            playerList: this.playerList
         }
 
     }
-
-    setPlayerName(playerIndex,name){
-        this.playerList[playerIndex].name = name;
-        this.setState({
-            playerList: this.playerList
-        })
-    };
+    //すごろくの初期状態を取得する
+    requestSugorokuInfo(sugorokuId) {
+        var xhr = new XMLHttpRequest();
+        var URI = BACKEND_HOST + "/api/sugorokuInfo?sugorokuId=" + sugorokuId ;
+        xhr.open("GET", URI, false);
+        xhr.send();
+        var response = JSON.parse(xhr.responseText);
+        console.log(response);
+        return response;
+    }
 
     render() {
         return (
             <>
-            
-           
+   
                 <Grid container>
                     <Grid item xs={2}>
                        <Menu playerList={this.state.playerList}></Menu>
                     </Grid>
                     <Grid item xs>
                         <div style={{ "textAlign": "center","backgroundColor":"#F3F1FA" ,"height":"100%"}}>
-                        <Button onClick={() => this.setPlayerName(0,"tomorrow")}> てすと</Button>
+                        <Button onClick={() => this.requestSugorokuInfo(this.props.sid)}> 何らかのテストボタン</Button>
                             <Masu top={100} left={100}> </Masu>
                             <Masu top={150} left={400}></Masu>
                         </div>

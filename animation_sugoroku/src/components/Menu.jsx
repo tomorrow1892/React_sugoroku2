@@ -13,13 +13,11 @@ export default class Menu extends React.Component {
     }
     render() {
         return (
-
             <div style={{ "backgroundColor": "	#FFFFE0",  "height": "100%" }}>
-                <div style={{ "textAlign": "center", "height": "30vh" }}>
+                <div style={{ "textAlign": "center", "height": "25vh" }}>
                     <Dice2></Dice2>
-
                 </div>
-                <div style={{"height": "70vh"}}>
+                <div style={{"height": "75vh"}}>
                     <PlayerList playerList= {this.props.playerList}></PlayerList>
                 </div>
 
