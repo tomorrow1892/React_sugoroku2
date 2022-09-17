@@ -1,28 +1,28 @@
 
-import { Grid, Button } from "@mui/material";
-import React from "react";
-import Dice2 from './Dice2';
-import PlayerList from './PlayerList';
+// import { Grid, Button } from "@mui/material";
+// import React from "react";
+// import Dice2 from './Dice2';
+// import PlayerList from './PlayerList';
 
 
-export default class Menu extends React.Component {
+// export default class Menu extends React.Component {
 
-    constructor(props) {
-        super(props);
+//     constructor(props) {
+//         super(props);
 
-    }
-    render() {
-        return (
-            <div style={{ "backgroundColor": "	#FFFFE0",  "height": "100%" }}>
-                <div style={{ "textAlign": "center", "height": "25vh" }}>
-                    <Dice2></Dice2>
-                </div>
-                <div style={{"height": "75vh"}}>
-                    <PlayerList playerList= {this.props.playerList}></PlayerList>
-                </div>
+//     }
+//     render() {
+//         return (
+//             <div style={{ "backgroundColor": "	#FFFFE0",  "height": "100%" }}>
+//                 <div style={{ "textAlign": "center", "height": "25vh" }}>
+//                     <Dice2></Dice2>
+//                 </div>
+//                 <div style={{"height": "75vh"}}>
+//                     <PlayerList playerList= {this.props.playerList}></PlayerList>
+//                 </div>
 
-            </div>
+//             </div>
 
-        )
-    }
-}
+//         )
+//     }
+// }

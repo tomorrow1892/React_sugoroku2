@@ -14,6 +14,7 @@ import Masu from './Masu';
 import Board from "./Board";
 
 
+
 // import PlayerStatus from './PlayerStatus';
 const { PlayerStatus } = require('./PlayerStatus');
 
@@ -41,14 +42,14 @@ export default class Game extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
         this.state = this.getState();
 
-       
+
     }
 
-      //バックエンドからゲーム設定を受け取ってstateにセットする
-    getState(){
+    //バックエンドからゲーム設定を受け取ってstateにセットする
+    getState() {
         const sugorokuInfo = this.requestSugorokuInfo(this.props.sid);
         //プレイヤー設定
         const playerList = new Array();
@@ -90,28 +91,36 @@ export default class Game extends React.Component {
     }
 
 
-      requestDiceRoll(sugorokuId,suzi){
+    requestDiceRoll(sugorokuId, suzi) {
         var xhr = new XMLHttpRequest();
-            var URI = BACKEND_HOST + "/api/diceRoll?sugorokuId=" + sugorokuId+"&suzi="+suzi;
-            xhr.open("GET", URI, false);
-            xhr.send();
-            var response = JSON.parse(xhr.responseText);
-            var sugorokuInfo = this.getState();
-            this.setState(sugorokuInfo);
-            return response;
-      }
-    
+        var URI = BACKEND_HOST + "/api/diceRoll?sugorokuId=" + sugorokuId + "&suzi=" + suzi;
+        xhr.open("GET", URI, false);
+        xhr.send();
+        var response = JSON.parse(xhr.responseText);
+        var sugorokuInfo = this.getState();
+        this.setState(sugorokuInfo);
+        return response;
+    }
+
 
     render() {
         return (
             <>
                 <Grid container>
                     <Grid item xs={2}>
-                        <Menu  playerList={this.state.playerList}></Menu>
+                        <div style={{ "backgroundColor": "	#FFFFE0", "height": "100%" }}>
+                            <div style={{ "textAlign": "center", "height": "25vh" }}>
+                                <Dice2></Dice2>
+                            </div>
+                            <div style={{ "height": "75vh" }}>
+                                <PlayerList playerList={this.state.playerList}></PlayerList>
+                            </div>
+
+                        </div>
                     </Grid>
                     <Grid item xs>
-                        <div style={{  "position": "relative" ,"textAlign": "center", "backgroundColor": "#F3F1FA", "height": "100%" }}>
-                            <Button onClick={() => this.requestDiceRoll(this.props.sid,1)}> 何らかのテストボタン</Button>
+                        <div style={{ "position": "relative", "textAlign": "center", "backgroundColor": "#F3F1FA", "height": "100%" }}>
+                            <Button onClick={() => this.requestDiceRoll(this.props.sid, 1)}> 何らかのテストボタン</Button>
                             <Board nowPlayer={this.state.nowPlayer} masuList={this.state.masuList} playerList={this.state.playerList}></Board>
                         </div>
                     </Grid>
