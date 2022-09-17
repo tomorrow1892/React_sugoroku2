@@ -12,6 +12,8 @@ import penguin from './img/penguin.png';
 import zo from './img/zo.png';
 import Masu from './Masu';
 import Board from "./Board";
+import MasuEvent from "./MasuEvent";
+import ModalTest from "./ModalTest";
 
 
 
@@ -44,6 +46,9 @@ export default class Game extends React.Component {
         super(props);
         this.state = this.getState();
         this.requestDiceRoll = this.requestDiceRoll.bind(this);
+        this.switchIsVisible = this.switchIsVisible.bind(this);
+        this.modalRef = React.createRef();
+
     }
 
     //バックエンドからゲーム設定を受け取ってstateにセットする
@@ -72,9 +77,10 @@ export default class Game extends React.Component {
         console.log(sugorokuInfo);
 
         return {
-            playerList: playerList,
-            masuList: masuList,
-            nowPlayer: nowPlayer
+            playerList: playerList,//プレイヤーのリスト
+            masuList: masuList,//マスのリスト
+            nowPlayer: nowPlayer,//ターンプレイヤー
+            isMasuEventVisible: false//マスのポップアップの表示フラグ
         }
     }
 
@@ -95,15 +101,20 @@ export default class Game extends React.Component {
         xhr.open("GET", URI, false);
         xhr.send();
         var response = JSON.parse(xhr.responseText);
-        var sugorokuInfo = this.getState();
-        this.setState(sugorokuInfo);
+        this.setState(this.getState()); //positionが更新されてコマが移動する
+        setTimeout(()=> this.setState({isMasuEventVisible:true}),500);
+        
         return response;
     }
 
+    switchIsVisible(isVisible){
+        this.setState({isMasuEventVisible:isVisible});
+    }
 
     render() {
         return (
             <>
+            {console.log(this.state.isMasuEventVisible)}
                 <Grid container>
                     <Grid item xs={2}>
                         <div style={{ "backgroundColor": "	#FFFFE0", "height": "100%" }}>
@@ -121,6 +132,9 @@ export default class Game extends React.Component {
                     <Grid item xs>
                         <div style={{ "position": "relative", "textAlign": "center", "backgroundColor": "#F3F1FA", "height": "100%" }}>
                             <Button onClick={() => this.requestDiceRoll(this.props.sid, 1)}> 何らかのテストボタン</Button>
+                            <ModalTest switchIsVisible={this.switchIsVisible} isOpen={this.state.isMasuEventVisible}></ModalTest>
+
+
                             <Board nowPlayer={this.state.nowPlayer} masuList={this.state.masuList} playerList={this.state.playerList}></Board>
                         </div>
                     </Grid>
