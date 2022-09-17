@@ -42,10 +42,8 @@ export default class Game extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.state = this.getState();
-
-
+        this.requestDiceRoll = this.requestDiceRoll.bind(this);
     }
 
     //バックエンドからゲーム設定を受け取ってstateにセットする
@@ -110,12 +108,14 @@ export default class Game extends React.Component {
                     <Grid item xs={2}>
                         <div style={{ "backgroundColor": "	#FFFFE0", "height": "100%" }}>
                             <div style={{ "textAlign": "center", "height": "25vh" }}>
-                                <Dice2></Dice2>
+                                <Dice2 sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice2>
+                                <Button id="diceBtn" style={{"zIndex":"100","position":"relative","top":"10%",}} ref={this.diceBtnRef}  color="success" onClick={() => this.changeDice()}>
+                                    サイコロを振る
+                                </Button>
                             </div>
                             <div style={{ "height": "75vh" }}>
                                 <PlayerList playerList={this.state.playerList}></PlayerList>
                             </div>
-
                         </div>
                     </Grid>
                     <Grid item xs>

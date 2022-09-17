@@ -106,7 +106,7 @@ export default class DiceImage extends React.Component {
       dice2d.style.display = "block";
       dice3d.style.display = "none";
       //この下にマス移動などの処理を書く
-      
+      this.props.requestDiceRoll(this.props.sugorokuId,rand);
 
       return rand;
     }

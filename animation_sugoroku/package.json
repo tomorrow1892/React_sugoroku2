@@ -19,6 +19,7 @@
     "react-transition-group": "^4.4.5",
     "react-zdog": "^1.0.11",
     "web-vitals": "^2.1.4",
+    "yarn": "^1.22.19",
     "zdog": "^1.1.3"
   },
   "scripts": {
