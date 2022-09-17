@@ -12,6 +12,7 @@ export default class Icon extends React.Component {
             positionX:this.props.x,
             positionY:this.props.y
         }
+        this.comaRef = React.createRef();
     }
 
     async moveComa(count) {
@@ -27,16 +28,22 @@ export default class Icon extends React.Component {
         }
     }
 
-    toNext() {
+    //指定した値だけコマを移動
+    toNext(x,y) {
         return new Promise((resolve, reject) => {
+            // console.log(this.state.positionX);
             anime({
                 targets: this.coma,
-                translateX: this.state.positionX + 200,
+                translateX:  0,
                 duration: 500,
                 easing: 'easeInOutQuad',
                 complete:()=>{
-                    this.state.positionX += 200;
-            console.log("yes");
+           
+                    this.setState(state=>({
+                        positionX: state.positionX+x,
+                        positionY: state.positionY+y
+                    }));
+            console.log(this.state.positionX);
             resolve(1);
                 }
             })
@@ -47,11 +54,13 @@ export default class Icon extends React.Component {
     render() {
         return (
             <>
-          
-          <Avatar ref={(e) => { this.coma = e; }} sx={{boxShadow:3, border: 2,borderColor:"#9933DD", width: 50, height: 50, bgcolor: 'background.paper' ,position: "absolute", top:this.state.positionY, left: this.state.positionX,zIndex:100} }>
+     
+            <Avatar ref={(e) => { this.coma = e; }} 
+            sx={{boxShadow:3, border: 2,borderColor:"#9933DD", width: 50, height: 50,
+             bgcolor: 'background.paper' ,position: "absolute", top:this.props.y, left: this.props.x,zIndex:100} }>
             <img src={this.props.iconImg} alt="コマ"  style={{ width: 40}} />
             </Avatar>
-                <button onClick={(e) => {this.moveComa(3)}}>移動</button>
+                
             </>
         )
     }

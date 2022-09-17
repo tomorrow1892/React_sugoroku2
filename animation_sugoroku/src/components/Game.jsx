@@ -41,7 +41,14 @@ export default class Game extends React.Component {
 
     constructor(props) {
         super(props);
-        //バックエンドからゲーム設定を受け取ってstateにセットする
+        
+        this.state = this.getState();
+
+       
+    }
+
+      //バックエンドからゲーム設定を受け取ってstateにセットする
+    getState(){
         const sugorokuInfo = this.requestSugorokuInfo(this.props.sid);
         //プレイヤー設定
         const playerList = new Array();
@@ -58,18 +65,20 @@ export default class Game extends React.Component {
             }
             //オブジェクトを生成してリストに入れる
             playerList.push(new Player(player.playerId, player.sugorokuId,
-                iconImg, player.name, player.order, player.points, player.posision, player.isGoaled, player.isBreak));
+                iconImg, player.name, player.order, player.points, player.position, player.isGoaled, player.isBreak));
         })
 
         const masuList = [...sugorokuInfo.squares];
-        console.log(masuList);
+        const nowPlayer = sugorokuInfo.nowPlayer;
+        console.log(sugorokuInfo);
 
-        this.state = {
+        return {
             playerList: playerList,
-            masuList: masuList
+            masuList: masuList,
+            nowPlayer: nowPlayer
         }
-
     }
+
     //すごろくの初期状態を取得する
     requestSugorokuInfo(sugorokuId) {
         var xhr = new XMLHttpRequest();
@@ -77,22 +86,33 @@ export default class Game extends React.Component {
         xhr.open("GET", URI, false);
         xhr.send();
         var response = JSON.parse(xhr.responseText);
-        console.log(response);
         return response;
     }
+
+
+      requestDiceRoll(sugorokuId,suzi){
+        var xhr = new XMLHttpRequest();
+            var URI = BACKEND_HOST + "/api/diceRoll?sugorokuId=" + sugorokuId+"&suzi="+suzi;
+            xhr.open("GET", URI, false);
+            xhr.send();
+            var response = JSON.parse(xhr.responseText);
+            var sugorokuInfo = this.getState();
+            this.setState(sugorokuInfo);
+            return response;
+      }
+    
 
     render() {
         return (
             <>
-
                 <Grid container>
                     <Grid item xs={2}>
-                        <Menu playerList={this.state.playerList}></Menu>
+                        <Menu  playerList={this.state.playerList}></Menu>
                     </Grid>
                     <Grid item xs>
                         <div style={{  "position": "relative" ,"textAlign": "center", "backgroundColor": "#F3F1FA", "height": "100%" }}>
-                            <Button onClick={() => this.requestSugorokuInfo(this.props.sid)}> 何らかのテストボタン</Button>
-                            <Board style={{}} masuList={this.state.masuList} playerList={this.state.playerList}></Board>
+                            <Button onClick={() => this.requestDiceRoll(this.props.sid,1)}> 何らかのテストボタン</Button>
+                            <Board nowPlayer={this.state.nowPlayer} masuList={this.state.masuList} playerList={this.state.playerList}></Board>
                         </div>
                     </Grid>
                 </Grid>

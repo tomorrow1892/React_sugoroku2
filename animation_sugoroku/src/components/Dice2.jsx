@@ -70,6 +70,7 @@ import dice4Img from "./img/4dice.jpeg";
 import dice5Img from "./img/5dice.jpeg";
 import dice6Img from "./img/6dice.jpeg";
 
+
 export default class DiceImage extends React.Component {
   constructor(props) {
     super(props);
@@ -89,6 +90,7 @@ export default class DiceImage extends React.Component {
       dicebtn.textContent = "ストップ";
       dice2d.style.display = "none";
       dice3d.style.display = "block";
+      return -1;
     } else if (dicebtn.textContent === "ストップ") {
       dicebtn.textContent = "サイコロを振る";
       let max = 6;
@@ -104,7 +106,9 @@ export default class DiceImage extends React.Component {
       dice2d.style.display = "block";
       dice3d.style.display = "none";
       //この下にマス移動などの処理を書く
+      
 
+      return rand;
     }
   }
 

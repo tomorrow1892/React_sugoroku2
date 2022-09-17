@@ -29,26 +29,28 @@ export default class Board extends React.Component {
         this.coma4Ref=React.createRef();
         this.coma5Ref=React.createRef();
         this.coma6Ref=React.createRef();
-
-        console.log(this.props.masuList);
     }
 
-    async moveComa(count) {
+    async moveComa(count,comaRef) {
         // let myPromise = Promise.resolve();
         let index = 0;
         console.log("count:" + count);
+        let comaNowPosition = this.props.nowPlayer.position;//コマの現在マス
         while (index < count) {
-            // console.log("index:"+index);
-            // myPromise = myPromise.then(moveComa).then(()=>{return new Promise((resolve,reject)=>{index++})});
-            await this.toNext();
+            const distX = masuPositionList[comaNowPosition+1].left - masuPositionList[comaNowPosition].left;//一つ次のマスまでのX方向の距離
+            const distY = masuPositionList[comaNowPosition+1].top - masuPositionList[comaNowPosition].top;//一つ次のマスまでのY方向の距離
+            console.log("distX:"+distX);
+            //console.log("distY:"+distY);
+            comaNowPosition += 1;
+            await comaRef.current.toNext(distX,distY);
             index++;
-            console.log(index);
         }
     }
 
     render() {
         return (
             <>
+            <button onClick={() => {this.moveComa(2,this.coma1Ref)}}>コマ移動</button>
             {this.props.playerList.map((player,index)=>{
                 let comaRef;
                 switch (player.order) {
@@ -60,14 +62,14 @@ export default class Board extends React.Component {
                     case 6: comaRef=this.coma6Ref; break;
                     default: break;
                 }
+                console.log("positon:"+player.position);
                 return (<Icon ref={comaRef} key={player.order} iconImg={player.icon} 
-                    x={masuPositionList[0].left+10+index*20} y={masuPositionList[0].top+30}></Icon>)
+                    x={masuPositionList[player.position].left+index*20} y={masuPositionList[player.position].top+30}></Icon>)
             })}
             
 
             <MasuStart top={masuPositionList[0].top} left={masuPositionList[0].left}></MasuStart>
             {this.props.masuList.map((masu,index) => {
-                console.log(index);
                 return (<Masu key={index+1} masu={masu} top={masuPositionList[index+1].top} left={masuPositionList[index+1].left}> </Masu>);
             })}
  

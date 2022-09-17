@@ -25,7 +25,7 @@ export default class PlayerList extends React.Component {
                                     <Card sx={{ margin: 1, border: 3, borderColor: 'primary.main', boxShadow: 2 }}
                                         style={{ "backgroundColor": "white", "width": "100%", "height": "50%", "marginLeft": "auto", "marginRight": "auto" }}>
                                         <CardHeader
-                                            avatar={<Avatar sx={{ width: 50, height: 50, bgcolor: 'background.paper' }}><img src={`${player.icon}`} style={{ width: 40 }} /></Avatar>}
+                                            avatar={<Avatar sx={{ border: 2,borderColor:"#9933DD",width: 50, height: 50, bgcolor: 'background.paper' }}><img src={`${player.icon}`} style={{ width: 40 }} /></Avatar>}
                                             title={player.name}
                                             subheader={`${player.point}ポイント`}
                                         />
