@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter ,Route,Routes} from 'react-router-dom';
-import ModalTest from './components/ModalTest';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -13,7 +13,7 @@ root.render(
     <Routes>
       <Route path="/:sid"  element={<App/>}/> {/*パスパラメータにsid(sugorokuId)を受ける*/}
       <Route path="/" element={<>/[sugorokuId]でaccessしてください</>}></Route>
-      <Route path="/modaltest" element={<ModalTest></ModalTest>}></Route>
+ 
 
       </Routes>
   </BrowserRouter>

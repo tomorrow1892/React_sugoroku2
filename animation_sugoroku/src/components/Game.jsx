@@ -12,8 +12,7 @@ import penguin from './img/penguin.png';
 import zo from './img/zo.png';
 import Masu from './Masu';
 import Board from "./Board";
-import MasuEvent from "./MasuEvent";
-import ModalTest from "./ModalTest";
+import EventModal from "./EventModal";
 
 
 
@@ -44,10 +43,17 @@ export default class Game extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = this.getState();
-        this.requestDiceRoll = this.requestDiceRoll.bind(this);
-        this.switchIsVisible = this.switchIsVisible.bind(this);
+        this.state = this.getState();//すごろくゲームに関するstateを取得
+        this.state["isEventModalVisible"]= false;//マスのモーダルの表示フラグのstate
+        this.state["modalContent"] = null;//モーダルの中身
         this.modalRef = React.createRef();
+
+        //子コンポーネントに渡す関数をバインド
+        this.requestDiceRoll = this.requestDiceRoll.bind(this);
+        this.requestdoEvent = this.requestdoEvent.bind(this);
+        this.switchIsVisible = this.switchIsVisible.bind(this);
+    
+
 
     }
 
@@ -80,7 +86,7 @@ export default class Game extends React.Component {
             playerList: playerList,//プレイヤーのリスト
             masuList: masuList,//マスのリスト
             nowPlayer: nowPlayer,//ターンプレイヤー
-            isMasuEventVisible: false//マスのポップアップの表示フラグ
+            
         }
     }
 
@@ -97,24 +103,38 @@ export default class Game extends React.Component {
 
     requestDiceRoll(sugorokuId, suzi) {
         var xhr = new XMLHttpRequest();
-        var URI = BACKEND_HOST + "/api/diceRoll?sugorokuId=" + sugorokuId + "&suzi=" + suzi;
+        var URI = BACKEND_HOST + "/api/diceRoll?sugorokuId=" + sugorokuId + "&suzi=" + 3;
         xhr.open("GET", URI, false);
         xhr.send();
-        var response = JSON.parse(xhr.responseText);
+        var response = JSON.parse(xhr.responseText);//サイコロを振ったターンプレイヤーのステータス
         this.setState(this.getState()); //positionが更新されてコマが移動する
-        setTimeout(()=> this.setState({isMasuEventVisible:true}),500);
+        this.setState({"modalContent": this.state.masuList[response.position-1]});//プレイヤーの位置のマス情報をモーダルの中身にセット(-1はインデックス調整)
+        setTimeout(()=> this.setState({isEventModalVisible:true}),500);//モーダルの表示フラグをtrueにする
         
         return response;
     }
 
+    requestdoEvent(){
+        var xhr = new XMLHttpRequest();
+        var URI = BACKEND_HOST + "/api/doEvent?sugorokuId=" + this.props.sid;
+        xhr.open("GET", URI, false);
+        xhr.send();
+        var response = JSON.parse(xhr.responseText);//イベント処理後のターンプレイヤーのステータス
+        this.setState(this.getState()); //positionが更新されてコマが移動する
+ 
+        
+        return response;
+    }
+
+
     switchIsVisible(isVisible){
-        this.setState({isMasuEventVisible:isVisible});
+        this.setState({isEventModalVisible:isVisible});
     }
 
     render() {
         return (
             <>
-            {console.log(this.state.isMasuEventVisible)}
+            {console.log(this.state.isEventModalVisible)}
                 <Grid container>
                     <Grid item xs={2}>
                         <div style={{ "backgroundColor": "	#FFFFE0", "height": "100%" }}>
@@ -131,8 +151,9 @@ export default class Game extends React.Component {
                     </Grid>
                     <Grid item xs>
                         <div style={{ "position": "relative", "textAlign": "center", "backgroundColor": "#F3F1FA", "height": "100%" }}>
-                            <Button onClick={() => this.requestDiceRoll(this.props.sid, 1)}> 何らかのテストボタン</Button>
-                            <ModalTest switchIsVisible={this.switchIsVisible} isOpen={this.state.isMasuEventVisible}></ModalTest>
+                            <Button onClick={() => this.requestdoEvent()}> 何らかのテストボタン</Button>
+                            <EventModal switchIsVisible={this.switchIsVisible} requestdoEvent={this.requestdoEvent}
+                            isOpen={this.state.isEventModalVisible} modalContent={this.state.modalContent}></EventModal>
 
 
                             <Board nowPlayer={this.state.nowPlayer} masuList={this.state.masuList} playerList={this.state.playerList}></Board>
