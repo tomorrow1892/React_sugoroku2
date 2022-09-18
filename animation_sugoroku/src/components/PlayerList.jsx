@@ -1,17 +1,12 @@
 
 import { Grid, Button, Card, ListItem, CardHeader, Avatar } from "@mui/material";
 import React from "react";
-import Dice2 from './Dice2';
-import Player from './Player';
-
-
 
 //プレイヤー達のステータスを表示するコンポーネント
 export default class PlayerList extends React.Component {
 
     constructor(props) {
         super(props);
-
     }
     render() {
         return (

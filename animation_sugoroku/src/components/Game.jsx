@@ -1,23 +1,18 @@
 
-import { Grid, Button, iconButtonClasses } from "@mui/material";
+import { Grid, Button } from "@mui/material";
 import React from "react";
 import Dice2 from './Dice2';
 import PlayerList from './PlayerList';
-import Menu from './Menu';
 import cat from './img/cat.png';
 import dog from './img/dog.png';
 import hamster from './img/hamster.png';
 import hiyoko from './img/hiyoko.png';
 import penguin from './img/penguin.png';
 import zo from './img/zo.png';
-import Masu from './Masu';
 import Board from "./Board";
 import EventModal from "./EventModal";
 
 
-
-// import PlayerStatus from './PlayerStatus';
-const { PlayerStatus } = require('./PlayerStatus');
 
 //環境変数
 const BACKEND_HOST = "http://localhost:2289";
@@ -36,9 +31,6 @@ function Player(playerId, sugorokuId, icon, name, order, point, position, isGoal
 
 }
 
-
-
-
 export default class Game extends React.Component {
 
     constructor(props) {
@@ -46,25 +38,19 @@ export default class Game extends React.Component {
         this.state = this.getState();//すごろくゲームに関するstateを取得
         this.state["isEventModalVisible"]= false;//マスのモーダルの表示フラグのstate
         this.state["modalContent"] = null;//モーダルの中身
-        this.modalRef = React.createRef();
-
         //子コンポーネントに渡す関数をバインド
         this.requestDiceRoll = this.requestDiceRoll.bind(this);
         this.requestdoEvent = this.requestdoEvent.bind(this);
         this.switchIsVisible = this.switchIsVisible.bind(this);
-    
-
-
     }
 
     //バックエンドからゲーム設定を受け取ってstateにセットする
     getState() {
         const sugorokuInfo = this.requestSugorokuInfo(this.props.sid);
-        //プレイヤー設定
-        const playerList = new Array();
+        const playerList = new Array();//バックエンドから受け取ったplayerオブジェクトを新しいplayerオブジェクトに変換
         sugorokuInfo.players.forEach(player => {
             let iconImg;
-            switch (player.icon) {
+            switch (player.icon) {//画像をセット
                 case "dog": iconImg = dog; break;
                 case "cat": iconImg = cat; break;
                 case "hiyoko": iconImg = hiyoko; break;
@@ -77,16 +63,12 @@ export default class Game extends React.Component {
             playerList.push(new Player(player.playerId, player.sugorokuId,
                 iconImg, player.name, player.order, player.points, player.position, player.isGoaled, player.isBreak));
         })
-
-        const masuList = [...sugorokuInfo.squares];
-        const nowPlayer = sugorokuInfo.nowPlayer;
-        console.log(sugorokuInfo);
-
+        const masuList = [...sugorokuInfo.squares];//バックエンドから受け取ったマスリストをそのまま入れる
+        const nowPlayer = sugorokuInfo.nowPlayer;//ターンプレイヤー
         return {
             playerList: playerList,//プレイヤーのリスト
             masuList: masuList,//マスのリスト
             nowPlayer: nowPlayer,//ターンプレイヤー
-            
         }
     }
 
@@ -96,14 +78,14 @@ export default class Game extends React.Component {
         var URI = BACKEND_HOST + "/api/sugorokuInfo?sugorokuId=" + sugorokuId;
         xhr.open("GET", URI, false);
         xhr.send();
-        var response = JSON.parse(xhr.responseText);
+        var response = JSON.parse(xhr.responseText);//nowPlayer,nplayers,players,squares
         return response;
     }
 
-
-    requestDiceRoll(sugorokuId, suzi) {
+    //サイコロの出目をバックエンドに送信する．(Dice2コンポーネントで使用)
+    requestDiceRoll(suzi) {
         var xhr = new XMLHttpRequest();
-        var URI = BACKEND_HOST + "/api/diceRoll?sugorokuId=" + sugorokuId + "&suzi=" + 3;
+        var URI = BACKEND_HOST + "/api/diceRoll?sugorokuId=" + this.props.sid + "&suzi=" + 2;
         xhr.open("GET", URI, false);
         xhr.send();
         var response = JSON.parse(xhr.responseText);//サイコロを振ったターンプレイヤーのステータス
@@ -114,6 +96,7 @@ export default class Game extends React.Component {
         return response;
     }
 
+    //イベントを処理する．(EventModalコンポーネントで使用)
     requestdoEvent(){
         var xhr = new XMLHttpRequest();
         var URI = BACKEND_HOST + "/api/doEvent?sugorokuId=" + this.props.sid;
@@ -121,12 +104,10 @@ export default class Game extends React.Component {
         xhr.send();
         var response = JSON.parse(xhr.responseText);//イベント処理後のターンプレイヤーのステータス
         this.setState(this.getState()); //positionが更新されてコマが移動する
- 
-        
         return response;
     }
 
-
+    //EventModalコンポーネントの表示フラグを変更する(EventModalコンポーネントで使用)
     switchIsVisible(isVisible){
         this.setState({isEventModalVisible:isVisible});
     }
@@ -140,9 +121,7 @@ export default class Game extends React.Component {
                         <div style={{ "backgroundColor": "	#FFFFE0", "height": "100%" }}>
                             <div style={{ "textAlign": "center", "height": "25vh" }}>
                                 <Dice2 sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice2>
-                                <Button id="diceBtn" style={{"zIndex":"100","position":"relative","top":"10%",}} ref={this.diceBtnRef}  color="success" onClick={() => this.changeDice()}>
-                                    サイコロを振る
-                                </Button>
+                               
                             </div>
                             <div style={{ "height": "75vh" }}>
                                 <PlayerList playerList={this.state.playerList}></PlayerList>

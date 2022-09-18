@@ -1,8 +1,6 @@
 
 import "./css/dice.css";
-
 import React from "react";
-import { render } from "react-dom";
 import { Button } from "@mui/material";
 import dice1Img from "./img/1dice.jpeg";
 import dice2Img from "./img/2dice.jpeg";
@@ -10,7 +8,6 @@ import dice3Img from "./img/3dice.jpeg";
 import dice4Img from "./img/4dice.jpeg";
 import dice5Img from "./img/5dice.jpeg";
 import dice6Img from "./img/6dice.jpeg";
-
 
 export default class DiceImage extends React.Component {
   constructor(props) {
@@ -46,10 +43,7 @@ export default class DiceImage extends React.Component {
       }
       dice2d.style.display = "block";
       dice3d.style.display = "none";
-      //この下にマス移動などの処理を書く
-      this.props.requestDiceRoll(this.props.sugorokuId,rand);
-
-      return rand;
+      this.props.requestDiceRoll(this.props.sugorokuId, rand);//バックエンドのサイコロ処理APIを呼び出す
     }
   }
 
@@ -73,8 +67,7 @@ export default class DiceImage extends React.Component {
               <div className="item"></div>
               <div className="item"></div>
             </div>
-
-            <Button id="diceBtn" ref={this.diceBtnRef}  variant="contained" color="success" onClick={() => this.changeDice()}>
+            <Button id="diceBtn" ref={this.diceBtnRef} variant="contained" color="success" onClick={() => this.changeDice()}>
               サイコロを振る
             </Button>
           </div>

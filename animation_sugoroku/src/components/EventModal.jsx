@@ -1,68 +1,63 @@
 
 import { CSSTransition } from "react-transition-group";
-import { useState } from "react";
 import styled from "styled-components";
-import { Card } from "@mui/material";
 
-
+//マスに止まったときにでるイベントモーダル．関数コンポーネント.
 export const EventModal = (props) => {
-    
-  const getEventfromEventId = (eventId)=>{
+
+  const getEventfromEventId = (eventId) => {
     switch (eventId) {
-      case 0: return ""; break;
-      case 1: return "1マス進む"; break;
-      case 2: return "2マス進む"; break;
-      case 3: return "3マス進む"; break;
-      case 4: return "4マス進む"; break;
-      case 5: return "5マス進む"; break;
-      case 6: return "6マス進む"; break;
-      case 7: return "1マス戻る"; break;
-      case 8: return "2マス戻る"; break;
-      case 9: return "3マス戻る"; break;
-      case 10: return "4マス戻る"; break;
-      case 11: return "5マス戻る"; break;
-      case 12: return "6マス戻る"; break;
-      case 13: return "1回休み"; break;
+      case 0: return "";
+      case 1: return "1マス進む";
+      case 2: return "2マス進む";
+      case 3: return "3マス進む";
+      case 4: return "4マス進む";
+      case 5: return "5マス進む";
+      case 6: return "6マス進む";
+      case 7: return "1マス戻る";
+      case 8: return "2マス戻る";
+      case 9: return "3マス戻る";
+      case 10: return "4マス戻る";
+      case 11: return "5マス戻る";
+      case 12: return "6マス戻る";
+      case 13: return "1回休み";
     }
   }
 
-    return (
-        <>
-        {console.log(props.modalContent)}
-            <TransitionStyle>
-                <div className="open" onClick={() => props.switchIsVisible(true)}>開く</div>
-                <div className="modal-wrapper">
-                    <CSSTransition
-                        classNames="modal"
-                        in={props.isOpen}
-                        timeout={700}
-                        unmountOnExit>
-                        <ModalStyle>
-                            <div  className="content">{/* マスタイトル */}
-                                {(props.modalContent!=null) &&  props.modalContent.title}
-                            </div>
-                            <div>{/* マスの詳細 */}
-                            {(props.modalContent!=null) &&  props.modalContent.description}
-                            </div>
-                            <div>
-                            {(props.modalContent!=null) &&  (getEventfromEventId(props.modalContent.squareEventId))}
-                           
-                            </div>
-                            <div className="close" onClick={() => {props.switchIsVisible(false);setTimeout(()=>props.requestdoEvent(),500)}}>閉じる</div>
-                        </ModalStyle>
-                    </CSSTransition>
-                </div>
-                <CSSTransition
-                    classNames="overlay"
-                    onClick={() => {props.switchIsVisible(false);setTimeout(()=>props.requestdoEvent(),500)}}
-                    in={props.isOpen}
-                    timeout={700}
-                    unmountOnExit>
-                    <OverlayStyle />
-                </CSSTransition>
-            </TransitionStyle>
-        </>
-    );
+  return (
+    <>
+      <TransitionStyle>
+        <div className="modal-wrapper">
+          <CSSTransition
+            classNames="modal"
+            in={props.isOpen}
+            timeout={700}
+            unmountOnExit>
+            <ModalStyle>
+              <div className="content">{/* マスタイトル */}
+                {(props.modalContent != null) && props.modalContent.title}
+              </div>
+              <div>{/* マスの詳細 */}
+                {(props.modalContent != null) && props.modalContent.description}
+              </div>
+              <div>
+                {(props.modalContent != null) && (getEventfromEventId(props.modalContent.squareEventId))}
+              </div>
+              <div className="close" onClick={() => { props.switchIsVisible(false); setTimeout(() => props.requestdoEvent(), 500) }}>閉じる</div>
+            </ModalStyle>
+          </CSSTransition>
+        </div>
+        <CSSTransition
+          classNames="overlay"
+          onClick={() => { props.switchIsVisible(false); setTimeout(() => props.requestdoEvent(), 500) }}
+          in={props.isOpen}
+          timeout={700}
+          unmountOnExit>
+          <OverlayStyle />
+        </CSSTransition>
+      </TransitionStyle>
+    </>
+  );
 }
 
 export default EventModal

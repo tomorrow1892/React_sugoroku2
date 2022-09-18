@@ -4,12 +4,11 @@ import React from "react";
 
 
 
-
+//スタートマスのコンポーネント
 export default class Masu extends React.Component {
 
     constructor(props) {
         super(props);
-
     }
     render() {
         return (
