@@ -1,11 +1,27 @@
 # React_sugoroku2
 
 ## テスト方法(9/16) 
+### Node.js環境構築
+- https://nodejs.org/ja/download/ からnode.jsのインストーラをダウンロードしてインストール
+- githubかこのプロジェクトをclone
+- ターミナルでReact_sugoroku2/animation_sugorokuにcd
+- yarnをインストール
+```
+(React_sugoroku2/animation_sugorokuで)
+npm install yarn
+```
+
+### 実行
+- mysqldを立ち上げる
 - ローカルでMiraiSugorouku2を立ち上げて，ゲーム設定画面で設定をしてゲーム開始ボタンを押す．
 - ゲーム画面のuriからsugorokuIdを見る(http://localhost:2289/game/25  の25のところがsugorokuId)
 - Reactのすごろくゲームを npm start で立ち上げる
+```
+(React_sugoroku2/animation_sugorokuで)
+npm start
+```
 - localhost:3000/{sugorokuId} にアクセス(localhost:/3000/25　など)
-- プレイヤーの設定などが反映されてるはず
+- ゲーム画面が表示されるはず
 
 
 ## バックエンド改修項目
