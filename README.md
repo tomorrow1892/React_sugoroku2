@@ -3,7 +3,7 @@
 ## テスト方法(9/16) 
 ### Node.js環境構築
 - https://nodejs.org/ja/download/ からnode.jsのインストーラをダウンロードしてインストール
-- githubかこのプロジェクトをclone
+- githubからこのプロジェクトをclone
 - ターミナルでReact_sugoroku2/animation_sugorokuにcd
 - yarnをインストール
 ```
