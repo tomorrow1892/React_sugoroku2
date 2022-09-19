@@ -20,31 +20,66 @@ export default class DiceImage extends React.Component {
     this.diceBtnRef = React.createRef();
   }
 
+  //サイコロを振る→止めるで2度ボタンを押す場合
+  // changeDice() {
+  //   const dicebtn = this.diceBtnRef.current;
+  //   const dice2d = this.dice2dRef.current;
+  //   const dice3d = this.dice3dRef.current;
+  //   if (dicebtn.textContent === "サイコロを振る") {
+  //     dicebtn.textContent = "ストップ";
+  //     dice2d.style.display = "none";
+  //     dice3d.style.display = "block";
+  //     return -1;
+  //   } else if (dicebtn.textContent === "ストップ") {
+  //     dicebtn.textContent = "サイコロを振る";
+  //     this.switchDiceButtonDisabled(true);//イベント処理後までボタンを無効にする
+  //     let max = 6;
+  //     let rand = Math.floor(Math.random() * max) + 1;
+  //     switch (rand) {
+  //       case 1: dice2d.src = dice1Img; break;
+  //       case 2: dice2d.src = dice2Img; break;
+  //       case 3: dice2d.src = dice3Img; break;
+  //       case 4: dice2d.src = dice4Img; break;
+  //       case 5: dice2d.src = dice5Img; break;
+  //       case 6: dice2d.src = dice6Img; break;
+  //     }
+  //     dice2d.style.display = "block";
+  //     dice3d.style.display = "none";
+  //     this.props.requestDiceRoll(this.props.sugorokuId, rand);//バックエンドのサイコロ処理APIを呼び出す
+  //   }
+  // }
+
+  //サイコロを振る→数秒後に自動で止まる場合
   changeDice() {
     const dicebtn = this.diceBtnRef.current;
     const dice2d = this.dice2dRef.current;
     const dice3d = this.dice3dRef.current;
-    if (dicebtn.textContent === "サイコロを振る") {
-      dicebtn.textContent = "ストップ";
-      dice2d.style.display = "none";
-      dice3d.style.display = "block";
-      return -1;
-    } else if (dicebtn.textContent === "ストップ") {
-      dicebtn.textContent = "サイコロを振る";
-      let max = 6;
-      let rand = Math.floor(Math.random() * max) + 1;
-      switch (rand) {
-        case 1: dice2d.src = dice1Img; break;
-        case 2: dice2d.src = dice2Img; break;
-        case 3: dice2d.src = dice3Img; break;
-        case 4: dice2d.src = dice4Img; break;
-        case 5: dice2d.src = dice5Img; break;
-        case 6: dice2d.src = dice6Img; break;
-      }
+
+    dice2d.style.display = "none";
+    dice3d.style.display = "block";
+    this.switchDiceButtonDisabled(true);//イベント処理後までボタンを無効にする
+    let max = 6;
+    let rand = Math.floor(Math.random() * max) + 1;
+    switch (rand) {
+      case 1: dice2d.src = dice1Img; break;
+      case 2: dice2d.src = dice2Img; break;
+      case 3: dice2d.src = dice3Img; break;
+      case 4: dice2d.src = dice4Img; break;
+      case 5: dice2d.src = dice5Img; break;
+      case 6: dice2d.src = dice6Img; break;
+    }
+    setTimeout(() => {
+      console.log("dice:"+rand);
       dice2d.style.display = "block";
       dice3d.style.display = "none";
-      this.props.requestDiceRoll(this.props.sugorokuId, rand);//バックエンドのサイコロ処理APIを呼び出す
-    }
+      this.props.requestDiceRoll(rand);//バックエンドのサイコロ処理APIを呼び出す
+    }, 1000);
+
+  }
+
+
+  switchDiceButtonDisabled(isDisabled) {
+    this.diceBtnRef.current.disabled = isDisabled;
   }
 
   render() {

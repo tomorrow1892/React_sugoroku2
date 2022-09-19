@@ -42,6 +42,9 @@ export default class Game extends React.Component {
         this.requestDiceRoll = this.requestDiceRoll.bind(this);
         this.requestdoEvent = this.requestdoEvent.bind(this);
         this.switchIsVisible = this.switchIsVisible.bind(this);
+
+        //ref
+        this.diceRef = React.createRef();
     }
 
     //バックエンドからゲーム設定を受け取ってstateにセットする
@@ -72,20 +75,21 @@ export default class Game extends React.Component {
         }
     }
 
-    //すごろくの初期状態を取得する
+    //すごろくの状態を取得する
     requestSugorokuInfo(sugorokuId) {
         var xhr = new XMLHttpRequest();
         var URI = BACKEND_HOST + "/api/sugorokuInfo?sugorokuId=" + sugorokuId;
         xhr.open("GET", URI, false);
         xhr.send();
         var response = JSON.parse(xhr.responseText);//nowPlayer,nplayers,players,squares
+        console.log(response);
         return response;
     }
 
     //サイコロの出目をバックエンドに送信する．(Dice2コンポーネントで使用)
     requestDiceRoll(suzi) {
         var xhr = new XMLHttpRequest();
-        var URI = BACKEND_HOST + "/api/diceRoll?sugorokuId=" + this.props.sid + "&suzi=" + 2;
+        var URI = BACKEND_HOST + "/api/diceRoll?sugorokuId=" + this.props.sid + "&suzi=" + suzi;
         xhr.open("GET", URI, false);
         xhr.send();
         var response = JSON.parse(xhr.responseText);//サイコロを振ったターンプレイヤーのステータス
@@ -104,6 +108,8 @@ export default class Game extends React.Component {
         xhr.send();
         var response = JSON.parse(xhr.responseText);//イベント処理後のターンプレイヤーのステータス
         this.setState(this.getState()); //positionが更新されてコマが移動する
+        setTimeout(()=> this.diceRef.current.switchDiceButtonDisabled(false),500);//サイコロボタンを有効にする．setStateが非同期なため，少し遅延を入れている．
+
         return response;
     }
 
@@ -120,7 +126,7 @@ export default class Game extends React.Component {
                     <Grid item xs={2}>
                         <div style={{ "backgroundColor": "	#FFFFE0", "height": "100%" }}>
                             <div style={{ "textAlign": "center", "height": "25vh" }}>
-                                <Dice2 sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice2>
+                                <Dice2 ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice2>
                                
                             </div>
                             <div style={{ "height": "75vh" }}>
