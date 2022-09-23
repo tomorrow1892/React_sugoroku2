@@ -1,6 +1,6 @@
 # React_sugoroku2
 
-##テスト方法(9/23)
+## テスト方法(9/23)
 ### ローカルでReactすごろくを立ち上げてテストする場合
 - マスの作成は　https://es4.eedept.kobe-u.ac.jp/miraisugoroku/ で行う
   - 中村研のサーバのmysqlにつながっているため，そっちにマスが作成される
