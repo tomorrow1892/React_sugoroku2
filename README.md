@@ -4,7 +4,7 @@
 ### ローカルでReactすごろくを立ち上げてテストする場合
 - マスの作成は　https://es4.eedept.kobe-u.ac.jp/miraisugoroku/ で行う
   - 中村研のサーバのmysqlにつながっているため，そっちにマスが作成される
-- https://es4.eedept.kobe-u.ac.jp/miraisugoroku/　のゲーム設定画面ですごろくを開始する
+- https://es4.eedept.kobe-u.ac.jp/miraisugoroku/ のゲーム設定画面ですごろくを開始する
 - 次のページのURIのsugorokuIdを控える
 - http://localhost:3000/?sid={sugorokuId} でアクセス
 
