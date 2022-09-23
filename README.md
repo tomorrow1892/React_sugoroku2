@@ -1,5 +1,13 @@
 # React_sugoroku2
 
+##テスト方法(9/23)
+### ローカルでReactすごろくを立ち上げてテストする場合
+- マスの作成は　https://es4.eedept.kobe-u.ac.jp/miraisugoroku/ で行う
+  - 中村研のサーバのmysqlにつながっているため，そっちにマスが作成される
+- https://es4.eedept.kobe-u.ac.jp/miraisugoroku/　のゲーム設定画面ですごろくを開始する
+- 次のページのURIのsugorokuIdを控える
+- http://localhost:3000/?sid={sugorokuId} でアクセス
+
 ## テスト方法(9/16) 
 ### Node.js環境構築
 - https://nodejs.org/ja/download/ からnode.jsのインストーラをダウンロードしてインストール
