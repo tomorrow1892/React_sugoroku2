@@ -1,54 +1,61 @@
 
 import React from 'react';
 import anime from '../lib/anime.js';
+import { Avatar } from '@mui/material';
 
-import cat from './img/1.png';
 
-
+//プレイヤーアイコンのコンポーネント
 export default class Icon extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            positionX: 30
+            positionX: this.props.x,
+            positionY: this.props.y
         }
+        this.comaRef = React.createRef();
     }
 
+    //コマを動かす
     async moveComa(count) {
-        // let myPromise = Promise.resolve();
         let index = 0;
         console.log("count:" + count);
         while (index < count) {
-            // console.log("index:"+index);
-            // myPromise = myPromise.then(moveComa).then(()=>{return new Promise((resolve,reject)=>{index++})});
             await this.toNext();
             index++;
             console.log(index);
         }
     }
 
-    toNext() {
+    //指定した値だけコマを移動
+    toNext(x, y) {
         return new Promise((resolve, reject) => {
             anime({
                 targets: this.coma,
-                translateX: this.state.positionX + 200,
+                translateX: 0,
                 duration: 500,
                 easing: 'easeInOutQuad',
-                complete:()=>{
-                    this.state.positionX += 200;
-            console.log("yes");
-            resolve(1);
+                complete: () => {
+                    this.setState(state => ({
+                        positionX: state.positionX + x,
+                        positionY: state.positionY + y
+                    }));
+                    resolve(1);
                 }
             })
-            
         });
     }
 
     render() {
         return (
             <>
-                <img src={cat} alt="コマ" ref={(e) => { this.coma = e; }} style={{ position: "absolute", top: 100, left: this.state.positionX, width: 50, height: 50}} />
-                <button onClick={(e) => {this.moveComa(3)}}>移動</button>
+                <Avatar ref={(e) => { this.coma = e; }}
+                    sx={{
+                        boxShadow: 3, border: 2, borderColor: "#9933DD", width: 50, height: 50,
+                        bgcolor: 'background.paper', position: "absolute", top: this.props.y, left: this.props.x, zIndex: 10
+                    }}>
+                    <img src={this.props.iconImg} alt="コマ" style={{ width: 40 }} />
+                </Avatar>
             </>
         )
     }
