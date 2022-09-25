@@ -34,6 +34,11 @@ export default class Masu extends React.Component {
             case 17: return "+300ポイント"
             case 18: return "+400ポイント"
             case 19: return "+500ポイント"
+            case 20: return "-100ポイント"
+            case 21: return "-200ポイント"
+            case 22: return "-300ポイント"
+            case 23: return "-400ポイント"
+            case 24: return "-500ポイント"
         }
     }
 

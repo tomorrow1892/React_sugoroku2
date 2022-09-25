@@ -23,6 +23,9 @@ const masuPositionList = [
     { left: 400, top: 440 },//12
     { left: 250, top: 450 },//13
     { left: 100, top: 460 },//14
+    { left: 100, top: 600 },//15
+    { left: 250, top: 610 },//16
+    { left: 400, top: 620 },//17
     
 ]
 

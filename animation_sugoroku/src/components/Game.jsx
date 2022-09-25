@@ -98,7 +98,7 @@ export default class Game extends React.Component {
     //サイコロの出目をバックエンドに送信する．(Dice2コンポーネントで使用)
     requestDiceRoll(suzi) {
         let xhr = new XMLHttpRequest();
-        let URI = BACKEND_HOST + "/api/diceRoll?sugorokuId=" + this.props.sid + "&suzi=" + 6;
+        let URI = BACKEND_HOST + "/api/diceRoll?sugorokuId=" + this.props.sid + "&suzi=" + suzi;
         xhr.open("GET", URI, false);
         xhr.send();
         let response = JSON.parse(xhr.responseText);//サイコロを振ったターンプレイヤーのステータス
