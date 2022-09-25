@@ -41,15 +41,15 @@ export const EventModal = (props) => {
                 {(props.modalContent != null) && props.modalContent.description}
               </div>
               <div>
-                {(props.modalContent != null) && (getEventfromEventId(props.modalContent.squareEventId))}
+                {(props.modalContent != null) &&(props.modalContent.squareEventId != null) && (getEventfromEventId(props.modalContent.squareEventId))}
               </div>
-              <div className="close" onClick={() => { props.switchIsVisible(false); setTimeout(() => props.requestdoEvent(), 500) }}>閉じる</div>
+              <div className="close" onClick={() => {props.onClose()}}>閉じる</div>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
             </ModalStyle>
           </CSSTransition>
         </div>
         <CSSTransition
           classNames="overlay"
-          onClick={() => { props.switchIsVisible(false); setTimeout(() => props.requestdoEvent(), 500) }}
+          onClick={() => {props.onClose()}}
           in={props.isOpen}
           timeout={700}
           unmountOnExit>
