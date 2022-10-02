@@ -50,7 +50,8 @@ export default class Masu extends React.Component {
             this.props.setModalContent(this.props.masu);
             this.props.setModalClosedMethod();
             this.props.switchIsVisible(true);}}
-                sx={{boxShadow:2, bgcolor: "#FFFFFF", border: 2, borderColor: "#0000DD", borderRadius: 2, width: 100, height: 100, position: "absolute", top: this.props.top, left: this.props.left }} >
+                sx={{boxShadow:2, bgcolor: "#FFFFFF", border: 2, borderColor: "#0000DD", borderRadius: 2, 
+                width: 100, height: 100, position: "absolute", top: this.props.top, left: this.props.left }} >
                     <Card><div style={{ "fontSize": "100%" }}>{this.props.masu.title}</div></Card>
                     <Card sx={{ width: "80%", marginLeft: "auto", marginRight: "auto", top: 8, position: "relative", borderRadius: 2, bgcolor: "#FF8888" }}>
                         {this.getEventfromEventId(this.props.masu.squareEventId)}

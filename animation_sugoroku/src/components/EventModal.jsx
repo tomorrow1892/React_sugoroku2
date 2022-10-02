@@ -71,7 +71,7 @@ const TransitionStyle = styled.div`
   }
   
   .modal-wrapper{
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -128,7 +128,6 @@ const ModalStyle = styled.div`
   justify-content: center;
   align-items: center;
   border-radius:10%;
-
   
   .content{
     font-size: 40px;

@@ -61,7 +61,7 @@ export default class Board extends React.Component {
 
     render() {
         return (
-            <>
+            <div style={{"positon":"relative","top": "100px","left":"100px"}}>
                 {this.props.playerList.map((player, index) => {
                     let comaRef;
                     switch (player.order) {
@@ -86,7 +86,7 @@ export default class Board extends React.Component {
                     > </Masu>);
                 })}
                 <MasuGoal top={masuPositionList[this.props.masuList.length+1].top} left={masuPositionList[this.props.masuList.length+1].left}></MasuGoal>
-            </>
+            </div>
 
         )
     }
