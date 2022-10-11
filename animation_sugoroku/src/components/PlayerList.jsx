@@ -13,7 +13,7 @@ export default class PlayerList extends React.Component {
         return (
             <>
             {this.props.playerList.map(player => (
-                    <div key={player.name}>
+                    <div key={player.order}>
                         <Card sx={{ margin: 1, border: 3, borderColor: 'primary.main', boxShadow: 2,
                         "position":"relative","backgroundColor": "white", 
                         "width": "80%", "height": "50%", "marginLeft": "auto", "marginRight": "auto"  }}
@@ -23,6 +23,12 @@ export default class PlayerList extends React.Component {
                                 title={player.name}
                                 subheader={`${player.point}ポイント`}
                             /> 
+                            {(player.isBreak) &&
+                            <img src={breakImg}
+                            style={{"position":"absolute","top":"40%","left":"40%",
+                            "height":"40%","width":"50%"}}></img>
+                            }
+                            
                         </Card>
                     </div>
                 ))}

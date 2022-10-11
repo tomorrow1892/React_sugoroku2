@@ -1,6 +1,7 @@
 
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
+import { Modal, Card } from "@mui/material";
 
 //マスに止まったときにでるイベントモーダル．関数コンポーネント.
 export const EventModal = (props) => {
@@ -23,6 +24,42 @@ export const EventModal = (props) => {
       case 13: return "1回休み";
     }
   }
+  // return (
+  //   <>
+  //     <Modal
+  //       open={props.isOpen}
+  //       onclose={() => { props.onClose() }}
+  //       aria-labelledby="simple-modal-title"
+  //     aria-describedby="simple-modal-description"
+  //       sx={{top: '50%',
+  //       left: '20%',
+  //       right: 'auto',
+  //       bottom: 'auto',
+  //       marginRight: '-50%',
+  //       "width":"60%",
+  //       "height":"5%"
+  //       }}
+  //     >
+  //       <Card sx={{"borderRadius":"2%"}}>
+  //       <br></br>
+  //       <br></br>
+  //       <br></br>
+  //       <br></br>
+  //       <div className="content">{/* マスタイトル */}
+  //         {(props.modalContent != null) && props.modalContent.title}
+  //       </div>
+  //       <div>{/* マスの詳細 */}
+  //         {(props.modalContent != null) && props.modalContent.description}
+  //       </div>
+  //       <div>
+  //         {(props.modalContent != null) && (props.modalContent.squareEventId != null) && (getEventfromEventId(props.modalContent.squareEventId))}
+  //       </div>
+  //       <div className="close" onClick={() => { props.onClose() }}>閉じる</div>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
+  //       </Card>
+
+  //     </Modal>
+  //   </>
+  // )
 
   return (
     <>
@@ -34,22 +71,40 @@ export const EventModal = (props) => {
             timeout={700}
             unmountOnExit>
             <ModalStyle>
-              <div className="content">{/* マスタイトル */}
-                {(props.modalContent != null) && props.modalContent.title}
-              </div>
-              <div>{/* マスの詳細 */}
-                {(props.modalContent != null) && props.modalContent.description}
-              </div>
-              <div>
-                {(props.modalContent != null) &&(props.modalContent.squareEventId != null) && (getEventfromEventId(props.modalContent.squareEventId))}
-              </div>
-              <div className="close" onClick={() => {props.onClose()}}>閉じる</div>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
+              
+              {/* マスタイトル */}
+              {(props.modalContent != null) &&
+                <div className="content" style={{textAlign: "center"}}>
+                  {props.modalContent.title}
+                </div>}
+              
+              {/* マスイベント内容(1進むなど) */}
+              {(props.modalContent != null) &&
+                <Card sx={{
+                  backgroundColor:(props.modalContent.squareEffect>0) ? "#DDAAAA":"#AAAADD",
+                  
+                }}>
+                  {getEventfromEventId(props.modalContent.squareEventId)}
+                </Card>}
+                {/* 画像 */}
+              {(props.modalContent != null) &&
+                <img
+                  style={{ "width": "100%" }}
+                  src={props.modalContent.picture} />
+              }
+              {/* マスの詳細 */}
+              {(props.modalContent != null) &&
+                <div>
+                  {props.modalContent.description}
+                </div>}
+
+              <div className="close" onClick={() => { props.onClose() }}>閉じる</div>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
             </ModalStyle>
           </CSSTransition>
         </div>
         <CSSTransition
           classNames="overlay"
-          onClick={() => {props.onClose()}}
+          onClick={() => { props.onClose() }}
           in={props.isOpen}
           timeout={700}
           unmountOnExit>
@@ -74,8 +129,9 @@ const TransitionStyle = styled.div`
     position: fixed;
     top: 50%;
     left: 50%;
+    width:500px;
     transform: translate(-50%, -50%);
-    z-index:1000;
+    z-index:10000;
     
     .modal-enter {
       opacity: 0;
@@ -121,14 +177,15 @@ const TransitionStyle = styled.div`
 
 // モーダルのスタイル
 const ModalStyle = styled.div`
-  padding: 100px;
+  padding: 10%;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius:10%;
-  
+  border-radius:5%;
+  border:2mm ridge #ffff00;
+
   .content{
     font-size: 40px;
     font-weight: bold;

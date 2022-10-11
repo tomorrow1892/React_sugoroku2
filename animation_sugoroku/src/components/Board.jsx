@@ -25,8 +25,8 @@ const masuPositionList = [
     { left: 100, top: 460 },//14
     { left: 100, top: 600 },//15
     { left: 250, top: 610 },//16
-    { left: 400, top: 620 },//17
-    
+    { left: 300, top: 620 },//17
+
 ]
 
 //マスを生成して管理するコンポーネント
@@ -73,7 +73,6 @@ export default class Board extends React.Component {
                         case 6: comaRef = this.coma6Ref; break;
                         default: break;
                     }
-                    console.log(player.name+"のposition:"+player.position);
                     return (<Icon ref={comaRef} key={player.order} iconImg={player.icon}
                         x={masuPositionList[player.position].left + index * 20} y={masuPositionList[player.position].top + 30}></Icon>)
                 })}
