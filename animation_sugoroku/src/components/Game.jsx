@@ -120,10 +120,10 @@ export default class Game extends React.Component {
                 this.requestdoEvent();
             }
             else {
-                this.setModalContent(this.state.masuList[response.position - 1]);//プレイヤーの現在位置のマスをモーダルにセット
-                setTimeout(() => { this.setState({ isEventModalVisible: true }) }, 500);//モーダルの表示フラグをtrueにする
+                this.setState({ isEventModalVisible: true });//モーダルの表示フラグをtrueにする
             }
         }
+        this.setModalContent(this.state.masuList[response.position - 1]);//プレイヤーの現在位置のマスをモーダルにセット
         this.stepMove(response.order, moveCount, callback);
         // let newState = this.getState();
         // this.setState(newState); //positionが更新されてコマが移動する
