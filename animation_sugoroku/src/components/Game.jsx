@@ -21,9 +21,9 @@ import styled, { ThemeConsumer } from "styled-components";
 
 
 //環境変数
-const BACKEND_HOST = "https://es4.eedept.kobe-u.ac.jp/miraisugoroku";
+//const BACKEND_HOST = "https://es4.eedept.kobe-u.ac.jp/miraisugoroku";
 //ローカルでテストする時は以下コメントを外す
-//const BACKEND_HOST = "http://localhost:2289";
+const BACKEND_HOST = "http://localhost:2289";
 
 //プレイヤーのステータスを持つオブジェクト
 function Player(playerId, sugorokuId, icon, name, order, point, position, isGoaled, isBreak) {
