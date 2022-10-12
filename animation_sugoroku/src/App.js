@@ -9,18 +9,19 @@ import { Link as Scroll } from 'react-scroll';
 import Dice2 from './components/Dice2';
 import Game from './components/Game';
 import RequestTest from './components/RequestTest';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Route,Routes,useParams } from 'react-router-dom';
+import { Route,Routes,useParams ,useSearchParams} from 'react-router-dom';
 
 function App() {
-  const {sid} = useParams();
-  console.log("sugorokuId:"+sid);
+  const [searchParams] = useSearchParams();
+  const sugorokuId = searchParams.get("sid");
+  console.log("sugorokuId:"+sugorokuId);
   return (
     <>
       {/* <RequestTest></RequestTest> */}
   
-      <Game sid={sid}></Game> {/*Gameコンポーネントにsidを渡す*/}
-    
+      <Game sid={sugorokuId}></Game> {/*Gameコンポーネントにsidを渡す*/}    
 
     </>
 

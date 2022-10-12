@@ -3,7 +3,7 @@
         /* 1 */
         
         .dice3d .item:nth-child(1) {
-            transform: translate3d(0, -50%, 0) rotateX(-90deg);
+            transform: translate3d(0, -50px, 0) rotateX(-90deg);
             background: url(../img/1dice.jpeg) no-repeat center center / 100% 100%;
             border-radius: 10%;
         }
@@ -19,7 +19,7 @@
         /* 3 */
         
         .dice3d .item:nth-child(3) {
-            transform: translate3d(50%, 0, 0) rotateY(90deg);
+            transform: translate3d(50px, 0, 0) rotateY(90deg);
             background: url(../img/3dice.jpeg) no-repeat center center / 100% 100%;
             border-radius: 10%;
         }
@@ -27,7 +27,7 @@
         /* 4 */
         
         .dice3d .item:nth-child(4) {
-            transform: translate3d(-50%, 0, 0) rotateY(-90deg);
+            transform: translate3d(-50px, 0, 0) rotateY(-90deg);
             background: url(../img/4dice.jpeg) no-repeat center center / 100% 100%;
             border-radius: 10%;
         }
@@ -43,7 +43,7 @@
         /* 6 */
         
         .dice3d .item:nth-child(6) {
-          transform: translate3d(0, 50%, 0) rotateX(-90deg);
+          transform: translate3d(0, 50px, 0) rotateX(-90deg);
             background: url(../img/6dice.jpeg) no-repeat center center / 100% 100%;
             border-radius: 10%;
         }
@@ -85,7 +85,8 @@
         
         #dice2d {
             position: absolute;
-            width: 54%;
+            /* width: 54%; */
+            width: 110px;
             top: 20%;
             left: 23%;
             margin-left: auto;
@@ -96,8 +97,10 @@
         
         .dice3d {
        
-            width: 50%;
-            height: 50%;
+            /* width: 50%;
+            height: 50%; */
+            width: 100px;
+            height: 100px;
             transform-style: preserve-3d;
             animation: rotate-animation 0.5s linear infinite;
             display: none;

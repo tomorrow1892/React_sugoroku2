@@ -6,13 +6,13 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter ,Route,Routes} from 'react-router-dom';
 
 
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <Routes>
       <Route path="/:sid"  element={<App/>}/> {/*パスパラメータにsid(sugorokuId)を受ける*/}
-      <Route path="/" element={<>/[sugorokuId]でaccessしてください</>}></Route>
+      <Route path="/" element={<App/>}></Route>
+      <Route path="/test" element={<>testpage</>}></Route>
  
 
       </Routes>
