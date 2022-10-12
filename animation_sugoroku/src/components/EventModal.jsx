@@ -1,7 +1,11 @@
 
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
-import { Modal, Card } from "@mui/material";
+import { Modal, Card, Box,Button } from "@mui/material";
+import styles from './css/masu.css';
+import diceImgWhite from './img/dice.png';
+import diceImgRed from './img/dice_red.png';
+import diceImgBlue from './img/dice_blue.png';
 
 //マスに止まったときにでるイベントモーダル．関数コンポーネント.
 export const EventModal = (props) => {
@@ -24,42 +28,7 @@ export const EventModal = (props) => {
       case 13: return "1回休み";
     }
   }
-  // return (
-  //   <>
-  //     <Modal
-  //       open={props.isOpen}
-  //       onclose={() => { props.onClose() }}
-  //       aria-labelledby="simple-modal-title"
-  //     aria-describedby="simple-modal-description"
-  //       sx={{top: '50%',
-  //       left: '20%',
-  //       right: 'auto',
-  //       bottom: 'auto',
-  //       marginRight: '-50%',
-  //       "width":"60%",
-  //       "height":"5%"
-  //       }}
-  //     >
-  //       <Card sx={{"borderRadius":"2%"}}>
-  //       <br></br>
-  //       <br></br>
-  //       <br></br>
-  //       <br></br>
-  //       <div className="content">{/* マスタイトル */}
-  //         {(props.modalContent != null) && props.modalContent.title}
-  //       </div>
-  //       <div>{/* マスの詳細 */}
-  //         {(props.modalContent != null) && props.modalContent.description}
-  //       </div>
-  //       <div>
-  //         {(props.modalContent != null) && (props.modalContent.squareEventId != null) && (getEventfromEventId(props.modalContent.squareEventId))}
-  //       </div>
-  //       <div className="close" onClick={() => { props.onClose() }}>閉じる</div>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
-  //       </Card>
 
-  //     </Modal>
-  //   </>
-  // )
 
   return (
     <>
@@ -71,34 +40,52 @@ export const EventModal = (props) => {
             timeout={700}
             unmountOnExit>
             <ModalStyle>
-              
-              {/* マスタイトル */}
-              {(props.modalContent != null) &&
-                <div className="content" style={{textAlign: "center"}}>
-                  {props.modalContent.title}
-                </div>}
-              
-              {/* マスイベント内容(1進むなど) */}
-              {(props.modalContent != null) &&
-                <Card sx={{
-                  backgroundColor:(props.modalContent.squareEffect>0) ? "#DDAAAA":"#AAAADD",
-                  
-                }}>
-                  {getEventfromEventId(props.modalContent.squareEventId)}
-                </Card>}
-                {/* 画像 */}
-              {(props.modalContent != null) &&
-                <img
-                  style={{ "width": "100%" }}
-                  src={props.modalContent.picture} />
-              }
-              {/* マスの詳細 */}
-              {(props.modalContent != null) &&
-                <div>
-                  {props.modalContent.description}
-                </div>}
+              <MasuStyle>
+                {(props.modalContent != null)&&
+                <Card className="masu" >
 
-              <div className="close" onClick={() => { props.onClose() }}>閉じる</div>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
+                  <Box className="masu-header" sx={{ display: 'flex', justifyContent: "center" }}>
+                    {
+                      (props.modalContent != null) &&
+                      <img src={props.modalContent.picture} className="masu-img" />
+                    }
+                  </Box>
+                  <Box className="masu-body">
+                    <ul className="list-group ">
+                      <li className="masu-title list-group-item">
+                        <p className="align-items-center">
+                          {/* マスタイトル */}
+                          {(props.modalContent != null) &&
+                            <>{props.modalContent.title}</>
+                          }
+                        </p>
+                      </li>
+                      <li className="masu-description list-group-item ">
+                        <p className="card-text">
+                          {/* マスの詳細 */}
+                          {(props.modalContent != null) &&
+                            <>
+                              {props.modalContent.description}
+                            </>}
+                        </p>
+                      </li>
+                    </ul>
+                  </Box>
+                  <Box className="masu-event">
+                    {
+                      (props.modalContent.squareEffect > 0) ?
+                        <img src={diceImgBlue}></img> :
+                        <img src={diceImgRed}></img>
+                    }
+                    {}
+                    <p className="font-wght700">{getEventfromEventId(props.modalContent.squareEventId)}</p>
+                    
+                  </Box>
+                </Card>}
+              </MasuStyle>
+
+
+              <Button className="close" sx={{}} onClick={() => { props.onClose() }}>閉じる</Button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
             </ModalStyle>
           </CSSTransition>
         </div>
@@ -114,6 +101,7 @@ export const EventModal = (props) => {
     </>
   );
 }
+
 
 export default EventModal
 
@@ -177,24 +165,24 @@ const TransitionStyle = styled.div`
 
 // モーダルのスタイル
 const ModalStyle = styled.div`
-  padding: 10%;
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius:5%;
-  border:2mm ridge #ffff00;
+  // padding: 5%;
+  // background-color: #ffffff;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+  // border-radius:5%;
+  // border:2mm ridge #ffff00;
 
-  .content{
-    font-size: 40px;
-    font-weight: bold;
-  }
+  // .content{
+  //   font-size: 40px;
+  //   font-weight: bold;
+  // }
   
-  .close{
-    cursor: pointer;
-    margin: 50px 0 0;
-  }
+  // .close{
+  //   cursor: pointer;
+  //   margin: 50px 0 0;
+  // }
 `
 
 // オーバーレイのスタイル
@@ -210,3 +198,79 @@ const OverlayStyle = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 `;
+
+const MasuStyle = styled.div`
+.masu{
+  width: 25rem;
+  height: 30rem;
+  position: relative;
+  
+  
+}
+.masu .masu-header{
+  height:50%;
+  background-color: #c1ff7953;
+}
+  .masu-header .masu-img{
+      
+      max-height: 100%;
+      max-width: 100%;
+  }
+
+.masu .masu-body{
+  height:50%;
+  width: 100%;
+}
+  .masu-body ul{
+      height: 100%;
+  }
+  .masu-body .masu-title{
+      height: 40%;
+      width: auto;
+      text-align: center;
+      
+  }
+      .masu-title p{
+          height: 100%;
+          font-size: 1.2rem;
+          overflow: auto;
+          font-family: 'Zen Maru Gothic', sans-serif;
+      }
+
+  .masu-body .masu-description{
+      height: 60%;
+      width: 100%;
+  }
+      .masu-description p{
+          font-size: 0.8rem;
+          height: 100%;
+          width: 100%;
+          overflow: auto;
+      }
+
+.masu .masu-event{
+  position: absolute;
+  width:25%;
+  right: 0%; 
+  top: 40%;
+}
+
+  .masu-event img{
+      position: absolute;
+      box-sizing:content-box;
+      top: 50%;
+      left: 50%;
+      transform:translateX(-50%) translateY(-50%);
+      width: 100%;
+  }
+  .masu-event p{
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      top: 50%;
+      left: 50%;
+      transform:translateX(-50%) translateY(-50%);
+      white-space: normal;
+  
+  }
+`

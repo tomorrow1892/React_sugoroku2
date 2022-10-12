@@ -21,9 +21,9 @@ import styled, { ThemeConsumer } from "styled-components";
 
 
 //環境変数
-//const BACKEND_HOST = "https://es4.eedept.kobe-u.ac.jp/miraisugoroku";
+const BACKEND_HOST = "https://es4.eedept.kobe-u.ac.jp/miraisugoroku";
 //ローカルでテストする時は以下コメントを外す
-const BACKEND_HOST = "http://localhost:2289";
+//const BACKEND_HOST = "http://localhost:2289";
 
 //プレイヤーのステータスを持つオブジェクト
 function Player(playerId, sugorokuId, icon, name, order, point, position, isGoaled, isBreak) {
@@ -110,11 +110,14 @@ export default class Game extends React.Component {
         xhr.send();
         let response = JSON.parse(xhr.responseText);//responseはサイコロを振ったターンプレイヤーのステータス
         console.log(response);
-        //サイコロを振って移動する数(ゴール時の移動量はサイコロの目通りでないため定義)
+        //サイコロを振って移動するマス数(ゴール時の移動マス数はサイコロの目通りでないため出目とイコールではない)
         let moveCount = response.position - this.state.playerList[response.order - 1].position;
+        this.setModalContent(this.state.masuList[response.position - 1]);//プレイヤーの現在位置のマスをモーダルにセット
+        this.setEventModalClosedMethod();//イベントモーダルが閉じたときの処理をセット
 
-        const callback = () => {
-            this.setEventModalClosedMethod();//イベントモーダルが閉じたときの処理をセット
+        //移動する数だけ1マスずつコマを動かす．移動終了後にコールバック関数が処理される．
+        this.stepMove(response.order, moveCount, ()=>{
+            
             if (response.isGoaled) {
                 console.log("goal!");
                 this.requestdoEvent();
@@ -122,18 +125,41 @@ export default class Game extends React.Component {
             else {
                 this.setState({ isEventModalVisible: true });//モーダルの表示フラグをtrueにする
             }
-        }
-        this.setModalContent(this.state.masuList[response.position - 1]);//プレイヤーの現在位置のマスをモーダルにセット
-        this.stepMove(response.order, moveCount, callback);
-        // let newState = this.getState();
-        // this.setState(newState); //positionが更新されてコマが移動する
-
-
-
-
-        return response;
+        });
     }
 
+    //イベントを処理する．(EventModalコンポーネントで使用)
+    requestdoEvent() {
+        let xhr = new XMLHttpRequest();
+        let URI = BACKEND_HOST + "/api/doEvent?sugorokuId=" + this.props.sid;
+        xhr.open("GET", URI, false);
+        xhr.send();
+        let response = JSON.parse(xhr.responseText);//イベント処理後のターンプレイヤーのステータス
+        let newState = this.getState();//最新のすごろく情報
+        //イベントで移動するマス数
+        let moveCount = response.position - this.state.playerList[response.order - 1].position;
+        //移動する数だけ1マスずつコマを動かす．移動終了後にコールバック関数が処理される．
+        this.stepMove(response.order, moveCount, ()=>{
+            if (response.isGoaled) {//ゴールした場合
+                console.log("goal!");
+                let goalCount = this.checkGoalCount(newState.playerList);
+                this.setModalContent({
+                    "title": "ゴール!",
+                    "description": `${goalCount}位でゴールしたので，${(6 - goalCount) * 100}ポイントゲット!`,
+                    "squareEventId": null
+                });
+                this.setGoalModalClosedMethod(newState.playerList);//モーダルを閉じるときの処理をセット
+                setTimeout(() => this.setState({ isEventModalVisible: true }), 500);//モーダルを表示
+            }
+            else {//ゴールでない場合，サイコロを有効にして次の人に番が回る
+                setTimeout(() => this.diceRef.current.switchDiceButtonDisabled(false), 500);//サイコロボタンを有効にする．setStateが非同期なため，少し遅延を入れている
+            }
+        });
+        
+    }
+
+    //コマを1マスずつ進ませる．
+    //orderはターンプレイヤーの順番,moveCountは移動マス数,moveFinishedFuncは進み終えた後に実行するコールバック処理
     stepMove(order, moveCount, moveFinishedFunc) {
         console.log("moveCount:"+moveCount);
         if (moveCount > 0) {
@@ -144,38 +170,18 @@ export default class Game extends React.Component {
                 this.stepMove(order, moveCount - 1,moveFinishedFunc);
             }, 500);
         }
+        else if(moveCount < 0){
+            let playerList_tmp = this.state.playerList;
+            playerList_tmp[order - 1].position--;
+            this.setState({ playerList: playerList_tmp });
+            setTimeout(() => {
+                this.stepMove(order, moveCount + 1,moveFinishedFunc);
+            }, 500);
+        }
         else {
             moveFinishedFunc();
         }
     }
-
-
-    //イベントを処理する．(EventModalコンポーネントで使用)
-    requestdoEvent() {
-        let xhr = new XMLHttpRequest();
-        let URI = BACKEND_HOST + "/api/doEvent?sugorokuId=" + this.props.sid;
-        xhr.open("GET", URI, false);
-        xhr.send();
-        let response = JSON.parse(xhr.responseText);//イベント処理後のターンプレイヤーのステータス
-        let newState = this.getState();
-        this.setState(newState); //positionが更新されてコマが移動する
-        if (response.isGoaled) {//ゴールした場合
-            console.log("goal!");
-            let goalCount = this.checkGoalCount(newState.playerList);
-            this.setModalContent({
-                "title": "ゴール!",
-                "description": `${goalCount}位でゴールしたので，${(6 - goalCount) * 100}ポイントゲット!`,
-                "squareEventId": null
-            });
-            this.setGoalModalClosedMethod(newState.playerList);//モーダルを閉じるときの処理をセット
-            setTimeout(() => this.setState({ isEventModalVisible: true }), 500);//モーダルを表示
-        }
-        else {
-            setTimeout(() => this.diceRef.current.switchDiceButtonDisabled(false), 500);//サイコロボタンを有効にする．setStateが非同期なため，少し遅延を入れている
-        }
-        return response;
-    }
-
     //ゴールした人数を確認する.引数にはplayerListを持つオブジェクトが入る
     checkGoalCount(playerList) {
         let goalCount = 0;
@@ -252,7 +258,7 @@ export default class Game extends React.Component {
                         modalContent={this.state.modalContent}
                         onClose={this.state.onModalClosedMethod}
                     />
-                    {/* ゴールしたときに出てくるモーダル */}
+                    {/* 全員がゴールしたときに出てくるモーダル */}
                     <GoalModal
                         isOpen={this.state.isGoalModalVisible}
                         playerList={this.state.playerList}
