@@ -26,8 +26,8 @@ export default class PlayerList extends React.Component {
                             /> 
                             {(player.isBreak) &&
                             <img src={breakImg}
-                            style={{"position":"absolute","top":"40%","left":"40%",
-                            "height":"40%","width":"50%"}}></img>
+                            style={{"position":"absolute","top":"15%","left":"15%",
+                            "height":"70%","width":"70%"}}></img>
                             }
                             {
                                 (player.isGoaled) &&
