@@ -11,11 +11,20 @@ export default class PlayerList extends React.Component {
         super(props);
     }
     render() {
+        let border = 'primary.main';
+        console.log(this.props.nowPlayer);
         return (
             <>
-            {this.props.playerList.map(player => (
+            {this.props.playerList.map(player => {
+                console.log(player.order);
+                if (player.order == this.props.nowPlayer.order) {
+                    border = 'error.main';
+                } else {
+                    border = 'primary.main';
+                }
+                return (
                     <div key={player.order}>
-                        <Card sx={{ margin: 1, border: 3, borderColor: 'primary.main', boxShadow: 2,
+                        <Card sx={{ margin: 1, border: 3, borderColor: border, boxShadow: 2,
                         "position":"relative","backgroundColor": "white", 
                         "width": "80%", "height": "50%", "marginLeft": "auto", "marginRight": "auto"  }}
                             >
@@ -36,7 +45,7 @@ export default class PlayerList extends React.Component {
                             }
                         </Card>
                     </div>
-                ))}
+            )})}
             </>
         )
     }

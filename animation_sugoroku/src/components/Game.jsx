@@ -10,6 +10,7 @@ import hiyoko from './img/hiyoko.png';
 import penguin from './img/penguin.png';
 import zo from './img/zo.png';
 import map from './img/map.jpg';
+import sky from './img/sky.jpg';
 import Board from "./Board";
 import EventModal from "./EventModal";
 import GoalModal from "./GoalModal";
@@ -255,7 +256,7 @@ export default class Game extends React.Component {
                         {(this.state.turnPlayer!=null)&& this.state.turnPlayer.name}さんの番です．
                     </div>
                     <div style={{ "height": "100px" }}>
-                        <PlayerList playerList={this.state.playerList}></PlayerList>
+                        <PlayerList playerList={this.state.playerList} nowPlayer={this.state.turnPlayer}></PlayerList>
                     </div>
                     {/* イベントやマスクリックで出てくるモーダル．サイドメニューより前面に出すためにDrawerの子にしている */}
                     <EventModal
@@ -271,9 +272,10 @@ export default class Game extends React.Component {
                 </Drawer>
                 {/* 盤面 */}
                 <div style={{
-                    "backgroundSize": "cover", "backgroundImage": `url(${map})`,
+                    "backgroundSize": "cover", "backgroundImage": `url(${sky})`,
                     "backgroundAttachment": "fixed",
-                    "height": "200%", "width": "150%", "position": "absolute", "left": "0px", "top": "0px", "textAlign": "center", "zIndex": 10
+                    "height": "200%", "width": "150%", "position": "absolute", "left": "0px", "top": "0px", "textAlign": "center", "zIndex": 10,
+                    "backgroundColor": "rgba(255, 255, 255, 0.45)", "backgroundBlendMode": "lighten"
                 }}>
                     <div style={{ "position": "absolute", "left": "300px", "top": "0px" }}>
                         <Board masuList={this.state.masuList} playerList={this.state.playerList}
