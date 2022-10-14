@@ -274,7 +274,8 @@ export default class Game extends React.Component {
                 <div style={{
                     "backgroundSize": "cover", "backgroundImage": `url(${sky})`,
                     "backgroundAttachment": "fixed",
-                    "height": "200%", "width": "150%", "position": "absolute", "left": "0px", "top": "0px", "textAlign": "center", "zIndex": 10
+                    "height": "200%", "width": "150%", "position": "absolute", "left": "0px", "top": "0px", "textAlign": "center", "zIndex": 10,
+                    "backgroundColor": "rgba(255, 255, 255, 0.45)", "backgroundBlendMode": "lighten"
                 }}>
                     <div style={{ "position": "absolute", "left": "300px", "top": "0px" }}>
                         <Board masuList={this.state.masuList} playerList={this.state.playerList}
