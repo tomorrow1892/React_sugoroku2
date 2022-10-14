@@ -118,7 +118,6 @@ export default class Game extends React.Component {
 
         //移動する数だけ1マスずつコマを動かす．移動終了後にコールバック関数が処理される．
         this.stepMove(response.order, moveCount, ()=>{
-            
             if (response.isGoaled) {
                 console.log("goal!");
                 this.requestdoEvent();
@@ -141,6 +140,7 @@ export default class Game extends React.Component {
         let moveCount = response.position - this.state.playerList[response.order - 1].position;
         //移動する数だけ1マスずつコマを動かす．移動終了後にコールバック関数が処理される．
         this.stepMove(response.order, moveCount, ()=>{
+            this.setState(newState);
             if (response.isGoaled) {//ゴールした場合
                 console.log("goal!");
                 let goalCount = this.checkGoalCount(newState.playerList);

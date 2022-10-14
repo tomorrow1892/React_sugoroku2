@@ -2,6 +2,7 @@
 import { Grid, Button, Card, ListItem, CardHeader, Avatar, breadcrumbsClasses } from "@mui/material";
 import React from "react";
 import breakImg from "./img/break.png";
+import goalImg from "./img/goal.png";
 
 //プレイヤー達のステータスを表示するコンポーネント
 export default class PlayerList extends React.Component {
@@ -25,10 +26,14 @@ export default class PlayerList extends React.Component {
                             /> 
                             {(player.isBreak) &&
                             <img src={breakImg}
-                            style={{"position":"absolute","top":"40%","left":"40%",
-                            "height":"40%","width":"50%"}}></img>
+                            style={{"position":"absolute","top":"15%","left":"15%",
+                            "height":"70%","width":"70%"}}></img>
                             }
-                            
+                            {
+                                (player.isGoaled) &&
+                                <img src={goalImg} style={{"position":"absolute","top":"15%","left":"15%",
+                                "height":"70%","width":"70%"}}></img>
+                            }
                         </Card>
                     </div>
                 ))}
