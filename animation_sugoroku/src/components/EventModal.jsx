@@ -85,7 +85,7 @@ export const EventModal = (props) => {
               </MasuStyle>
 
 
-              <Button className="close" sx={{}} onClick={() => { props.onClose() }}>閉じる</Button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
+              <Button className="close" variant="contained" sx={{}} onClick={() => { props.onClose() }}>閉じる</Button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
             </ModalStyle>
           </CSSTransition>
         </div>

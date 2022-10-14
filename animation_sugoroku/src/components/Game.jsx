@@ -156,7 +156,6 @@ export default class Game extends React.Component {
                 setTimeout(() => this.diceRef.current.switchDiceButtonDisabled(false), 500);//サイコロボタンを有効にする．setStateが非同期なため，少し遅延を入れている
             }
         });
-        
     }
 
     //コマを1マスずつ進ませる．
