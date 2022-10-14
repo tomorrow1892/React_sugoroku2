@@ -87,7 +87,8 @@ export default class Game extends React.Component {
         return {
             playerList: playerList,//プレイヤーのリスト
             masuList: masuList,//マスのリスト
-            nPlayers: sugorokuInfo.nplayers
+            nPlayers: sugorokuInfo.nplayers,//プレイヤーの人数
+            turnPlayer: sugorokuInfo.nowPlayer//ターンプレイヤー
         }
     }
 
@@ -231,6 +232,7 @@ export default class Game extends React.Component {
                 onModalClosedMethod: () => {
                     this.switchIsVisible(false);
                     this.diceRef.current.switchDiceButtonDisabled(false);
+
                 }
             })
         }
@@ -249,7 +251,10 @@ export default class Game extends React.Component {
                     <div style={{ "textAlign": "center", "height": "300px" }}>
                         <Dice2 ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice2>
                     </div>
-                    <div style={{ "height": "75%" }}>
+                    <div style={{ "textAlign": "center"}}>
+                        {(this.state.turnPlayer!=null)&& this.state.turnPlayer.name}さんの番です．
+                    </div>
+                    <div style={{ "height": "100px" }}>
                         <PlayerList playerList={this.state.playerList}></PlayerList>
                     </div>
                     {/* イベントやマスクリックで出てくるモーダル．サイドメニューより前面に出すためにDrawerの子にしている */}
