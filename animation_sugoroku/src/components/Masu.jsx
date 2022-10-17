@@ -43,6 +43,12 @@ export default class Masu extends React.Component {
     }
 
     render() {
+        let masuColor = 'black';
+        if (this.props.masu.squareEffect > 0) {
+            masuColor = 'cyan';
+        } else if (this.props.masu.squareEffect < 0) {
+            masuColor = 'orangered';
+        }
         return (
             <>
             <MasuStyle>
@@ -57,7 +63,7 @@ export default class Masu extends React.Component {
                             <div style={{ "display":"table-cell", "verticalAlign": "middle", "padding":"0", "margin":"0"}}>{this.props.masu.title}</div>
                         </div>
                     
-                    <Card sx={{ width: "80%", marginLeft: "auto", marginRight: "auto", top: 8, position: "relative", borderRadius: 2, bgcolor: "#FF8888" }}>
+                    <Card sx={{ width: "80%", marginLeft: "auto", marginRight: "auto", top: 8, position: "relative", borderRadius: 2, bgcolor: masuColor }}>
                         {this.getEventfromEventId(this.props.masu.squareEventId)}
                     </Card>
                 </Card>
