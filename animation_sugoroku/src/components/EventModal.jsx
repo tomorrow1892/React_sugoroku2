@@ -85,7 +85,7 @@ export const EventModal = (props) => {
               </MasuStyle>
 
 
-              <Button className="close" variant="contained" sx={{}} onClick={() => { props.onClose() }}>閉じる</Button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
+              <Button className="close" variant="contained" sx={{"display": "flex","justifyContent": "center"}} onClick={() => { props.onClose() }}>閉じる</Button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
             </ModalStyle>
           </CSSTransition>
         </div>
@@ -166,11 +166,12 @@ const TransitionStyle = styled.div`
 // モーダルのスタイル
 const ModalStyle = styled.div`
   // padding: 5%;
-  // background-color: #ffffff;
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: center;
-  // align-items: center;
+   //background-color: #ffffff;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+  margin: 1em;
   // border-radius:5%;
   // border:2mm ridge #ffff00;
 
@@ -179,10 +180,15 @@ const ModalStyle = styled.div`
   //   font-weight: bold;
   // }
   
-  // .close{
-  //   cursor: pointer;
-  //   margin: 50px 0 0;
-  // }
+  .close{
+    cursor: pointer;
+    margin: 30px 0 0;
+    width: 120px;
+    height: 75px;
+    font-size: x-large;
+    background-color: cyan;
+    color: blue;
+  }
 `
 
 // オーバーレイのスタイル
@@ -196,7 +202,7 @@ const OverlayStyle = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(255,255,255, 0.5);
 `;
 
 const MasuStyle = styled.div`
