@@ -1,8 +1,13 @@
 
 import { Grid, Button, Drawer, Paper } from "@mui/material";
 import React from "react";
+
 import Dice2 from './Dice2';
+import Board from "./Board";
+import EventModal from "./EventModal";
+import GoalModal from "./GoalModal";
 import PlayerList from './PlayerList';
+
 import cat from './img/cat.png';
 import dog from './img/dog.png';
 import hamster from './img/hamster.png';
@@ -11,9 +16,7 @@ import penguin from './img/penguin.png';
 import zo from './img/zo.png';
 import map from './img/map.jpg';
 import sky from './img/sky.jpg';
-import Board from "./Board";
-import EventModal from "./EventModal";
-import GoalModal from "./GoalModal";
+import sound from './sound/move.mp3';
 import { CSSTransition } from "react-transition-group";
 import styled, { ThemeConsumer } from "styled-components";
 
@@ -53,6 +56,7 @@ export default class Game extends React.Component {
         this.state["isGoalModalVisible"] = false;
         this.state["onModalClosedMethod"] = null;//モーダルを閉じたときの処理
         this.state["modalContent"] = null;//モーダルの中身
+
         //子コンポーネントに渡す関数をバインド
         this.setState = this.setState.bind(this);
         this.requestDiceRoll = this.requestDiceRoll.bind(this);
@@ -163,12 +167,14 @@ export default class Game extends React.Component {
     //コマを1マスずつ進ませる．
     //orderはターンプレイヤーの順番,moveCountは移動マス数,moveFinishedFuncは進み終えた後に実行するコールバック処理
     stepMove(order, moveCount, moveFinishedFunc) {
+        const audio = new Audio(sound);
         console.log("moveCount:"+moveCount);
         if (moveCount > 0) {
             let playerList_tmp = this.state.playerList;
             playerList_tmp[order - 1].position++;
             this.setState({ playerList: playerList_tmp });
             setTimeout(() => {
+                audio.play();
                 this.stepMove(order, moveCount - 1,moveFinishedFunc);
             }, 500);
         }
@@ -177,6 +183,7 @@ export default class Game extends React.Component {
             playerList_tmp[order - 1].position--;
             this.setState({ playerList: playerList_tmp });
             setTimeout(() => {
+                audio.play();
                 this.stepMove(order, moveCount + 1,moveFinishedFunc);
             }, 500);
         }
