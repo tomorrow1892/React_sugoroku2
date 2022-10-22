@@ -1,8 +1,13 @@
 
 import { Grid, Button, Drawer, Paper } from "@mui/material";
 import React from "react";
+
 import Dice2 from './Dice2';
+import Board from "./Board";
+import EventModal from "./EventModal";
+import GoalModal from "./GoalModal";
 import PlayerList from './PlayerList';
+
 import cat from './img/cat.png';
 import dog from './img/dog.png';
 import hamster from './img/hamster.png';
@@ -11,9 +16,8 @@ import penguin from './img/penguin.png';
 import zo from './img/zo.png';
 import map from './img/map.jpg';
 import sky from './img/sky.jpg';
-import Board from "./Board";
-import EventModal from "./EventModal";
-import GoalModal from "./GoalModal";
+import sound from './sound/move.mp3';
+import sound_success from './sound/success.mp3';
 import { CSSTransition } from "react-transition-group";
 import styled, { ThemeConsumer } from "styled-components";
 
@@ -53,6 +57,7 @@ export default class Game extends React.Component {
         this.state["isGoalModalVisible"] = false;
         this.state["onModalClosedMethod"] = null;//モーダルを閉じたときの処理
         this.state["modalContent"] = null;//モーダルの中身
+
         //子コンポーネントに渡す関数をバインド
         this.setState = this.setState.bind(this);
         this.requestDiceRoll = this.requestDiceRoll.bind(this);
@@ -143,6 +148,7 @@ export default class Game extends React.Component {
         this.stepMove(response.order, moveCount, ()=>{
             this.setState(newState);
             if (response.isGoaled) {//ゴールした場合
+                const audio_success = new Audio(sound_success);
                 console.log("goal!");
                 let goalCount = this.checkGoalCount(newState.playerList);
                 this.setModalContent({
@@ -151,6 +157,7 @@ export default class Game extends React.Component {
                     "squareEventId": null
                 });
                 this.setGoalModalClosedMethod(newState.playerList);//モーダルを閉じるときの処理をセット
+                audio_success.play();
                 setTimeout(() => this.setState({ isEventModalVisible: true }), 500);//モーダルを表示
             }
             else {//ゴールでない場合，サイコロを有効にして次の人に番が回る
@@ -163,12 +170,14 @@ export default class Game extends React.Component {
     //コマを1マスずつ進ませる．
     //orderはターンプレイヤーの順番,moveCountは移動マス数,moveFinishedFuncは進み終えた後に実行するコールバック処理
     stepMove(order, moveCount, moveFinishedFunc) {
+        const audio_move = new Audio(sound);
         console.log("moveCount:"+moveCount);
         if (moveCount > 0) {
             let playerList_tmp = this.state.playerList;
             playerList_tmp[order - 1].position++;
             this.setState({ playerList: playerList_tmp });
             setTimeout(() => {
+                audio_move.play();
                 this.stepMove(order, moveCount - 1,moveFinishedFunc);
             }, 500);
         }
@@ -177,6 +186,7 @@ export default class Game extends React.Component {
             playerList_tmp[order - 1].position--;
             this.setState({ playerList: playerList_tmp });
             setTimeout(() => {
+                audio_move.play();
                 this.stepMove(order, moveCount + 1,moveFinishedFunc);
             }, 500);
         }
