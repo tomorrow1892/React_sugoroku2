@@ -4,7 +4,7 @@ import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
 
 //マスに止まったときにでるイベントモーダル．関数コンポーネント.
-export const GoalModal = (props) => {
+export const FinishModal = (props) => {
 
 
 
@@ -60,7 +60,7 @@ export const GoalModal = (props) => {
     );
 }
 
-export default GoalModal
+export default FinishModal
 
 // transitionのスタイル
 const TransitionStyle = styled.div`

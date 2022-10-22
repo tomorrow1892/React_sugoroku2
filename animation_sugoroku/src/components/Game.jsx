@@ -5,7 +5,7 @@ import React from "react";
 import Dice2 from './Dice2';
 import Board from "./Board";
 import EventModal from "./EventModal";
-import GoalModal from "./GoalModal";
+import FinishModal from "./FinishModal";
 import PlayerList from './PlayerList';
 
 import cat from './img/cat.png';
@@ -54,7 +54,7 @@ export default class Game extends React.Component {
         //state
         this.state = this.getState();//すごろくゲームに関するstateを取得
         this.state["isEventModalVisible"] = false;//イベント処理時のモーダルの表示フラグのstate
-        this.state["isGoalModalVisible"] = false;
+        this.state["isFinishModalVisible"] = false;
         this.state["onModalClosedMethod"] = null;//モーダルを閉じたときの処理
         this.state["modalContent"] = null;//モーダルの中身
 
@@ -156,7 +156,7 @@ export default class Game extends React.Component {
                     "description": `${goalCount}位でゴールしたので，${(6 - goalCount) * 100}ポイントゲット!`,
                     "squareEventId": null
                 });
-                this.setGoalModalClosedMethod(newState.playerList);//モーダルを閉じるときの処理をセット
+                this.setFinishModalClosedMethod(newState.playerList);//モーダルを閉じるときの処理をセット
                 audio_success.play();
                 setTimeout(() => this.setState({ isEventModalVisible: true }), 500);//モーダルを表示
             }
@@ -226,7 +226,7 @@ export default class Game extends React.Component {
         })
     }
     //イベント処理後にゴールした場合のモーダルを閉じるときの処理をセット．閉じたときにサイコロボタンを有効にする．
-    setGoalModalClosedMethod(playerList) {
+    setFinishModalClosedMethod(playerList) {
         console.log("ゴール人数(stateの方):" + this.checkGoalCount(this.state.playerList))
         console.log("ゴール人数:" + this.checkGoalCount(playerList))
         console.log("プレイヤー人数:" + this.state.nPlayers);
@@ -234,7 +234,7 @@ export default class Game extends React.Component {
             this.setState({
                 onModalClosedMethod: () => {
                     this.switchIsVisible(false);
-                    setTimeout(() => { this.setState({ isGoalModalVisible: true }) }, 500);//モーダルの表示フラグをtrueにする
+                    setTimeout(() => { this.setState({ isFinishModalVisible: true }) }, 500);//モーダルの表示フラグをtrueにする
                 }
             })
         }
@@ -275,8 +275,8 @@ export default class Game extends React.Component {
                         onClose={this.state.onModalClosedMethod}
                     />
                     {/* 全員がゴールしたときに出てくるモーダル */}
-                    <GoalModal
-                        isOpen={this.state.isGoalModalVisible}
+                    <FinishModal
+                        isOpen={this.state.isFinishModalVisible}
                         playerList={this.state.playerList}
                     />
                 </Drawer>
