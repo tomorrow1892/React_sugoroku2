@@ -60,7 +60,7 @@ export default class Masu extends React.Component {
                 width: 120, height: 120, position: "absolute", top: this.props.top, left: this.props.left }} >
                     
                         <div style={{ "fontSize": "90%", "display":"table", "height": "60px", "textAlign":"center", "width":"100%", "marginTop":"10px" }}>
-                            <div style={{ "display":"table-cell", "verticalAlign": "middle", "padding":"0", "margin":"0"}}>{this.props.masu.title}</div>
+                            <div style={{ "display":"table-cell", "verticalAlign": "middle", "padding":"0", "margin":"0", "font-family": "'Zen Maru Gothic', sans-serif"}}>{this.props.masu.title}</div>
                         </div>
                     
                     <Card sx={{ width: "80%", marginLeft: "auto", marginRight: "auto", top: 8, position: "relative", borderRadius: 2, bgcolor: masuColor }}>
