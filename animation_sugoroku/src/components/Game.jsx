@@ -154,8 +154,8 @@ export default class Game extends React.Component {
                 console.log("goal!");
                 let goalCount = this.checkGoalCount(newState.playerList);
                 this.setModalContent({
-                    "title": "ゴール!",
-                    "description": `${goalCount}位でゴールしたので，${(6 - goalCount) * 100}ポイントゲット!`,
+                    "title": `${goalCount} 位`,
+                    "description": `${(6 - goalCount) * 100}ポイントゲット!`,
                     "squareEventId": null
                 });
                 this.setFinishModalClosedMethod(newState.playerList);//モーダルを閉じるときの処理をセット
@@ -235,7 +235,7 @@ export default class Game extends React.Component {
         if (this.checkGoalCount(playerList) == this.state.nPlayers) {//全員がゴールした場合
             this.setState({
                 onModalClosedMethod: () => {
-                    this.switchIsVisible(false);
+                    this.setState({ isGoalModalVisible: false });
                     setTimeout(() => { this.setState({ isFinishModalVisible: true }) }, 500);//モーダルの表示フラグをtrueにする
                 }
             })
@@ -243,7 +243,7 @@ export default class Game extends React.Component {
         else {
             this.setState({
                 onModalClosedMethod: () => {
-                    this.switchIsVisible(false);
+                    this.setState({ isGoalModalVisible: false });
                     this.diceRef.current.switchDiceButtonDisabled(false);
 
                 }

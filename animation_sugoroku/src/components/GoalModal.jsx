@@ -52,41 +52,12 @@ export const GoalModal = (props) => {
             <ModalStyle>
               <MasuStyle>
                 {(props.modalContent != null)&&
-                <Card className="masu" >
-
-                  <Box className="masu-header" sx={{ display: 'flex', justifyContent: "center" }}>
-                    {
-                      (props.modalContent != null) &&
-                      <img src={props.modalContent.picture} className="masu-img" />
-                    }
-                  </Box>
-                  <Box className="masu-body">
-                    <ul className="list-group ">
-                      <li className="masu-title list-group-item">
-                        <p className="align-items-center">
-                          {/* マスタイトル */}
-                          {(props.modalContent != null) &&
-                            <>{props.modalContent.title}</>
-                          }
-                        </p>
-                      </li>
-                      <li className="masu-description list-group-item ">
-                        <p className="card-text">
-                          {/* マスの詳細 */}
-                          {(props.modalContent != null) &&
-                            <>
-                              {props.modalContent.description}
-                            </>}
-                        </p>
-                      </li>
-                    </ul>
-                  </Box>
-                  <Box className="masu-event">
-                    {}
-                    <p className="font-wght700">{getEventfromEventId(props.modalContent.squareEventId)}</p>
-                    
-                  </Box>
-                </Card>}
+                  <ModalBase>
+                    <div className="title_text">ゴール</div>
+                    <div className="rank_text">{props.modalContent.title}</div>
+                    <div className="score_text">{props.modalContent.description}</div>
+                  </ModalBase>
+                }
               </MasuStyle>
 
 
@@ -122,7 +93,7 @@ const TransitionStyle = styled.div`
     position: fixed;
     top: 50%;
     left: 50%;
-    width:500px;
+    width:200px;
     transform: translate(-50%, -50%);
     z-index:10000;
     
@@ -279,3 +250,41 @@ const MasuStyle = styled.div`
   
   }
 `
+
+const ModalBase = styled.div`
+width: 200px;
+height: 200px;
+background: linear-gradient(135deg, rgba(240, 248, 255, 1) 40%, rgba(0, 201, 253, 1));
+transform: rotate(45deg);
+border: 3px solid blue;
+
+position: relative;
+  .title_text {
+    transform: rotate(-45deg);
+    text-align: center;
+    position: absolute;
+    top: 30px;
+    left:10px;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: x-large;
+  }
+
+  .rank_text {
+    transform: rotate(-45deg);
+    text-align: center;
+    position: absolute;
+    top: 70px;
+    left:72px;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: large;
+  }
+  
+  .score_text {
+    transform: rotate(-45deg);
+    text-align: center;
+    position: absolute;
+    top: 105px;
+    left:45px;
+    // font-family: 'Zen Maru Gothic', sans-serif;
+  }
+`;
