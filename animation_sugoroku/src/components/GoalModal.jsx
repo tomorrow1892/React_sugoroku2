@@ -10,36 +10,6 @@ import diceImgBlue from './img/dice_blue.png';
 //マスに止まったときにでるイベントモーダル．関数コンポーネント.
 export const GoalModal = (props) => {
 
-  const getEventfromEventId = (eventId) => {
-    switch (eventId) {
-      case 0: return ""; 
-      case 1: return "1マス進む"; 
-      case 2: return "2マス進む"; 
-      case 3: return "3マス進む"; 
-      case 4: return "4マス進む"; 
-      case 5: return "5マス進む"; 
-      case 6: return "6マス進む"; 
-      case 7: return "1マス戻る"; 
-      case 8: return "2マス戻る"; 
-      case 9: return "3マス戻る"; 
-      case 10: return "4マス戻る"; 
-      case 11: return "5マス戻る"; 
-      case 12: return "6マス戻る"; 
-      case 13: return "1回休み"; 
-      case 15: return "+100点"
-      case 16: return "+200点"
-      case 17: return "+300点"
-      case 18: return "+400点"
-      case 19: return "+500点"
-      case 20: return "-100点"
-      case 21: return "-200点"
-      case 22: return "-300点"
-      case 23: return "-400点"
-      case 24: return "-500点"
-  }
-  }
-
-
   return (
     <>
       <TransitionStyle>
