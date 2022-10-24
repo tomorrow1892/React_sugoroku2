@@ -44,7 +44,7 @@ export const FinishModal = (props) => {
                                 })
                                 }
 
-                            <button className="close" onClick={() => {window.location.href="https://es4.eedept.kobe-u.ac.jp/miraisugoroku/menu?"}}>メニューに戻る</button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
+                            <button className="close" onClick={() => {window.location.href="https://es4.eedept.kobe-u.ac.jp/miraisugoroku/"}}>メニューに戻る</button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
                         </ModalStyle>
                     </CSSTransition>
                 </div>
