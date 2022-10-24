@@ -33,16 +33,33 @@ export const FinishModal = (props) => {
                         unmountOnExit>
                         <ModalStyle>
                             <div className="content">{/* マスタイトル */}
-                                ゲーム終了!
-                                
+                                ゲーム終了!   
                             </div>
+                            <ResultTable>
+                            <table>
                             {rankSort(props.playerList).map((player, index) => {
                                     if (player.point == rankedPoint) samePointCount++;//前の人とポイントが同じ場合，同順位となるようカウントに+1
                                     else samePointCount = 0;//前の人とポイントが違う場合，カウントをリセット
                                     rankedPoint = player.point;
-                                    return (<div key={index}>{index + 1 - samePointCount}位:    {player.name}</div>);
+                                    return ( 
+                                        <tr>
+                                          <th>{index + 1 - samePointCount}位</th>
+                                          <td>{player.name}</td>
+                                          <td>{player.point}ポイント</td>
+                                        </tr>    
+                                      );
                                 })
                                 }
+                            </table>
+                            </ResultTable>
+
+                             { // rankSort(props.playerList).map((player, index) => {
+                            //         if (player.point == rankedPoint) samePointCount++;//前の人とポイントが同じ場合，同順位となるようカウントに+1
+                            //         else samePointCount = 0;//前の人とポイントが違う場合，カウントをリセット
+                            //         rankedPoint = player.point;
+                            //         return (<div key={index}>{index + 1 - samePointCount}位:    {player.name}</div>);
+                            //     })
+                                 }
 
                             <button className="close" onClick={() => {window.location.href="https://es4.eedept.kobe-u.ac.jp/miraisugoroku/"}}>メニューに戻る</button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
                         </ModalStyle>
@@ -61,6 +78,45 @@ export const FinishModal = (props) => {
 }
 
 export default FinishModal
+
+const ResultTable = styled.div`
+table {
+  border-collapse: collapse;  /* セルの線を重ねる */
+}
+
+th,td {
+  padding: 5px 10px;          /* 余白指定 */
+}
+
+th {
+  background-color: #2196F3;  /* 背景色指定 */
+  color:  #fff;               /* 文字色指定 */
+  font-weight:  normal;       /* 文字の太さ指定 */
+  position:  relative;        /* 位置指定 */
+  z-index: 10;                /* 重なり調整 */
+}
+
+td {
+  background-color:  #c0c9ff; /* 背景色指定 */
+  padding-left: 25px;         /* 余白指定 */
+}
+
+th::after {
+  content:'';                 /* 空の要素を作る */
+  position:  absolute;        /* 位置指定 */
+  height: 24px;               /* 高さ指定 */
+  width: 24px;                /* 幅指定 */
+  background-color: #2196F3;  /* 背景色指定 */
+  transform:  rotate(45deg);  /* 要素を回転 */
+  top: 5px;                   /* 位置指定 */
+  right: -12px;               /* 位置指定 */
+  z-index:  -1;               /* 重なり調整 */
+}
+
+tr {
+  border-bottom:  solid #fff; /* 線指定 */
+}
+`;
 
 // transitionのスタイル
 const TransitionStyle = styled.div`
@@ -133,6 +189,7 @@ const ModalStyle = styled.div`
   .content{
     font-size: 40px;
     font-weight: bold;
+    padding-bottom: 20px
   }
   
   .close{
