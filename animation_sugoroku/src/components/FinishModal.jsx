@@ -36,13 +36,34 @@ export const FinishModal = (props) => {
                                 ゲーム終了!
                                 
                             </div>
+                            <table>
+                              <tr>
+                                <th>順位</th>
+                                <th>名前</th>
+                                <th>ポイント</th>
+                              </tr>
                             {rankSort(props.playerList).map((player, index) => {
                                     if (player.point == rankedPoint) samePointCount++;//前の人とポイントが同じ場合，同順位となるようカウントに+1
                                     else samePointCount = 0;//前の人とポイントが違う場合，カウントをリセット
                                     rankedPoint = player.point;
-                                    return (<div key={index}>{index + 1 - samePointCount}位:    {player.name}</div>);
+                                    return ( 
+                                        <tr>
+                                          <td>{index + 1 - samePointCount}位</td>
+                                          <td>{player.name}</td>
+                                          <td>{player.point}</td>
+                                        </tr>    
+                                      );
                                 })
                                 }
+                            </table>
+
+                             { // rankSort(props.playerList).map((player, index) => {
+                            //         if (player.point == rankedPoint) samePointCount++;//前の人とポイントが同じ場合，同順位となるようカウントに+1
+                            //         else samePointCount = 0;//前の人とポイントが違う場合，カウントをリセット
+                            //         rankedPoint = player.point;
+                            //         return (<div key={index}>{index + 1 - samePointCount}位:    {player.name}</div>);
+                            //     })
+                                 }
 
                             <button className="close" onClick={() => {window.location.href="https://es4.eedept.kobe-u.ac.jp/miraisugoroku/"}}>メニューに戻る</button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
                         </ModalStyle>
