@@ -5,6 +5,7 @@ import React from "react";
 import Dice2 from './Dice2';
 import Board from "./Board";
 import EventModal from "./EventModal";
+import GoalModal from "./GoalModal";
 import FinishModal from "./FinishModal";
 import PlayerList from './PlayerList';
 
@@ -54,6 +55,7 @@ export default class Game extends React.Component {
         //state
         this.state = this.getState();//すごろくゲームに関するstateを取得
         this.state["isEventModalVisible"] = false;//イベント処理時のモーダルの表示フラグのstate
+        this.state["isGoalModalVisible"] = false;
         this.state["isFinishModalVisible"] = false;
         this.state["onModalClosedMethod"] = null;//モーダルを閉じたときの処理
         this.state["modalContent"] = null;//モーダルの中身
@@ -152,13 +154,13 @@ export default class Game extends React.Component {
                 console.log("goal!");
                 let goalCount = this.checkGoalCount(newState.playerList);
                 this.setModalContent({
-                    "title": "ゴール!",
-                    "description": `${goalCount}位でゴールしたので，${(6 - goalCount) * 100}ポイントゲット!`,
+                    "title": `${goalCount} 位`,
+                    "description": `${(6 - goalCount) * 100}ポイントゲット!`,
                     "squareEventId": null
                 });
                 this.setFinishModalClosedMethod(newState.playerList);//モーダルを閉じるときの処理をセット
                 audio_success.play();
-                setTimeout(() => this.setState({ isEventModalVisible: true }), 500);//モーダルを表示
+                setTimeout(() => this.setState({ isGoalModalVisible: true }), 500);//モーダルを表示
             }
             else {//ゴールでない場合，サイコロを有効にして次の人に番が回る
                 setTimeout(() => this.diceRef.current.switchDiceButtonDisabled(false), 500);//サイコロボタンを有効にする．setStateが非同期なため，少し遅延を入れている
@@ -233,7 +235,7 @@ export default class Game extends React.Component {
         if (this.checkGoalCount(playerList) == this.state.nPlayers) {//全員がゴールした場合
             this.setState({
                 onModalClosedMethod: () => {
-                    this.switchIsVisible(false);
+                    this.setState({ isGoalModalVisible: false });
                     setTimeout(() => { this.setState({ isFinishModalVisible: true }) }, 500);//モーダルの表示フラグをtrueにする
                 }
             })
@@ -241,7 +243,7 @@ export default class Game extends React.Component {
         else {
             this.setState({
                 onModalClosedMethod: () => {
-                    this.switchIsVisible(false);
+                    this.setState({ isGoalModalVisible: false });
                     this.diceRef.current.switchDiceButtonDisabled(false);
 
                 }
@@ -271,6 +273,11 @@ export default class Game extends React.Component {
                     {/* イベントやマスクリックで出てくるモーダル．サイドメニューより前面に出すためにDrawerの子にしている */}
                     <EventModal
                         isOpen={this.state.isEventModalVisible}
+                        modalContent={this.state.modalContent}
+                        onClose={this.state.onModalClosedMethod}
+                    />
+                    <GoalModal
+                        isOpen={this.state.isGoalModalVisible}
                         modalContent={this.state.modalContent}
                         onClose={this.state.onModalClosedMethod}
                     />
