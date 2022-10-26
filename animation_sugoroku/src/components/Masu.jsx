@@ -56,7 +56,7 @@ export default class Masu extends React.Component {
             this.props.setModalContent(this.props.masu);
             this.props.setModalClosedMethod();
             this.props.switchIsVisible(true);}}
-                sx={{boxShadow:2, bgcolor: "#FFFFFF", border: 2, borderColor: "#0000DD", borderRadius: 2, 
+                sx={{boxShadow:2, bgcolor: "#FFFFFF", border: 2, borderColor: "#0000DD", borderRadius: 2,cursor: "hand", cursor:"pointer",
                 width: 120, height: 120, position: "absolute", top: this.props.top, left: this.props.left }} >
                     
                         <div style={{ "fontSize": "90%", "display":"table", "height": "60px", "textAlign":"center", "width":"100%", "marginTop":"10px" }}>
