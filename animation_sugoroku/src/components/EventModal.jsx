@@ -95,7 +95,7 @@ export const EventModal = (props) => {
               </MasuStyle>
 
 
-              <Button className="close" variant="contained" sx={{"display": "flex","justifyContent": "center"}} onClick={() => { props.onClose() }}>閉じる</Button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
+              <Button className="close" variant="contained" sx={{"display": "flex","justifyContent": "center","height":"7rem"}} onClick={() => { props.onClose() }}>閉じる</Button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
             </ModalStyle>
           </CSSTransition>
         </div>
@@ -194,7 +194,7 @@ const ModalStyle = styled.div`
     cursor: pointer;
     margin: 30px 0 0;
     width: 120px;
-    height: 75px;
+    height: 50px;
     font-size: x-large;
     background-color: cyan;
     color: blue;
