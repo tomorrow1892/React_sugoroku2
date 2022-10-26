@@ -1,64 +1,53 @@
 
-import { areArraysEqual } from "@mui/base";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
+import { Modal, Card, Box,Button } from "@mui/material";
+import styles from './css/masu.css';
+import diceImgWhite from './img/dice.png';
+import diceImgRed from './img/dice_red.png';
+import diceImgBlue from './img/dice_blue.png';
 
 //マスに止まったときにでるイベントモーダル．関数コンポーネント.
 export const GoalModal = (props) => {
 
+  return (
+    <>
+      <TransitionStyle>
+        <div className="modal-wrapper">
+          <CSSTransition
+            classNames="modal"
+            in={props.isOpen}
+            timeout={700}
+            unmountOnExit>
+            <ModalStyle>
+              <MasuStyle>
+                {(props.modalContent != null)&&
+                  <ModalBase>
+                    <div className="title_text">ゴール</div>
+                    <div className="rank_text">{props.modalContent.title}</div>
+                    <div className="score_text">{props.modalContent.description}</div>
+                  </ModalBase>
+                }
+              </MasuStyle>
 
 
-    //ポイントが高い順にプレイヤーリストをソートしたコピーを返す．
-    const rankSort = (playerList) => {
-        let playerList_sort = Array.from(playerList);
-        playerList_sort.sort((a, b) => {
-            if (a.point > b.point) return -1;
-            if (a.point < b.point) return 1;
-            return 0;
-        })
-        return playerList_sort;
-    }
-
-    //順位付けに使う
-    let samePointCount = 0;
-    let rankedPoint = 10000000;//
-    return (
-        <>
-            <TransitionStyle>
-                <div className="modal-wrapper">
-                    <CSSTransition
-                        classNames="modal"
-                        in={props.isOpen}
-                        timeout={700}
-                        unmountOnExit>
-                        <ModalStyle>
-                            <div className="content">{/* マスタイトル */}
-                                ゲーム終了!
-                                
-                            </div>
-                            {rankSort(props.playerList).map((player, index) => {
-                                    if (player.point == rankedPoint) samePointCount++;//前の人とポイントが同じ場合，同順位となるようカウントに+1
-                                    else samePointCount = 0;//前の人とポイントが違う場合，カウントをリセット
-                                    rankedPoint = player.point;
-                                    return (<div key={index}>{index + 1 - samePointCount}位:    {player.name}</div>);
-                                })
-                                }
-
-                            <button className="close" onClick={() => {window.location.href="https://es4.eedept.kobe-u.ac.jp/miraisugoroku/menu?"}}>メニューに戻る</button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
-                        </ModalStyle>
-                    </CSSTransition>
-                </div>
-                <CSSTransition
-                    classNames="overlay"
-                    in={props.isOpen}
-                    timeout={700}
-                    unmountOnExit>
-                    <OverlayStyle />
-                </CSSTransition>
-            </TransitionStyle>
-        </>
-    );
+              <Button className="close" sx={{}} onClick={() => { props.onClose() }}>閉じる</Button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
+            </ModalStyle>
+          </CSSTransition>
+        </div>
+        <CSSTransition
+          classNames="overlay"
+          onClick={() => { props.onClose() }}
+          in={props.isOpen}
+          timeout={700}
+          unmountOnExit>
+          <OverlayStyle />
+        </CSSTransition>
+      </TransitionStyle>
+    </>
+  );
 }
+
 
 export default GoalModal
 
@@ -71,11 +60,12 @@ const TransitionStyle = styled.div`
   }
   
   .modal-wrapper{
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
+    width:200px;
     transform: translate(-50%, -50%);
-    z-index:1000;
+    z-index:10000;
     
     .modal-enter {
       opacity: 0;
@@ -121,24 +111,24 @@ const TransitionStyle = styled.div`
 
 // モーダルのスタイル
 const ModalStyle = styled.div`
-  padding: 100px;
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius:10%;
+  // padding: 5%;
+  // background-color: #ffffff;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+  // border-radius:5%;
+  // border:2mm ridge #ffff00;
 
+  // .content{
+  //   font-size: 40px;
+  //   font-weight: bold;
+  // }
   
-  .content{
-    font-size: 40px;
-    font-weight: bold;
-  }
-  
-  .close{
-    cursor: pointer;
-    margin: 50px 0 0;
-  }
+  // .close{
+  //   cursor: pointer;
+  //   margin: 50px 0 0;
+  // }
 `
 
 // オーバーレイのスタイル
@@ -153,4 +143,118 @@ const OverlayStyle = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+`;
+
+const MasuStyle = styled.div`
+.masu{
+  width: 25rem;
+  height: 30rem;
+  position: relative;
+  
+  
+}
+.masu .masu-header{
+  height:50%;
+  background-color: #c1ff7953;
+}
+  .masu-header .masu-img{
+      
+      max-height: 100%;
+      max-width: 100%;
+  }
+
+.masu .masu-body{
+  height:50%;
+  width: 100%;
+}
+  .masu-body ul{
+      height: 100%;
+  }
+  .masu-body .masu-title{
+      height: 40%;
+      width: auto;
+      text-align: center;
+      
+  }
+      .masu-title p{
+          height: 100%;
+          font-size: 1.2rem;
+          overflow: auto;
+          font-family: 'Zen Maru Gothic', sans-serif;
+      }
+
+  .masu-body .masu-description{
+      height: 60%;
+      width: 100%;
+  }
+      .masu-description p{
+          font-size: 0.8rem;
+          height: 100%;
+          width: 100%;
+          overflow: auto;
+      }
+
+.masu .masu-event{
+  position: absolute;
+  width:25%;
+  right: 0%; 
+  top: 40%;
+}
+
+  .masu-event img{
+      position: absolute;
+      box-sizing:content-box;
+      top: 50%;
+      left: 50%;
+      transform:translateX(-50%) translateY(-50%);
+      width: 100%;
+  }
+  .masu-event p{
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      top: 50%;
+      left: 50%;
+      transform:translateX(-50%) translateY(-50%);
+      white-space: normal;
+  
+  }
+`
+
+const ModalBase = styled.div`
+width: 200px;
+height: 200px;
+background: linear-gradient(135deg, rgba(240, 248, 255, 1) 40%, rgba(0, 201, 253, 1));
+transform: rotate(45deg);
+border: 3px solid blue;
+
+position: relative;
+  .title_text {
+    transform: rotate(-45deg);
+    text-align: center;
+    position: absolute;
+    top: 30px;
+    left:10px;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: x-large;
+  }
+
+  .rank_text {
+    transform: rotate(-45deg);
+    text-align: center;
+    position: absolute;
+    top: 70px;
+    left:72px;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: large;
+  }
+  
+  .score_text {
+    transform: rotate(-45deg);
+    text-align: center;
+    position: absolute;
+    top: 105px;
+    left:45px;
+    // font-family: 'Zen Maru Gothic', sans-serif;
+  }
 `;

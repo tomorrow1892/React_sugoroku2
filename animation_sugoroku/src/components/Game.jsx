@@ -1,8 +1,14 @@
 
 import { Grid, Button, Drawer, Paper } from "@mui/material";
 import React from "react";
+
 import Dice2 from './Dice2';
+import Board from "./Board";
+import EventModal from "./EventModal";
+import GoalModal from "./GoalModal";
+import FinishModal from "./FinishModal";
 import PlayerList from './PlayerList';
+
 import cat from './img/cat.png';
 import dog from './img/dog.png';
 import hamster from './img/hamster.png';
@@ -11,9 +17,8 @@ import penguin from './img/penguin.png';
 import zo from './img/zo.png';
 import map from './img/map.jpg';
 import sky from './img/sky.jpg';
-import Board from "./Board";
-import EventModal from "./EventModal";
-import GoalModal from "./GoalModal";
+import sound from './sound/move.mp3';
+import sound_success from './sound/success.mp3';
 import { CSSTransition } from "react-transition-group";
 import styled, { ThemeConsumer } from "styled-components";
 
@@ -51,8 +56,10 @@ export default class Game extends React.Component {
         this.state = this.getState();//すごろくゲームに関するstateを取得
         this.state["isEventModalVisible"] = false;//イベント処理時のモーダルの表示フラグのstate
         this.state["isGoalModalVisible"] = false;
+        this.state["isFinishModalVisible"] = false;
         this.state["onModalClosedMethod"] = null;//モーダルを閉じたときの処理
         this.state["modalContent"] = null;//モーダルの中身
+
         //子コンポーネントに渡す関数をバインド
         this.setState = this.setState.bind(this);
         this.requestDiceRoll = this.requestDiceRoll.bind(this);
@@ -143,15 +150,17 @@ export default class Game extends React.Component {
         this.stepMove(response.order, moveCount, ()=>{
             this.setState(newState);
             if (response.isGoaled) {//ゴールした場合
+                const audio_success = new Audio(sound_success);
                 console.log("goal!");
                 let goalCount = this.checkGoalCount(newState.playerList);
                 this.setModalContent({
-                    "title": "ゴール!",
-                    "description": `${goalCount}位でゴールしたので，${(6 - goalCount) * 100}ポイントゲット!`,
+                    "title": `${goalCount} 位`,
+                    "description": `${(6 - goalCount) * 100}ポイントゲット!`,
                     "squareEventId": null
                 });
-                this.setGoalModalClosedMethod(newState.playerList);//モーダルを閉じるときの処理をセット
-                setTimeout(() => this.setState({ isEventModalVisible: true }), 500);//モーダルを表示
+                this.setFinishModalClosedMethod(newState.playerList);//モーダルを閉じるときの処理をセット
+                audio_success.play();
+                setTimeout(() => this.setState({ isGoalModalVisible: true }), 500);//モーダルを表示
             }
             else {//ゴールでない場合，サイコロを有効にして次の人に番が回る
                 setTimeout(() => this.diceRef.current.switchDiceButtonDisabled(false), 500);//サイコロボタンを有効にする．setStateが非同期なため，少し遅延を入れている
@@ -162,12 +171,14 @@ export default class Game extends React.Component {
     //コマを1マスずつ進ませる．
     //orderはターンプレイヤーの順番,moveCountは移動マス数,moveFinishedFuncは進み終えた後に実行するコールバック処理
     stepMove(order, moveCount, moveFinishedFunc) {
+        const audio_move = new Audio(sound);
         console.log("moveCount:"+moveCount);
         if (moveCount > 0) {
             let playerList_tmp = this.state.playerList;
             playerList_tmp[order - 1].position++;
             this.setState({ playerList: playerList_tmp });
             setTimeout(() => {
+                audio_move.play();
                 this.stepMove(order, moveCount - 1,moveFinishedFunc);
             }, 500);
         }
@@ -176,6 +187,7 @@ export default class Game extends React.Component {
             playerList_tmp[order - 1].position--;
             this.setState({ playerList: playerList_tmp });
             setTimeout(() => {
+                audio_move.play();
                 this.stepMove(order, moveCount + 1,moveFinishedFunc);
             }, 500);
         }
@@ -215,22 +227,22 @@ export default class Game extends React.Component {
         })
     }
     //イベント処理後にゴールした場合のモーダルを閉じるときの処理をセット．閉じたときにサイコロボタンを有効にする．
-    setGoalModalClosedMethod(playerList) {
+    setFinishModalClosedMethod(playerList) {
         console.log("ゴール人数(stateの方):" + this.checkGoalCount(this.state.playerList))
         console.log("ゴール人数:" + this.checkGoalCount(playerList))
         console.log("プレイヤー人数:" + this.state.nPlayers);
         if (this.checkGoalCount(playerList) == this.state.nPlayers) {//全員がゴールした場合
             this.setState({
                 onModalClosedMethod: () => {
-                    this.switchIsVisible(false);
-                    setTimeout(() => { this.setState({ isGoalModalVisible: true }) }, 500);//モーダルの表示フラグをtrueにする
+                    this.setState({ isGoalModalVisible: false });
+                    setTimeout(() => { this.setState({ isFinishModalVisible: true }) }, 500);//モーダルの表示フラグをtrueにする
                 }
             })
         }
         else {
             this.setState({
                 onModalClosedMethod: () => {
-                    this.switchIsVisible(false);
+                    this.setState({ isGoalModalVisible: false });
                     this.diceRef.current.switchDiceButtonDisabled(false);
 
                 }
@@ -247,7 +259,7 @@ export default class Game extends React.Component {
         return (
             <div>
                 {/*サイドメニュー */}
-                <Drawer variant="permanent" anchor="left" sx={{ '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "300px" } }}>
+                <Drawer variant="permanent" anchor="left" sx={{ '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "300px", background: "linear-gradient(to bottom, white, 75%, cyan)" } }}>
                     <div style={{ "textAlign": "center", "height": "300px" }}>
                         <Dice2 ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice2>
                     </div>
@@ -263,9 +275,14 @@ export default class Game extends React.Component {
                         modalContent={this.state.modalContent}
                         onClose={this.state.onModalClosedMethod}
                     />
-                    {/* 全員がゴールしたときに出てくるモーダル */}
                     <GoalModal
                         isOpen={this.state.isGoalModalVisible}
+                        modalContent={this.state.modalContent}
+                        onClose={this.state.onModalClosedMethod}
+                    />
+                    {/* 全員がゴールしたときに出てくるモーダル */}
+                    <FinishModal
+                        isOpen={this.state.isFinishModalVisible}
                         playerList={this.state.playerList}
                     />
                 </Drawer>
