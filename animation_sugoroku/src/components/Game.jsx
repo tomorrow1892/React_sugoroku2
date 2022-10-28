@@ -8,6 +8,7 @@ import EventModal from "./EventModal";
 import GoalModal from "./GoalModal";
 import FinishModal from "./FinishModal";
 import PlayerList from './PlayerList';
+import CancelModal from "./CancelModal";
 
 import cat from './img/cat.png';
 import dog from './img/dog.png';
@@ -22,6 +23,7 @@ import sound from './sound/move.mp3';
 import sound_success from './sound/success.mp3';
 import { CSSTransition } from "react-transition-group";
 import styled, { ThemeConsumer } from "styled-components";
+
 
 
 
@@ -57,6 +59,7 @@ export default class Game extends React.Component {
         this.state["isEventModalVisible"] = false;//イベント処理時のモーダルの表示フラグのstate
         this.state["isGoalModalVisible"] = false;
         this.state["isFinishModalVisible"] = false;
+        this.state["isCancelModalVisible"] = false;
         this.state["onModalClosedMethod"] = null;//モーダルを閉じたときの処理
         this.state["modalContent"] = null;//モーダルの中身
 
@@ -65,7 +68,7 @@ export default class Game extends React.Component {
         this.requestDiceRoll = this.requestDiceRoll.bind(this);
         this.setModalContent = this.setModalContent.bind(this);
         this.switchIsVisible = this.switchIsVisible.bind(this);
-        this.setModalClosedMethod = this.setModalClosedMethod.bind(this);
+        this.setCancelModalClosedMethod = this.setCancelModalClosedMethod.bind(this);
         this.setEventModalClosedMethod = this.setEventModalClosedMethod.bind(this);
 
         //ref
@@ -252,8 +255,9 @@ export default class Game extends React.Component {
 
     }
     //それ以外のモーダルを閉じるときの処理をセット．ただ閉じるだけ
-    setModalClosedMethod() {
-        this.setState({ onModalClosedMethod: () => this.switchIsVisible(false) })
+    setCancelModalClosedMethod() {
+        this.setState({ onModalClosedMethod: () => this.setState({ isCancelModalVisible: false }) })
+        console.log("aaaaaaaaaaa");
     }
 
     render() {
@@ -264,6 +268,7 @@ export default class Game extends React.Component {
                     <div style={{ "textAlign": "center", "height": "300px" }}>
                         <Dice2 ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice2>
                     </div>
+                    <Button style={{ "width":"70%", "margin":"0 auto 20px auto"}} ref={this.diceBtnRef} variant="contained" color="error" onClick={() => { this.setCancelModalClosedMethod(); console.log(this.state.onModalClosedMethod); this.setState({ isCancelModalVisible: true }); }}>メニューに戻る</Button>
                     <div style={{ "textAlign": "center"}}>
                         {(this.state.turnPlayer!=null)&& this.state.turnPlayer.name}さんの番です．
                     </div>
@@ -286,6 +291,10 @@ export default class Game extends React.Component {
                         isOpen={this.state.isFinishModalVisible}
                         playerList={this.state.playerList}
                     />
+                    <CancelModal
+                        isOpen={this.state.isCancelModalVisible}
+                        onClose={this.state.onModalClosedMethod}
+                    ></CancelModal>
                 </Drawer>
                 {/* 盤面 */}
                 <div style={{
@@ -298,7 +307,7 @@ export default class Game extends React.Component {
                         <Board masuList={this.state.masuList} playerList={this.state.playerList}
                             switchIsVisible={this.switchIsVisible}
                             setModalContent={this.setModalContent}
-                            setModalClosedMethod={this.setModalClosedMethod}
+                            setCancelModalClosedMethod={this.setCancelModalClosedMethod}
                         ></Board>
                     </div>
                 </div>
