@@ -18,7 +18,8 @@ export const CancelModal = (props) => {
                         unmountOnExit>
                         <ModalStyle>
                             <div>{/* マスタイトル */}
-                                ゲームを中止して、メインメニューに戻りますか？   
+                                ゲームを中止して、メインメニューに戻りますか？<br />
+                                （中止したゲームは再開できません） 
                             </div>
                             <button className="close" onClick={() => {window.location.href="https://es4.eedept.kobe-u.ac.jp/miraisugoroku/"}}>メニューに戻る</button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
                         </ModalStyle>
