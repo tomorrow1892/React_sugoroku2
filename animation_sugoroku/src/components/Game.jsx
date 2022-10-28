@@ -17,6 +17,7 @@ import penguin from './img/penguin.png';
 import zo from './img/zo.png';
 import map from './img/map.jpg';
 import sky from './img/sky.jpg';
+import mizutama from "./img/mizutamahaikei-illust2.png";
 import sound from './sound/move.mp3';
 import sound_success from './sound/success.mp3';
 import { CSSTransition } from "react-transition-group";
@@ -27,9 +28,9 @@ import styled, { ThemeConsumer } from "styled-components";
 
 
 //環境変数
-//const BACKEND_HOST = "https://es4.eedept.kobe-u.ac.jp/miraisugoroku";
+const BACKEND_HOST = "https://es4.eedept.kobe-u.ac.jp/miraisugoroku";
 //ローカルでテストする時は以下コメントを外す
-const BACKEND_HOST = "http://localhost:2289";
+//const BACKEND_HOST = "http://localhost:2289";
 
 //プレイヤーのステータスを持つオブジェクト
 function Player(playerId, sugorokuId, icon, name, order, point, position, isGoaled, isBreak) {
@@ -166,7 +167,6 @@ export default class Game extends React.Component {
                 setTimeout(() => this.diceRef.current.switchDiceButtonDisabled(false), 500);//サイコロボタンを有効にする．setStateが非同期なため，少し遅延を入れている
             }
         });
-        
     }
 
     //コマを1マスずつ進ませる．
@@ -260,7 +260,7 @@ export default class Game extends React.Component {
         return (
             <div>
                 {/*サイドメニュー */}
-                <Drawer variant="permanent" anchor="left" sx={{ '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "300px", background: "linear-gradient(to bottom, white, 75%, cyan)" } }}>
+                <Drawer variant="permanent" anchor="left" sx={{'& .MuiDrawer-paper': { boxSizing: 'border-box', width: "300px", background: "linear-gradient(to bottom, white, 75%, cyan)" } }}>
                     <div style={{ "textAlign": "center", "height": "300px" }}>
                         <Dice2 ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice2>
                     </div>
@@ -289,7 +289,7 @@ export default class Game extends React.Component {
                 </Drawer>
                 {/* 盤面 */}
                 <div style={{
-                    "backgroundSize": "cover", "backgroundImage": `url(${sky})`,
+                    "backgroundSize": "cover", "backgroundImage": `url(${mizutama})`,
                     "backgroundAttachment": "fixed",
                     "height": "200%", "width": "150%", "position": "absolute", "left": "0px", "top": "0px", "textAlign": "center", "zIndex": 10,
                     "backgroundColor": "rgba(255, 255, 255, 0.45)", "backgroundBlendMode": "lighten"

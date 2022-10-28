@@ -23,15 +23,14 @@ export const GoalModal = (props) => {
               <MasuStyle>
                 {(props.modalContent != null)&&
                   <ModalBase>
-                    <div className="title_text">ゴール</div>
+                    <div className="title_text">ゴール!</div>
                     <div className="rank_text">{props.modalContent.title}</div>
                     <div className="score_text">{props.modalContent.description}</div>
                   </ModalBase>
                 }
               </MasuStyle>
 
-
-              <Button className="close" sx={{}} onClick={() => { props.onClose() }}>閉じる</Button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
+              <Button className="close" variant="contained" sx={{"display": "flex","justifyContent": "center"}} onClick={() => { props.onClose() }}>閉じる</Button>
             </ModalStyle>
           </CSSTransition>
         </div>
@@ -125,10 +124,17 @@ const ModalStyle = styled.div`
   //   font-weight: bold;
   // }
   
-  // .close{
-  //   cursor: pointer;
-  //   margin: 50px 0 0;
-  // }
+  .close{
+    cursor: pointer;
+    margin-top: 80px;
+    margin-left:auto;
+    margin-right:auto;
+    width: 120px;
+    height: 50px;
+    font-size: x-large;
+    background-color: cyan;
+    color: blue;
+  }
 `
 
 // オーバーレイのスタイル
@@ -142,7 +148,7 @@ const OverlayStyle = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(255,255,255, 0.5);
 `;
 
 const MasuStyle = styled.div`
