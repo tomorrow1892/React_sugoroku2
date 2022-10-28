@@ -177,9 +177,10 @@ export default class Game extends React.Component {
             let playerList_tmp = this.state.playerList;
             playerList_tmp[order - 1].position++;
             this.setState({ playerList: playerList_tmp });
+            audio_move.play();
             setTimeout(() => {
                 this.stepMove(order, moveCount - 1,moveFinishedFunc);
-                audio_move.play();
+                
             }, 500);
         }
         else if(moveCount < 0){
