@@ -79,7 +79,12 @@ export default class DiceImage extends React.Component {
 
 
   switchDiceButtonDisabled(isDisabled) {
-    this.diceBtnRef.current.disabled = isDisabled;
+    // this.diceBtnRef.current.disabled = isDisabled;
+    if (isDisabled) {
+      this.diceBtnRef.current.style.display = "none";
+    } else {
+      this.diceBtnRef.current.style.display = "block";
+    }
   }
 
   render() {
