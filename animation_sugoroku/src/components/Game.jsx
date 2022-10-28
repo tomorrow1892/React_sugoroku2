@@ -254,10 +254,9 @@ export default class Game extends React.Component {
         }
 
     }
-    //それ以外のモーダルを閉じるときの処理をセット．ただ閉じるだけ
+    // ゲーム中止モーダルを閉じる時の処理
     setCancelModalClosedMethod() {
         this.setState({ onModalClosedMethod: () => this.setState({ isCancelModalVisible: false }) })
-        console.log("aaaaaaaaaaa");
     }
 
     render() {
@@ -268,7 +267,7 @@ export default class Game extends React.Component {
                     <div style={{ "textAlign": "center", "height": "300px" }}>
                         <Dice2 ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice2>
                     </div>
-                    <Button style={{ "width":"70%", "margin":"0 auto 20px auto"}} ref={this.diceBtnRef} variant="contained" color="error" onClick={() => { this.setCancelModalClosedMethod(); console.log(this.state.onModalClosedMethod); this.setState({ isCancelModalVisible: true }); }}>メニューに戻る</Button>
+                    <Button style={{ "width":"70%", "margin":"0 auto 20px auto"}} ref={this.diceBtnRef} variant="contained" color="error" onClick={() => { this.setCancelModalClosedMethod();  this.setState({ isCancelModalVisible: true }); }}>メニューに戻る</Button>
                     <div style={{ "textAlign": "center"}}>
                         {(this.state.turnPlayer!=null)&& this.state.turnPlayer.name}さんの番です．
                     </div>
