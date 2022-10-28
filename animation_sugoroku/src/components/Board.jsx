@@ -74,7 +74,7 @@ export default class Board extends React.Component {
                         default: break;
                     }
                     return (<Icon ref={comaRef} key={player.order} iconImg={player.icon}
-                        x={masuPositionList[player.position].left + index * 20} y={masuPositionList[player.position].top + 30}></Icon>)
+                        x={masuPositionList[player.position].left + Math.floor(index / 2) * 30 + (index % 2) * 10} y={masuPositionList[player.position].top + (index % 2) * 35 + 30}></Icon>)
                 })}
                 <MasuStart top={masuPositionList[0].top} left={masuPositionList[0].left}></MasuStart>
                 {this.props.masuList.map((masu, index) => {
