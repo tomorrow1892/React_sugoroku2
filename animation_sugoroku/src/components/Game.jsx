@@ -30,7 +30,7 @@ import styled, { ThemeConsumer } from "styled-components";
 //環境変数
 const BACKEND_HOST = "https://es4.eedept.kobe-u.ac.jp/miraisugoroku";
 //ローカルでテストする時は以下コメントを外す
-//const BACKEND_HOST = "http://localhost:2289";
+// const BACKEND_HOST = "http://localhost:2289";
 
 //プレイヤーのステータスを持つオブジェクト
 function Player(playerId, sugorokuId, icon, name, order, point, position, isGoaled, isBreak) {
@@ -43,7 +43,6 @@ function Player(playerId, sugorokuId, icon, name, order, point, position, isGoal
     this.position = position;
     this.isGoaled = isGoaled;
     this.isBreak = isBreak;
-
 }
 
 
@@ -179,8 +178,8 @@ export default class Game extends React.Component {
             playerList_tmp[order - 1].position++;
             this.setState({ playerList: playerList_tmp });
             setTimeout(() => {
-                audio_move.play();
                 this.stepMove(order, moveCount - 1,moveFinishedFunc);
+                audio_move.play();
             }, 500);
         }
         else if(moveCount < 0){
