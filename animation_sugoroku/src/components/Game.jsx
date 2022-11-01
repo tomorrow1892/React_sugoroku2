@@ -68,6 +68,7 @@ export default class Game extends React.Component {
         this.requestDiceRoll = this.requestDiceRoll.bind(this);
         this.setModalContent = this.setModalContent.bind(this);
         this.switchIsVisible = this.switchIsVisible.bind(this);
+        this.setModalClosedMethod = this.setModalClosedMethod.bind(this);
         this.setCancelModalClosedMethod = this.setCancelModalClosedMethod.bind(this);
         this.setEventModalClosedMethod = this.setEventModalClosedMethod.bind(this);
 
@@ -254,6 +255,11 @@ export default class Game extends React.Component {
         }
 
     }
+    //それ以外のモーダルを閉じるときの処理をセット．ただ閉じるだけ
+    setModalClosedMethod() {
+        this.setState({ onModalClosedMethod: () => this.switchIsVisible(false) })
+    }
+
     // ゲーム中止モーダルを閉じる時の処理
     setCancelModalClosedMethod() {
         this.setState({ onModalClosedMethod: () => this.setState({ isCancelModalVisible: false }) })
@@ -306,6 +312,7 @@ export default class Game extends React.Component {
                         <Board masuList={this.state.masuList} playerList={this.state.playerList}
                             switchIsVisible={this.switchIsVisible}
                             setModalContent={this.setModalContent}
+                            setModalClosedMethod={this.setModalClosedMethod}
                             setCancelModalClosedMethod={this.setCancelModalClosedMethod}
                         ></Board>
                     </div>
