@@ -19,6 +19,7 @@ import map from './img/map.jpg';
 import sky from './img/sky.jpg';
 import mizutama from "./img/mizutamahaikei-illust2.png";
 import sound from './sound/move.mp3';
+import bgm from './sound/dizzy.mp3';
 import sound_success from './sound/success.mp3';
 import { CSSTransition } from "react-transition-group";
 import styled, { ThemeConsumer } from "styled-components";
@@ -52,6 +53,7 @@ export default class Game extends React.Component {
     constructor(props) {
         super(props);
 
+        
         //state
         this.state = this.getState();//すごろくゲームに関するstateを取得
         this.state["isEventModalVisible"] = false;//イベント処理時のモーダルの表示フラグのstate
@@ -256,9 +258,19 @@ export default class Game extends React.Component {
         this.setState({ onModalClosedMethod: () => this.switchIsVisible(false) })
     }
 
+    play_music(){
+        const bgm_music = new Audio(bgm);
+        bgm_music.play();
+
+        console.log("bgmstart");
+    }
     render() {
         return (
+            
             <div>
+                {
+                this.play_music()
+            }
                 {/*サイドメニュー */}
                 <Drawer variant="permanent" anchor="left" sx={{'& .MuiDrawer-paper': { boxSizing: 'border-box', width: "300px", background: "linear-gradient(to bottom, white, 75%, cyan)" } }}>
                     <div style={{ "textAlign": "center", "height": "300px" }}>

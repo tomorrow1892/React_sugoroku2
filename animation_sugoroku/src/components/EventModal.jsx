@@ -70,12 +70,19 @@ export const EventModal = (props) => {
                           }
                         </p>
                       </li>
-                      <li className="masu-description list-group-item ">
-                        <p className="card-text">
+                      <li className="masu-contents list-group-item ">
+                        <p className="masu-description">
                           {/* マスの詳細 */}
                           {(props.modalContent != null) &&
                             <>
                               {props.modalContent.description}
+                            </>}
+                        </p>
+                        <p className="masu-creator">
+                          {/* マスの詳細 */}
+                          {(props.modalContent != null) &&
+                            <>
+                              作者: {props.modalContent.nickName}
                             </>}
                         </p>
                       </li>
