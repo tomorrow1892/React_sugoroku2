@@ -277,9 +277,6 @@ export default class Game extends React.Component {
         return (
             
             <div>
-                {
-                this.play_music()
-            }
                 {/*サイドメニュー */}
                 <Drawer variant="permanent" anchor="left" sx={{'& .MuiDrawer-paper': { boxSizing: 'border-box', width: "300px", background: "linear-gradient(to bottom, white, 75%, cyan)" } }}>
                     <div style={{ "textAlign": "center", "height": "300px" }}>
