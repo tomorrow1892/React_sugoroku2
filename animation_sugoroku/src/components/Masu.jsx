@@ -43,6 +43,7 @@ export default class Masu extends React.Component {
     }
 
     render() {
+        // マスの色を指定
         let masuColor = 'black';
         if (this.props.masu.squareEffect > 0) {
             masuColor = 'cyan';
