@@ -2,7 +2,7 @@
 import { Grid, Button, Card, ListItem, CardHeader, Avatar, Box } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
-
+import ModalContent_Masu from "./ModalContent_Masu"
 
 
 
@@ -45,27 +45,26 @@ export default class Masu extends React.Component {
     render() {
         // マスの色を指定
         let masuColor = 'black';
-        if (this.props.masu.squareEffect > 0) {
+        if (this.props.masuInfo.squareEffect > 0) {
             masuColor = 'cyan';
-        } else if (this.props.masu.squareEffect < 0) {
+        } else if (this.props.masuInfo.squareEffect < 0) {
             masuColor = 'orangered';
         }
         return (
             <>
             <MasuStyle>
             <Card className="masu" onClick={()=>{
-            this.props.setModalContent(this.props.masu);
-            this.props.setModalClosedMethod();
-            this.props.switchIsVisible(true);}}
+            this.props.setModalContent(<ModalContent_Masu masuInfo={this.props.masuInfo} handleClose={()=>this.props.switchIsModalOpen(false)}/>)
+            this.props.switchIsModalOpen(true);}}
                 sx={{boxShadow:2, bgcolor: "#FFFFFF", border: 2, borderColor: "#0000DD", borderRadius: 2,cursor: "hand", cursor:"pointer",
                 width: 120, height: 120, position: "absolute", top: this.props.top, left: this.props.left }} >
                     
                         <div style={{ "fontSize": "90%", "display":"table", "height": "60px", "textAlign":"center", "width":"100%", "marginTop":"10px" }}>
-                            <div style={{ "display":"table-cell", "verticalAlign": "middle", "padding":"0", "margin":"0", "fontFamily": "'Zen Maru Gothic', sans-serif"}}>{this.props.masu.title}</div>
+                            <div style={{ "display":"table-cell", "verticalAlign": "middle", "padding":"0", "margin":"0", "fontFamily": "'Zen Maru Gothic', sans-serif"}}>{this.props.masuInfo.title}</div>
                         </div>
                     
                     <Card sx={{ width: "80%", marginLeft: "auto", marginRight: "auto", top: 8, position: "relative", borderRadius: 2, bgcolor: masuColor }}>
-                        {this.getEventfromEventId(this.props.masu.squareEventId)}
+                        {this.getEventfromEventId(this.props.masuInfo.squareEventId)}
                     </Card>
                 </Card>
             </MasuStyle>

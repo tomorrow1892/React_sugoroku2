@@ -78,10 +78,9 @@ export default class Board extends React.Component {
                 })}
                 <MasuStart top={masuPositionList[0].top} left={masuPositionList[0].left}></MasuStart>
                 {this.props.masuList.map((masu, index) => {
-                    return (<Masu key={index + 1} masu={masu} top={masuPositionList[index + 1].top} left={masuPositionList[index + 1].left}
-                        switchIsVisible = {this.props.switchIsVisible}
+                    return (<Masu key={index + 1} masuInfo={masu} top={masuPositionList[index + 1].top} left={masuPositionList[index + 1].left}
+                        switchIsModalOpen = {this.props.switchIsModalOpen}
                         setModalContent = {this.props.setModalContent}
-                        setModalClosedMethod = {this.props.setModalClosedMethod}
                     > </Masu>);
                 })}
                 <MasuGoal top={masuPositionList[this.props.masuList.length+1].top} left={masuPositionList[this.props.masuList.length+1].left}></MasuGoal>
