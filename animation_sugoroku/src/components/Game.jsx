@@ -21,6 +21,8 @@ import sound_success from './sound/success.mp3';
 import ModalContent_Masu from "./ModalContent_Masu";
 import ModalContent_Goal from "./ModalContent_Goal";
 import ModalContent_Finish from "./ModalContent_Finish";
+import ModalContent_GameStart from "./ModalContent_GameStart";
+import ModalContent_BackToMenu from "./ModalContent_BackToMenu";
 
 
 
@@ -67,14 +69,7 @@ export default class Game extends React.Component {
     }
 
     componentDidMount() {
-        this.setModalContent(<Box>
-                <a>ゲームスタート</a>
-                <button onClick={() => {
-                    const bgm_music = new Audio(bgm);
-                    bgm_music.play();
-                    this.switchIsModalOpen(false);
-                    }}>ゲームスタート</button>
-        </Box>);
+        this.setModalContent(<ModalContent_GameStart switchIsModalOpen={this.switchIsModalOpen} />);
         this.switchIsModalOpen(true);
     }
 
@@ -183,7 +178,11 @@ export default class Game extends React.Component {
                             }
                             else {
                                 this.setState({ isModalOpen: false });
+                                this.setModalContent(<Dice ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice>);
                                 this.diceRef.current.switchDiceButtonDisabled(false);
+                                setTimeout(() => { //ゲーム終了モーダルを表示する
+                                    this.setState({ isModalOpen: true })
+                                }, 500);
                             }
                         }
                         } />
@@ -192,7 +191,11 @@ export default class Game extends React.Component {
                 setTimeout(() => this.setState({ isModalOpen: true }), 500);//モーダルを表示
             }
             else {//ゴールでない場合，サイコロを有効にして次の人に番が回る
-                setTimeout(() => this.diceRef.current.switchDiceButtonDisabled(false), 500);//サイコロボタンを有効にする．setStateが非同期なため，少し遅延を入れている
+                this.setModalContent(<Dice ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice>);
+                this.diceRef.current.switchDiceButtonDisabled(false);
+                setTimeout(() => { //ゲーム終了モーダルを表示する
+                    this.setState({ isModalOpen: true })
+                }, 500);
             }
         });
     }
@@ -240,12 +243,11 @@ export default class Game extends React.Component {
     //モーダルの表示フラグを変更する
     switchIsModalOpen(isOpen) { this.setState({ isModalOpen: isOpen }); }
     //マス情報をモーダルの中身にセットする
-    setModalContent(content) { this.setState({"modalContent": content }); }
+    setModalContent(content) { this.setState({ "modalContent": content }); }
 
 
     render() {
         return (
-
             <div>
                 {/*サイドメニュー */}
                 <Drawer variant="permanent" anchor="left" sx={{ '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "300px", background: "linear-gradient(to bottom, white, 75%, cyan)" } }}>
@@ -253,13 +255,10 @@ export default class Game extends React.Component {
                         <Dice ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice>
                     </div>
                     <Button style={{ "width": "70%", "margin": "0 auto 20px auto" }} ref={this.diceBtnRef} variant="contained" color="error" onClick={() => {
-                        this.setModalContent(<>
-                            <div>{/* マスタイトル */}
-                                ゲームを中止して、メインメニューに戻りますか？<br />
-                                （中止したゲームは再開できません）
-                            </div>
-                            <button className="close" onClick={() => { window.location.href = "https://es4.eedept.kobe-u.ac.jp/miraisugoroku/" }}>メニューに戻る</button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
-                        </>)
+                        this.setModalContent(<ModalContent_BackToMenu
+                            handleClose={() => {//イベントモーダルが閉じたときの処理をセット
+                                this.switchIsModalOpen(false);
+                            }} />)
                         this.switchIsModalOpen(true);
                     }}>メニューに戻る</Button>
                     <div style={{ "textAlign": "center" }}>
@@ -268,10 +267,15 @@ export default class Game extends React.Component {
                     <div style={{ "height": "100px" }}>
                         <PlayerList playerList={this.state.playerList} nowPlayer={this.state.turnPlayer}></PlayerList>
                     </div>
-                    {/* イベントやマスクリックで出てくるモーダル．サイドメニューより前面に出すためにDrawerの子にしている */} <Modal
-                        sx={{ border: 0 }}
+                    {/* ゲームスタート・イベント・ゴールなどで出てくるモーダル．サイドメニューより前面に出すためにDrawerの子にしている */}
+                    <Modal
+                        sx={{
+                            border: 0, textAlign: "center", verticalAlign: "middle", display: "flex",
+                            backgroundColor: "rgba(255,255,255, 0.1)",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}
                         open={this.state.isModalOpen}
-                        onClose={() => { console.log("test") }}
                         aria-labelledby="modal-modal-title"
                         aria-describedby="modal-modal-description"
                     >

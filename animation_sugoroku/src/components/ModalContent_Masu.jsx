@@ -6,6 +6,7 @@ import styles from './css/masu.css';
 import diceImgWhite from './img/dice.png';
 import diceImgRed from './img/dice_red.png';
 import diceImgBlue from './img/dice_blue.png';
+import { pc, sp, tab } from '../media';
 
 //マスに止まったときにでるイベントモーダル．関数コンポーネント.
 export const EventModal = (props) => {
@@ -41,59 +42,65 @@ export const EventModal = (props) => {
 
 
     return (
-        <>
-            <MasuStyle>
-                {(props.masuInfo != null) &&
-                    <Card className="masu" >
+        <ModalStyle>
+            <Card className="modal">
+                <div className="modal_contents">
+                    <MasuStyle>
+                        {(props.masuInfo != null) &&
+                            <Card className="masu" >
 
-                        <Box className="masu-header" sx={{ display: 'flex', justifyContent: "center" }}>
-                            {
-                                (props.masuInfo != null) &&
-                                <img src={props.masuInfo.picture} className="masu-img" />
-                            }
-                        </Box>
-                        <Box className="masu-body">
-                            <ul className="list-group ">
-                                <li className="masu-title list-group-item">
-                                    <p className="align-items-center">
-                                        {/* マスタイトル */}
-                                        {(props.masuInfo != null) &&
-                                            <>{props.masuInfo.title}</>
-                                        }
-                                    </p>
-                                </li>
-                                <li className="masu-contents list-group-item ">
-                                    <p className="masu-description">
-                                        {/* マスの詳細 */}
-                                        {(props.masuInfo != null) &&
-                                            <>
-                                                {props.masuInfo.description}
-                                            </>}
-                                    </p>
-                                    <p className="masu-creator">
-                                        {/* マスの詳細 */}
-                                        {(props.masuInfo != null) &&
-                                            <>
-                                                作者: {props.masuInfo.nickName}
-                                            </>}
-                                    </p>
-                                </li>
-                            </ul>
-                        </Box>
-                        <Box className="masu-event">
-                            {
-                                (props.masuInfo.squareEffect > 0) ?
-                                    <img src={diceImgBlue}></img> :
-                                    <img src={diceImgRed}></img>
-                            }
-                            { }
-                            <p className="font-wght700">{getEventfromEventId(props.masuInfo.squareEventId)}</p>
+                                <Box className="masu-header" sx={{ display: 'flex', justifyContent: "center" }}>
+                                    {
+                                        (props.masuInfo != null) &&
+                                        <img src={props.masuInfo.picture} className="masu-img" />
+                                    }
+                                </Box>
+                                <Box className="masu-body">
+                                    <ul className="list-group ">
+                                        <li className="masu-title list-group-item">
+                                            <p className="align-items-center">
+                                                {/* マスタイトル */}
+                                                {(props.masuInfo != null) &&
+                                                    <>{props.masuInfo.title}</>
+                                                }
+                                            </p>
+                                        </li>
+                                        <li className="masu-contents list-group-item ">
+                                            <p className="masu-description">
+                                                {/* マスの詳細 */}
+                                                {(props.masuInfo != null) &&
+                                                    <>
+                                                        {props.masuInfo.description}
+                                                    </>}
+                                            </p>
+                                            <p className="masu-creator">
+                                                {/* マスの詳細 */}
+                                                {(props.masuInfo != null) &&
+                                                    <>
+                                                        作者: {props.masuInfo.nickName}
+                                                    </>}
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </Box>
+                                <Box className="masu-event">
+                                    {
+                                        (props.masuInfo.squareEffect > 0) ?
+                                            <img src={diceImgBlue}></img> :
+                                            <img src={diceImgRed}></img>
+                                    }
+                                    { }
+                                    <p className="font-wght700">{getEventfromEventId(props.masuInfo.squareEventId)}</p>
 
-                        </Box>
-                    </Card>}
-            </MasuStyle>
-            <Button className="close" variant="contained" sx={{ "display": "flex", "justifyContent": "center" }} onClick={props.handleClose}>閉じる</Button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
-        </>
+                                </Box>
+                            </Card>}
+                    </MasuStyle>
+                    <button className="btn" variant="contained" onClick={props.handleClose}>閉じる</button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
+
+                </div>
+
+            </Card>
+        </ModalStyle>
     );
 }
 
@@ -175,4 +182,95 @@ const MasuStyle = styled.div`
       white-space: normal;
   
   }
-`
+`;
+
+const ModalStyle = styled.div`
+
+.modal_flame{
+    
+    width :80vw;
+    height : 80vh;
+    margin: 2em auto;
+    padding:2em;/*内側余白*/
+    border-radius: 30px 60px/60px 30px;
+    border: solid 8px #ccc7be;
+        position: relative;
+    }
+    .modal_contents{
+       ${pc` font-size: 30px; `}
+       ${sp` font-size: 10px; `}
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%) translateX(-50%);
+        -webkit- transform: translateY(-50%) translateX(-50%);
+            font-family: 'Zen Maru Gothic', sans-serif;
+        }
+    @keyframes slide {
+        from {
+        background-position: 0 0;
+        }
+    
+        to {
+        background-position: -120px 60px;
+        }
+    }
+    
+    .modal {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width :80vw;
+        height : 80vh;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1.6rem 3rem;
+        border: 3px solid black;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+    .message {
+        ${pc` font-size: 5.1rem; `}
+        ${sp` font-size: 2.1rem; `}
+        margin-bottom: 1.6rem;
+        margin-top: 0;
+    }
+    .btn {
+        color:inherit;
+        font-family:inherit;
+        font-size: 20px;
+        background: cyan;
+        ${pc` padding: 0.3rem 3.4rem; `}
+        ${sp` padding: 0.3rem 1.4rem; `}
+        
+        border: 3px solid black;
+        margin-right: 2.6rem;
+        box-shadow: 0 0 0 black;
+        transition: all 0.2s;
+    }
+    
+    .btn:last-child {
+        margin: 0;
+    }
+    
+    .btn:hover {
+        box-shadow: 0.2rem 0.2rem 0 black;
+        transform: translate(-0.2rem, -0.2rem);
+    }
+    
+    .btn:active {
+        box-shadow: 0 0 0 black;
+        transform: translate(0, 0);
+    }
+    
+    .options {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    
+`;

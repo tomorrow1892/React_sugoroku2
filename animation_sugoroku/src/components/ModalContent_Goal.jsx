@@ -1,11 +1,7 @@
 
-import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
-import { Modal, Card, Box, Button } from "@mui/material";
-import styles from './css/masu.css';
-import diceImgWhite from './img/dice.png';
-import diceImgRed from './img/dice_red.png';
-import diceImgBlue from './img/dice_blue.png';
+import { Button } from "@mui/material";
+
 
 //マスに止まったときにでるイベントモーダル．関数コンポーネント.
 export const GoalModal = (props) => {
