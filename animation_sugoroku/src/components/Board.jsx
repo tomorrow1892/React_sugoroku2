@@ -103,10 +103,6 @@ export const Board = (props) => {
             // startSocket: "left",
             // endSocket: "right"
         };
-        console.log(masuListRef1.current);
-        console.log(masuListRef2.current);
-        console.log(masuListRefs);
-
         //各マス同士を矢印で繋ぐ
         props.masuList.forEach((_, index) => {
             if (masuListRefs[index].current != null && masuListRefs[index + 1].current != null) new LeaderLine(masuListRefs[index].current, masuListRefs[index + 1].current, lineOptions);
