@@ -23,6 +23,7 @@ import ModalContent_Goal from "./ModalContent_Goal";
 import ModalContent_Finish from "./ModalContent_Finish";
 import ModalContent_GameStart from "./ModalContent_GameStart";
 import ModalContent_BackToMenu from "./ModalContent_BackToMenu";
+import ModalContent_Dice from "./ModalContent_Dice";
 
 
 
@@ -57,8 +58,9 @@ export default class Game extends React.Component {
 
         //state
         this.state = this.getState();//すごろくゲームに関するstateを取得
-        this.state["isModalOpen"] = false;
+        this.state["isModalOpen"] = false;//モーダルの表示状態
         this.state["modalContent"] = null;//モーダルの中身
+        
 
         //子コンポーネントに渡す関数をバインド
         this.requestDiceRoll = this.requestDiceRoll.bind(this);
@@ -178,9 +180,11 @@ export default class Game extends React.Component {
                             }
                             else {
                                 this.setState({ isModalOpen: false });
-                                this.setModalContent(<Dice ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice>);
+                                this.setModalContent(<ModalContent_Dice ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll} handleClose={() => {//イベントモーダルが閉じたときの処理をセット
+                                    this.switchIsModalOpen(false);
+                                }}/>);
                                 this.diceRef.current.switchDiceButtonDisabled(false);
-                                setTimeout(() => { //ゲーム終了モーダルを表示する
+                                setTimeout(() => { //ターンが変わってサイコロを表示する
                                     this.setState({ isModalOpen: true })
                                 }, 500);
                             }
@@ -189,13 +193,14 @@ export default class Game extends React.Component {
                 )
                 audio_success.play();
                 setTimeout(() => this.setState({ isModalOpen: true }), 500);//モーダルを表示
+                
             }
             else {//ゴールでない場合，サイコロを有効にして次の人に番が回る
-                this.setModalContent(<Dice ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice>);
+                this.setModalContent(<ModalContent_Dice ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll} handleClose={() => {//イベントモーダルが閉じたときの処理をセット
+                    this.switchIsModalOpen(false);
+                }}/>);
                 this.diceRef.current.switchDiceButtonDisabled(false);
-                setTimeout(() => { //ゲーム終了モーダルを表示する
-                    this.setState({ isModalOpen: true })
-                }, 500);
+                setTimeout(() => this.setState({ isModalOpen: true }), 500);//モーダルを表示
             }
         });
     }
@@ -249,10 +254,11 @@ export default class Game extends React.Component {
     render() {
         return (
             <div>
+                
                 {/*サイドメニュー */}
                 <Drawer variant="permanent" anchor="left" sx={{ '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "300px", background: "linear-gradient(to bottom, white, 75%, cyan)" } }}>
                     <div style={{ "textAlign": "center", "height": "300px" }}>
-                        <Dice ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice>
+                        <Dice  sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice>
                     </div>
                     <Button style={{ "width": "70%", "margin": "0 auto 20px auto" }} ref={this.diceBtnRef} variant="contained" color="error" onClick={() => {
                         this.setModalContent(<ModalContent_BackToMenu
@@ -286,7 +292,7 @@ export default class Game extends React.Component {
                 <div style={{
                     "backgroundSize": "cover", "backgroundImage": `url(${mizutama})`,
                     "backgroundAttachment": "fixed",
-                    "height": "200%", "width": "150%", "position": "absolute", "left": "0px", "top": "0px", "textAlign": "center", "zIndex": 10,
+                    "height": "200%", "width": "150%", "position": "absolute", "left": "0px", "top": "0px", "textAlign": "center", 
                     "backgroundColor": "rgba(255, 255, 255, 0.45)", "backgroundBlendMode": "lighten"
                 }}>
                     <div style={{ "position": "absolute", "left": "300px", "top": "0px" }}>

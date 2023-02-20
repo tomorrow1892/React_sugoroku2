@@ -2,49 +2,18 @@ import React from "react";
 import styled from "styled-components";
 import { Button, Card } from "@mui/material";
 import { Modal, Dialog, Box, IconButton } from "@mui/material";
-import bgm from './sound/dizzy.mp3';
-import audio_on_img from './img/audio_on.png';
-import audio_off_img from './img/audio_off.png';
+import Dice from "./Dice";
 import { pc, sp, tab } from '../media';
 
 //マスに止まったときにでるイベントモーダル．関数コンポーネント.
-export const GoalModal = (props) => {
+export const DiceModal = (props) => {
     const [audioconfig, setAudioConfig] = React.useState(true);
     return (
         <ModalStyle>
             <Card className="modal">
-                <div className="modal_contents">
-                    <p className="message">ゲームスタート!</p>
-                    <div>音楽を流すか選んでね</div>
-                    <AudioConfig>
-                        <div className="audio_config_area" id="makeImg">
-                            <input type="radio" id="audio_on" checked={audioconfig} onChange={() => setAudioConfig(true)} />
-                            <label htmlFor="audio_on">
-                                <div><img src={audio_on_img} width="50%"></img></div>
-                                ON
-                            </label>
-                            <input type="radio" id="audio_off" checked={!audioconfig} onChange={() => setAudioConfig(false)} />
-                            <label htmlFor="audio_off">
-                                <div><img src={audio_off_img} width="50%"></img></div>
-                                OFF
-                            </label>
-                        </div>
-                    </AudioConfig>
-
-                    <div>
-                        <button className="btn" onClick={() => {
-                            if (audioconfig) {
-                                const bgm_music = new Audio(bgm);
-                                bgm_music.play();
-                            }
-
-                            props.switchIsModalOpen(false);
-                        }}>ゲームを始める
-                        </button>
-
-                    </div>
-
-
+                <div className="modal_contents" onClick={()=>props.diceRef.current.changeDice()}>
+                    <p className="message">サイコロを振ってね!</p>
+                    <Dice ref={props.diceRef} sugorokuId={props.sugorokuId} requestDiceRoll={props.requestDiceRoll}></Dice>
                 </div>
 
             </Card>
@@ -54,7 +23,7 @@ export const GoalModal = (props) => {
 }
 
 
-export default GoalModal
+export default DiceModal
 
 const ModalStyle = styled.div`
 
