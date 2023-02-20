@@ -258,7 +258,7 @@ export default class Game extends React.Component {
                 {/*サイドメニュー */}
                 <Drawer variant="permanent" anchor="left" sx={{ '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "300px", background: "linear-gradient(to bottom, white, 75%, cyan)" } }}>
                     <div style={{ "textAlign": "center", "height": "300px" }}>
-                        <Dice  sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice>
+                        <Dice ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice>
                     </div>
                     <Button style={{ "width": "70%", "margin": "0 auto 20px auto" }} ref={this.diceBtnRef} variant="contained" color="error" onClick={() => {
                         this.setModalContent(<ModalContent_BackToMenu
