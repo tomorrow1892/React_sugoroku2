@@ -1,7 +1,7 @@
 
 import "./css/dice.css";
 import React from "react";
-import { Button } from "@mui/material";
+import { Button,Card, Typography } from "@mui/material";
 import dice1Img from "./img/1dice.jpeg";
 import dice2Img from "./img/2dice.jpeg";
 import dice3Img from "./img/3dice.jpeg";
@@ -18,36 +18,14 @@ export default class DiceImage extends React.Component {
     this.dice2dRef = React.createRef();
     this.dice3dRef = React.createRef();
     this.diceBtnRef = React.createRef();
+    this.diceContentsRef = React.createRef();
   }
 
-  //サイコロを振る→止めるで2度ボタンを押す場合
-  // changeDice() {
-  //   const dicebtn = this.diceBtnRef.current;
-  //   const dice2d = this.dice2dRef.current;
-  //   const dice3d = this.dice3dRef.current;
-  //   if (dicebtn.textContent === "サイコロを振る") {
-  //     dicebtn.textContent = "ストップ";
-  //     dice2d.style.display = "none";
-  //     dice3d.style.display = "block";
-  //     return -1;
-  //   } else if (dicebtn.textContent === "ストップ") {
-  //     dicebtn.textContent = "サイコロを振る";
-  //     this.switchDiceButtonDisabled(true);//イベント処理後までボタンを無効にする
-  //     let max = 6;
-  //     let rand = Math.floor(Math.random() * max) + 1;
-  //     switch (rand) {
-  //       case 1: dice2d.src = dice1Img; break;
-  //       case 2: dice2d.src = dice2Img; break;
-  //       case 3: dice2d.src = dice3Img; break;
-  //       case 4: dice2d.src = dice4Img; break;
-  //       case 5: dice2d.src = dice5Img; break;
-  //       case 6: dice2d.src = dice6Img; break;
-  //     }
-  //     dice2d.style.display = "block";
-  //     dice3d.style.display = "none";
-  //     this.props.requestDiceRoll(this.props.sugorokuId, rand);//バックエンドのサイコロ処理APIを呼び出す
-  //   }
-  // }
+  componentDidMount() {
+  this.diceContentsRef.current.addEventListener("click",(e)=>{
+    this.changeDice();
+  },{"once":true});
+}
 
   //サイコロを振る→数秒後に自動で止まる場合
   changeDice() {
@@ -68,11 +46,16 @@ export default class DiceImage extends React.Component {
       case 5: dice2d.src = dice5Img; break;
       case 6: dice2d.src = dice6Img; break;
     }
+    //１秒後にサイコロが止まり，1秒後にモーダルが閉じ，0.5秒後にコマが動き出す．
     setTimeout(() => {
-      console.log("dice:"+rand);
       dice2d.style.display = "block";
       dice3d.style.display = "none";
-      this.props.requestDiceRoll(rand);//バックエンドのサイコロ処理APIを呼び出す
+      setTimeout(()=>{
+        this.props.handleClose();
+        setTimeout(()=>{
+          this.props.requestDiceRoll(rand);//バックエンドのサイコロ処理APIを呼び出す
+        },500)
+      },1000)
     }, 1000);
 
   }
@@ -91,7 +74,7 @@ export default class DiceImage extends React.Component {
     return (
       <>
         <div className="diceContent" >
-          <div className="inner">
+          <div className="inner" ref={this.diceContentsRef}>
             <img
               id="dice2d"
               src={dice1Img}
@@ -107,8 +90,9 @@ export default class DiceImage extends React.Component {
               <div className="item"></div>
               <div className="item"></div>
             </div>
-            <Button id="diceBtn" ref={this.diceBtnRef} variant="contained" color="success" onClick={() => this.changeDice()}>
-              サイコロを振る
+            <Button id="diceBtn" ref={this.diceBtnRef} 
+            sx={{backgroundColor:"white",borderColor:"blue"}} >
+              <Typography fontFamily="'Zen Maru Gothic', sans-serif">サイコロを振る</Typography>
             </Button>
           </div>
 

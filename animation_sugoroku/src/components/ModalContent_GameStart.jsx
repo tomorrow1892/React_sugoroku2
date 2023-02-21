@@ -38,7 +38,7 @@ export const GoalModal = (props) => {
                                 bgm_music.play();
                             }
 
-                            props.switchIsModalOpen(false);
+                            props.handleClose();
                         }}>ゲームを始める
                         </button>
 

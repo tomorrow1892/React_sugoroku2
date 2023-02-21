@@ -130,7 +130,7 @@ export const Board = (props) => {
                     case 6: comaRef = coma6Ref; break;
                     default: break;
                 }
-                return (<Icon ref={comaRef} key={player.order} iconImg={player.icon}
+                return (<Icon ref={comaRef} key={player.order} icon={player.icon}
                     x={masuPositionList[player.position].left + Math.floor(index / 2) * 30 + (index % 2) * 10} y={masuPositionList[player.position].top + (index % 2) * 35 + 30}></Icon>)
             })}
             <div ref={masuListRefs[0]} id="start" style={{ position: "absolute", top: masuPositionList[0].top, left: masuPositionList[0].left, width: "120px", height: "120px" }}>

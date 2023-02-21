@@ -53,50 +53,66 @@
 
 
         .diceContent {
-            width: 70%;
+            width: 300px;
             margin-left: auto;
             margin-right: auto;
             margin-top: auto;
             margin-bottom: auto;
-            
-            
-            top: 10%;
-
-            background: rgb(176, 231, 240);
-            border-radius: 20px;
+            background: rgb(200, 200, 200);
+            border-radius: 10px;
             position: relative;
+            display: "flex";
+            justify-content:"center";
+            align-items:"center";
         }
         .diceContent .inner{
             width:0px;
             height:0px;
             padding-bottom: 100%;
+            
         }
         
         #diceBtn{
             position: absolute;
             width: 70%;
-            height: 15%;
+            height: 20%;
             bottom: 5%;
             left: 50%;
             transform: translate(-50%);
-            border-radius: 10px;
-            font-size:80%
+            color:inherit;
+            font-family:inherit;
+            font-size: 20px;
+            background: rgb(255, 149, 149);
+            border: 3px solid black;
+            box-shadow: 0 0 0 black;
+            transition: all 0.2s;
+        }
+      
+        #diceBtn:last-child {
+            margin: 0;
+        }
+        #diceBtn:hover {
+            box-shadow: 0.1rem 0.1rem 0 rgb(156, 156, 156);
+        }
+        #diceBtn:active {
+            box-shadow: 0 0 0 black;
+            transform: translate(0, 0);
         }
         
         #dice2d {
             position: absolute;
-            /* width: 54%; */
             width: 110px;
             top: 20%;
-            left: 23%;
+            left: 50%;
+            transform: translate(-50%);
             margin-left: auto;
             margin-right: auto;
-            
             border-radius: 10%;
+            cursor:pointer;
+            border: 3px solid black;
         }
         
         .dice3d {
-       
             /* width: 50%;
             height: 50%; */
             width: 100px;
@@ -106,7 +122,8 @@
             display: none;
             position: absolute;
             top: 20%;
-            left: 25%;
+            left: 30%;
+            transform: translate(-50%);
         }
 
         

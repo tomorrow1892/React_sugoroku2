@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { Button, Card } from "@mui/material";
+import { Button, Card, Typography } from "@mui/material";
 import { Modal, Dialog, Box, IconButton } from "@mui/material";
 import Dice from "./Dice";
 import { pc, sp, tab } from '../media';
+import Player from "./Player";
 
 //マスに止まったときにでるイベントモーダル．関数コンポーネント.
 export const DiceModal = (props) => {
@@ -11,9 +12,19 @@ export const DiceModal = (props) => {
     return (
         <ModalStyle>
             <Card className="modal">
-                <div className="modal_contents" onClick={()=>props.diceRef.current.changeDice()}>
-                    <p className="message">サイコロを振ってね!</p>
-                    <Dice ref={props.diceRef} sugorokuId={props.sugorokuId} requestDiceRoll={props.requestDiceRoll}></Dice>
+                <div className="modal_contents">
+                    <p className="message">{props.turnPlayer.name}さんの番です!</p>
+                    <div className="options">
+                        <Dice requestDiceRoll={props.requestDiceRoll} handleClose={props.switchIsModalOpen}></Dice>
+                        <div>
+                        <Player player={props.turnPlayer}></Player>
+                        <button className="btn" onClick={() => props.handleClose()}>
+                           <Typography fontFamily="'Zen Maru Gothic', sans-serif">ばんめんを見る</Typography> 
+                            </button>
+                        
+                        </div>
+                        
+                    </div>
                 </div>
 
             </Card>
@@ -39,7 +50,7 @@ const ModalStyle = styled.div`
     }
     .modal_contents{
        ${pc` font-size: 30px; `}
-       ${sp` font-size: 10px; `}
+       ${sp` font-size: 20px; `}
         position: absolute;
         top: 50%;
         left: 50%;
@@ -62,19 +73,21 @@ const ModalStyle = styled.div`
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        width :80vw;
-        height : 80vh;
+        ${pc` width :1000px;height: 90vh `}
+        ${tab` width :800px; height: 90vh`}
+        ${sp` width :500px; height: 60vh`}
+        
         display: inline-flex;
         flex-direction: column;
         align-items: center;
-        padding: 1.6rem 3rem;
+        
         border: 3px solid black;
-        border-radius: 5px;
+        border-radius: 10px;
         background: white;
         box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
     }
     .message {
-        ${pc` font-size: 5.1rem; `}
+        ${pc` font-size: 3.0rem; `}
         ${sp` font-size: 2.1rem; `}
         margin-bottom: 1.6rem;
         margin-top: 0;
@@ -84,11 +97,10 @@ const ModalStyle = styled.div`
         font-family:inherit;
         font-size: 20px;
         background: cyan;
-        ${pc` padding: 0.3rem 3.4rem; `}
-        ${sp` padding: 0.3rem 1.4rem; `}
+        width:100px;
+        height:100px;
         
         border: 3px solid black;
-        margin-right: 2.6rem;
         box-shadow: 0 0 0 black;
         transition: all 0.2s;
     }
@@ -114,63 +126,4 @@ const ModalStyle = styled.div`
     }
 
     
-`;
-const AudioConfig = styled.div`
-/* === ボタンを表示するエリア ============================== */
-    .audio_config_area {
-    position       : relative;            /* 親要素が基点       */
-    margin         : auto;                /* 中央寄せ           */
-    width          : 160px;               /* ボタンの横幅       */
-    height         : 100px;                /* ボタンの高さ       */
-    }
-    
-    /* === ラジオボタン ======================================== */
-    .audio_config_area input[type="radio"] {
-    display        : none;            /* チェックボックス非表示 */
-    }
-    
-    /* === ラジオボタンのラベル（標準） ======================== */
-    .audio_config_area label {
-    display        : block;               /* ボックス要素に変更 */
-    position       : absolute;            /* 親要素からの相対位置*/
-    
-    font-size      : 18pt;                /* 文字サイズ         */
-    font-weight    : bold;                /* 太字               */
-    border: 3px solid black;
-        border-radius: 5px;
-    }
-    
-    /* === ON側のラジオボタンのラベル（標準） ================== */
-    .audio_config_area #audio_on + label {
-    right          : 50%;                 /* 右端を中央に変更   */
-    border-radius  : 6px 0 0 6px;         /* 角丸(左側の上下)   */
-    background     : #eee;                /* 背景               */
-    color          : #666;                /* 文字色             */
-    border-right   : none;                /* 枠線の右側を消す   */
-    }
-    
-    /* === ON側のラジオボタンのラベル（ONのとき） ============== */
-    .audio_config_area #audio_on:checked +label {
-                                            /* 背景グラデーション */
-    background     : #92D050;
-    color          : #fff;                /* 文字色             */
-    text-shadow    : 1px 1px 1px #333;    /* 文字に影を付ける   */
-    }
-    
-    /* === OFF側のラジオボタンのラベル（標準） ================ */
-    .audio_config_area #audio_off + label {
-    left           : 50%;                 /* 左端を中央に変更   */
-    border-radius  : 0 6px 6px 0;         /* 角丸(右側の上下)   */
-    background     : #eee;                /* 背景               */
-    color          : #666;                /* 文字色             */
-    border-left    : none;                /* 枠線の左側を消す   */
-    }
-    
-    /* === OFF側のラジオボタンのラベル（OFFのとき） ============= */
-    .audio_config_area #audio_off:checked +label {
-                                            
-    background-color : #aaa;              /* 背景色 */
-    color          : #fff;                /* 文字色             */
-    text-shadow    : 1px 1px 1px #333;    /* 文字に影を付ける   */
-    }
 `;
