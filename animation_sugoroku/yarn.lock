@@ -6369,6 +6369,11 @@
   dependencies:
     "language-subtag-registry" "~0.3.2"
 
+"leader-line-new@^1.1.9":
+  "integrity" "sha512-x56aRYaqJTA4aAS2fgbSpvWKY3IxRXDSFeGkNBmCQ3LX44B3F1HEjcBTkCiK5I3W0nPWeUTWe7dTt59VtdfFWw=="
+  "resolved" "https://registry.npmjs.org/leader-line-new/-/leader-line-new-1.1.9.tgz"
+  "version" "1.1.9"
+
 "leven@^3.1.0":
   "integrity" "sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A=="
   "resolved" "https://registry.npmjs.org/leven/-/leven-3.1.0.tgz"
