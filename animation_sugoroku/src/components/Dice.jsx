@@ -9,6 +9,9 @@ import dice4Img from "./img/4dice.jpeg";
 import dice5Img from "./img/5dice.jpeg";
 import dice6Img from "./img/6dice.jpeg";
 
+import rolling_dice from './sound/dice.mp3'
+
+
 export default class DiceImage extends React.Component {
   constructor(props) {
     super(props);
@@ -33,6 +36,8 @@ export default class DiceImage extends React.Component {
     const dice2d = this.dice2dRef.current;
     const dice3d = this.dice3dRef.current;
 
+    const sound_dice = new Audio(rolling_dice);
+    sound_dice.play();
     dice2d.style.display = "none";
     dice3d.style.display = "block";
     this.switchDiceButtonDisabled(true);//イベント処理後までボタンを無効にする

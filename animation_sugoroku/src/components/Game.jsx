@@ -22,7 +22,8 @@ import ModalContent_GameStart from "./ModalContent_GameStart";
 import ModalContent_BackToMenu from "./ModalContent_BackToMenu";
 import ModalContent_Dice from "./ModalContent_Dice";
 
-
+import sound_good from './sound/good_action.mp3';
+import sound_bad from './sound/bad_action.mp3';
 
 
 
@@ -123,6 +124,12 @@ export default class Game extends React.Component {
         let response = JSON.parse(xhr.responseText);//responseはサイコロを振ったターンプレイヤーのステータス
         //サイコロを振って移動するマス数(ゴール時の移動マス数はサイコロの目通りでないため出目とイコールではない)
         let moveCount = response.position - this.state.playerList[response.order - 1].position;
+        let sound_action
+        if (this.state.masuList[response.position - 1].squareEffect >= 0) {
+            sound_action = new Audio(sound_good);
+        } else {
+            sound_action = new Audio(sound_bad);
+        }
         this.setModalContent(
             <ModalContent_Masu
                 masuInfo={this.state.masuList[response.position - 1]}//プレイヤーの現在位置をセット
@@ -139,6 +146,7 @@ export default class Game extends React.Component {
             }
             else {
                 this.setState({ isModalOpen: true });//モーダルの表示フラグをtrueにする
+                sound_action.play();
             }
         });
     }
