@@ -1,26 +1,26 @@
 
-import { Grid, Button, Drawer, Paper } from "@mui/material";
+import { Grid, Button, Drawer, Paper, Typography } from "@mui/material";
 import React from "react";
-
-import Dice from './Dice';
+import styled from "styled-components";
 import Board from "./Board";
 import PlayerList from './PlayerList';
-import { Modal, Dialog, Box, IconButton } from "@mui/material";
+import { Modal, Box, } from "@mui/material";
 import cat from './img/cat.png';
 import dog from './img/dog.png';
 import hamster from './img/hamster.png';
 import hiyoko from './img/hiyoko.png';
 import penguin from './img/penguin.png';
 import zo from './img/zo.png';
-import map from './img/map.jpg';
-import sky from './img/sky.jpg';
+import { pc, sp, tab } from '../media';
 import mizutama from "./img/mizutamahaikei-illust2.png";
 import sound from './sound/move.mp3';
-import bgm from './sound/dizzy.mp3';
 import sound_success from './sound/success.mp3';
 import ModalContent_Masu from "./ModalContent_Masu";
 import ModalContent_Goal from "./ModalContent_Goal";
 import ModalContent_Finish from "./ModalContent_Finish";
+import ModalContent_GameStart from "./ModalContent_GameStart";
+import ModalContent_BackToMenu from "./ModalContent_BackToMenu";
+import ModalContent_Dice from "./ModalContent_Dice";
 
 
 
@@ -33,13 +33,13 @@ const BACKEND_HOST = "https://es4.eedept.kobe-u.ac.jp/miraisugoroku";
 // const BACKEND_HOST = "http://localhost:2289";
 
 //プレイヤーのステータスを持つオブジェクト
-function Player(playerId, sugorokuId, icon, name, order, point, position, isGoaled, isBreak) {
+function Player(playerId, sugorokuId, icon, name, order, points, position, isGoaled, isBreak) {
     this.playerId = playerId;
     this.sugorokuId = sugorokuId;
     this.icon = icon;
     this.name = name;
     this.order = order;
-    this.point = point;
+    this.points = points;
     this.position = position;
     this.isGoaled = isGoaled;
     this.isBreak = isBreak;
@@ -55,26 +55,32 @@ export default class Game extends React.Component {
 
         //state
         this.state = this.getState();//すごろくゲームに関するstateを取得
-        this.state["isModalOpen"] = false;
+        this.state["isModalOpen"] = false;//モーダルの表示状態
         this.state["modalContent"] = null;//モーダルの中身
+        this.state["isDiceButtonVisible"] = false;//メニューバーのサイコロを振るボタンの表示状態
 
         //子コンポーネントに渡す関数をバインド
         this.requestDiceRoll = this.requestDiceRoll.bind(this);
         this.setModalContent = this.setModalContent.bind(this);
         this.switchIsModalOpen = this.switchIsModalOpen.bind(this);
-        //ref
-        this.diceRef = React.createRef();
+
     }
 
     componentDidMount() {
-        this.setModalContent(<Box>
-                <a>ゲームスタート</a>
-                <button onClick={() => {
-                    const bgm_music = new Audio(bgm);
-                    bgm_music.play();
+        this.setModalContent(<ModalContent_GameStart handleClose={() => {
+            this.switchIsModalOpen(false);
+            this.setModalContent(<ModalContent_Dice
+                turnPlayer={this.state.turnPlayer}
+                requestDiceRoll={this.requestDiceRoll}
+                switchIsModalOpen={this.switchIsModalOpen}
+                handleClose={() => {//モーダルが閉じたときの処理をセット
                     this.switchIsModalOpen(false);
-                    }}>ゲームスタート</button>
-        </Box>);
+                    this.setState({ isDiceButtonVisible: true });
+                }} />);
+            setTimeout(() => { //ゲーム終了モーダルを表示する
+                this.setState({ isModalOpen: true })
+            }, 500);
+        }} />);
         this.switchIsModalOpen(true);
     }
 
@@ -84,19 +90,9 @@ export default class Game extends React.Component {
         const sugorokuInfo = this.requestSugorokuInfo(this.props.sid);
         const playerList = new Array();//バックエンドから受け取ったplayerオブジェクトを新しいplayerオブジェクトに変換
         sugorokuInfo.players.forEach(player => {
-            let iconImg;
-            switch (player.icon) {//画像をセット
-                case "dog": iconImg = dog; break;
-                case "cat": iconImg = cat; break;
-                case "hiyoko": iconImg = hiyoko; break;
-                case "hamster": iconImg = hamster; break;
-                case "zo": iconImg = zo; break;
-                case "penguin": iconImg = penguin; break;
-                default: break;
-            }
             //オブジェクトを生成してリストに入れる
             playerList.push(new Player(player.playerId, player.sugorokuId,
-                iconImg, player.name, player.order, player.points, player.position, player.isGoaled, player.isBreak));
+                player.icon, player.name, player.order, player.points, player.position, player.isGoaled, player.isBreak));
         })
         const masuList = [...sugorokuInfo.squares];//バックエンドから受け取ったマスリストをそのまま入れる
         return {
@@ -183,16 +179,35 @@ export default class Game extends React.Component {
                             }
                             else {
                                 this.setState({ isModalOpen: false });
-                                this.diceRef.current.switchDiceButtonDisabled(false);
+                                this.setModalContent(<ModalContent_Dice
+                                    turnPlayer={this.state.turnPlayer}
+                                    requestDiceRoll={this.requestDiceRoll}
+                                    switchIsModalOpen={this.switchIsModalOpen}
+                                    handleClose={() => {//モーダルが閉じたときの処理をセット
+                                        this.switchIsModalOpen(false);
+                                        this.setState({ isDiceButtonVisible: true });
+                                    }} />);
+                                setTimeout(() => { //ターンが変わってサイコロを表示する
+                                    this.setState({ isModalOpen: true })
+                                }, 500);
                             }
                         }
                         } />
                 )
                 audio_success.play();
                 setTimeout(() => this.setState({ isModalOpen: true }), 500);//モーダルを表示
+
             }
             else {//ゴールでない場合，サイコロを有効にして次の人に番が回る
-                setTimeout(() => this.diceRef.current.switchDiceButtonDisabled(false), 500);//サイコロボタンを有効にする．setStateが非同期なため，少し遅延を入れている
+                this.setModalContent(<ModalContent_Dice
+                    turnPlayer={this.state.turnPlayer}
+                    requestDiceRoll={this.requestDiceRoll}
+                    switchIsModalOpen={this.switchIsModalOpen}
+                    handleClose={() => {//モーダルが閉じたときの処理をセット
+                        this.switchIsModalOpen(false);
+                        this.setState({ isDiceButtonVisible: true });
+                    }} />);
+                setTimeout(() => this.setState({ isModalOpen: true }), 500);//モーダルを表示
             }
         });
     }
@@ -240,26 +255,45 @@ export default class Game extends React.Component {
     //モーダルの表示フラグを変更する
     switchIsModalOpen(isOpen) { this.setState({ isModalOpen: isOpen }); }
     //マス情報をモーダルの中身にセットする
-    setModalContent(content) { this.setState({"modalContent": content }); }
+    setModalContent(content) { this.setState({ "modalContent": content }); }
 
 
     render() {
         return (
-
             <div>
+
                 {/*サイドメニュー */}
                 <Drawer variant="permanent" anchor="left" sx={{ '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "300px", background: "linear-gradient(to bottom, white, 75%, cyan)" } }}>
-                    <div style={{ "textAlign": "center", "height": "300px" }}>
-                        <Dice ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice>
-                    </div>
+                    <Grid container alignItems="center" justifyContent="center" direction="column">
+                        <Box sx={{
+                            height: "200px", width: "200px", display: "flex",justifyContent:"center",alignItems:"center"}}>
+                        {this.state.isDiceButtonVisible &&
+                            <BtnStyle>
+                                <button className="btn" onClick={() => {
+                                    this.setState({isDiceButtonVisible:false});
+                                    this.setModalContent(<ModalContent_Dice
+                                        turnPlayer={this.state.turnPlayer}
+                                        requestDiceRoll={this.requestDiceRoll}
+                                        switchIsModalOpen={this.switchIsModalOpen}
+                                        handleClose={() => {//モーダルが閉じたときの処理をセット
+                                            this.switchIsModalOpen(false);
+                                            this.setState({ isDiceButtonVisible: true });
+                                        }} />);
+                                    this.setState({ isModalOpen: true });
+                                }} style={{height: "150px", width: "150px",backgroundColor:"rgb(181, 241, 148)"}} >
+                                    <Typography fontFamily="'Zen Maru Gothic', sans-serif">サイコロを振る</Typography>
+                                </button>
+                            </BtnStyle>
+
+                        }
+                    </Box>
+
+
                     <Button style={{ "width": "70%", "margin": "0 auto 20px auto" }} ref={this.diceBtnRef} variant="contained" color="error" onClick={() => {
-                        this.setModalContent(<>
-                            <div>{/* マスタイトル */}
-                                ゲームを中止して、メインメニューに戻りますか？<br />
-                                （中止したゲームは再開できません）
-                            </div>
-                            <button className="close" onClick={() => { window.location.href = "https://es4.eedept.kobe-u.ac.jp/miraisugoroku/" }}>メニューに戻る</button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
-                        </>)
+                        this.setModalContent(<ModalContent_BackToMenu
+                            handleClose={() => {//イベントモーダルが閉じたときの処理をセット
+                                this.switchIsModalOpen(false);
+                            }} />)
                         this.switchIsModalOpen(true);
                     }}>メニューに戻る</Button>
                     <div style={{ "textAlign": "center" }}>
@@ -268,32 +302,65 @@ export default class Game extends React.Component {
                     <div style={{ "height": "100px" }}>
                         <PlayerList playerList={this.state.playerList} nowPlayer={this.state.turnPlayer}></PlayerList>
                     </div>
-                    {/* イベントやマスクリックで出てくるモーダル．サイドメニューより前面に出すためにDrawerの子にしている */} <Modal
-                        sx={{ border: 0 }}
+                    {/* ゲームスタート・イベント・ゴールなどで出てくるモーダル．サイドメニューより前面に出すためにDrawerの子にしている */}
+                    <Modal
+                        sx={{
+                            border: 0, textAlign: "center", verticalAlign: "middle", display: "flex",
+                            backgroundColor: "rgba(255,255,255, 0.1)",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}
                         open={this.state.isModalOpen}
-                        onClose={() => { console.log("test") }}
                         aria-labelledby="modal-modal-title"
                         aria-describedby="modal-modal-description"
                     >
                         <>{this.state.modalContent != null && this.state.modalContent}</>
                     </Modal>
-                </Drawer>
-                {/* 盤面 */}
-                <div style={{
-                    "backgroundSize": "cover", "backgroundImage": `url(${mizutama})`,
-                    "backgroundAttachment": "fixed",
-                    "height": "200%", "width": "150%", "position": "absolute", "left": "0px", "top": "0px", "textAlign": "center", "zIndex": 10,
-                    "backgroundColor": "rgba(255, 255, 255, 0.45)", "backgroundBlendMode": "lighten"
-                }}>
-                    <div style={{ "position": "absolute", "left": "300px", "top": "0px" }}>
-                        <Board masuList={this.state.masuList} playerList={this.state.playerList}
-                            switchIsModalOpen={this.switchIsModalOpen}
-                            setModalContent={this.setModalContent}
-                        ></Board>
-                    </div>
-                </div>
+                </Grid>
+
+            </Drawer>
+                {/* 盤面 */ }
+        <div style={{
+            "backgroundSize": "cover", "backgroundImage": `url(${mizutama})`,
+            "backgroundAttachment": "fixed",
+            "height": "200%", "width": "150%", "position": "absolute", "left": "0px", "top": "0px", "textAlign": "center",
+            "backgroundColor": "rgba(255, 255, 255, 0.45)", "backgroundBlendMode": "lighten"
+        }}>
+            <div style={{ "position": "absolute", "left": "300px", "top": "0px" }}>
+                <Board masuList={this.state.masuList} playerList={this.state.playerList}
+                    switchIsModalOpen={this.switchIsModalOpen}
+                    setModalContent={this.setModalContent}
+                ></Board>
             </div>
+        </div>
+            </div >
         )
     }
+
+}
+const BtnStyle = styled.div`
+.btn {
+    color:inherit;
+    font-family:inherit;
+    font-size: 20px;
+    background: cyan;
+    
+    border: 3px solid black;
+    margin-right: 2.6rem;
+    box-shadow: 0 0 0 black;
+    transition: all 0.2s;
 }
 
+.btn:last-child {
+    margin: 0;
+}
+
+.btn:hover {
+    box-shadow: 0.2rem 0.2rem 0 black;
+    transform: translate(-0.2rem, -0.2rem);
+}
+
+.btn:active {
+    box-shadow: 0 0 0 black;
+    transform: translate(0, 0);
+}`
