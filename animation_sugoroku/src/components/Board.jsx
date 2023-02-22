@@ -16,61 +16,34 @@ const masuPositionList = [
     { left: 400, top: 200 },//3
     { left: 550, top: 200 },//4
     { left: 700, top: 200 },//5
-    { left: 850, top: 250 },//6
-    { left: 1000, top: 260 },//7
+    { left: 850, top: 200 },//6
+    { left: 1000, top: 200 },//7
     { left: 1000, top: 400 },//8
-    { left: 850, top: 410 },//9
-    { left: 700, top: 420 },//10
-    { left: 550, top: 430 },//11
-    { left: 400, top: 440 },//12
-    { left: 250, top: 450 },//13
-    { left: 100, top: 460 },//14
+    { left: 850, top: 400 },//9
+    { left: 700, top: 400 },//10
+    { left: 550, top: 400 },//11
+    { left: 400, top: 400 },//12
+    { left: 250, top: 400 },//13
+    { left: 100, top: 400 },//14
     { left: 100, top: 600 },//15
-    { left: 250, top: 610 },//16
-    { left: 300, top: 620 },//17
-    { left: 100, top: 50 },//18
-    { left: 100, top: 200 },//19
-    { left: 250, top: 210 },//20
-    { left: 400, top: 220 },//21
-    { left: 550, top: 230 },//22
-    { left: 700, top: 240 },//23
-    { left: 850, top: 250 },//24
-    { left: 1000, top: 260 },//25
-    { left: 1000, top: 400 },//26
-    { left: 850, top: 410 },//27
-    { left: 700, top: 420 },//28
-    { left: 550, top: 430 },//29
-    { left: 400, top: 440 },//30
-    { left: 250, top: 450 },//31
-    { left: 100, top: 460 },//32
-    { left: 100, top: 600 },//33
-    { left: 250, top: 610 },//34
-    { left: 300, top: 620 },//35
-    { left: 100, top: 50 },//36
-    { left: 100, top: 200 },//37
-    { left: 250, top: 210 },//38
-    { left: 400, top: 220 },//39
-    { left: 550, top: 230 },//40
-    { left: 700, top: 240 },//41
-    { left: 850, top: 250 },//42
-    { left: 1000, top: 260 },//43
-    { left: 1000, top: 400 },//44
-    { left: 850, top: 410 },//45
-    { left: 700, top: 420 },//46
-    { left: 550, top: 430 },//47
-    { left: 400, top: 440 },//48
-    { left: 250, top: 450 },//49
-    { left: 100, top: 460 },//50
-    { left: 100, top: 600 },//51
-    { left: 250, top: 610 },//52
-    { left: 300, top: 620 },//53
-    { left: 1000, top: 400 },//54
-    { left: 850, top: 410 },//55
-    { left: 700, top: 420 },//56
-    { left: 550, top: 430 },//57
-    { left: 400, top: 440 },//58
-    { left: 250, top: 450 },//59
-    { left: 100, top: 460 },//60
+    { left: 250, top: 600 },//16
+    { left: 400, top: 600 },//17
+    { left: 550, top: 600 },//18
+    { left: 700, top: 600 },//19
+    { left: 850, top: 600 },//20
+    { left: 1000, top: 600 },//21
+    { left: 1000, top: 800 },//22
+    { left: 850, top: 800 },//23
+    { left: 700, top: 800 },//24
+    { left: 550, top: 800 },//25
+    { left: 400, top: 800 },//26
+    { left: 250, top: 800 },//27
+    { left: 100, top: 800 },//28
+    { left: 100, top: 1000 },//29
+    { left: 250, top: 1000 },//30
+    { left: 400, top: 1000 },//31
+    { left: 550, top: 1000 },//32
+    { left: 700, top: 1000 },//33
 ]
 
 
@@ -87,9 +60,6 @@ export const Board = (props) => {
     const coma4Ref = useRef();
     const coma5Ref = useRef();
     const coma6Ref = useRef();
-
-
-
 
     masuPositionList.forEach((_, i) => {
         masuListRefs[i] = useRef();
