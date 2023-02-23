@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Button, Card } from "@mui/material";
 import { Modal, Dialog, Box, IconButton } from "@mui/material";
-import bgm from './sound/dizzy.mp3';
+import bgm from './sound/bgm.mp3';
 import audio_on_img from './img/audio_on.png';
 import audio_off_img from './img/audio_off.png';
 import { pc, sp, tab } from '../media';
@@ -36,6 +36,7 @@ export const GoalModal = (props) => {
                             if (audioconfig) {
                                 const bgm_music = new Audio(bgm);
                                 bgm_music.play();
+                                bgm_music.loop=true;
                             }
 
                             props.handleClose();
