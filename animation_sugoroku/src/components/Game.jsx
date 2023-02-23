@@ -1,31 +1,29 @@
 
-import { Grid, Button, Drawer, Paper } from "@mui/material";
+import { Grid, Button, Drawer, Paper, Typography } from "@mui/material";
 import React from "react";
-
-import Dice2 from './Dice2';
+import styled from "styled-components";
 import Board from "./Board";
-import EventModal from "./EventModal";
-import GoalModal from "./GoalModal";
-import FinishModal from "./FinishModal";
 import PlayerList from './PlayerList';
-import CancelModal from "./CancelModal";
-
+import { Modal, Box, } from "@mui/material";
 import cat from './img/cat.png';
 import dog from './img/dog.png';
 import hamster from './img/hamster.png';
 import hiyoko from './img/hiyoko.png';
 import penguin from './img/penguin.png';
 import zo from './img/zo.png';
-import map from './img/map.jpg';
-import sky from './img/sky.jpg';
+import { pc, sp, tab } from '../media';
 import mizutama from "./img/mizutamahaikei-illust2.png";
 import sound from './sound/move.mp3';
-import bgm from './sound/dizzy.mp3';
 import sound_success from './sound/success.mp3';
-import { CSSTransition } from "react-transition-group";
-import styled, { ThemeConsumer } from "styled-components";
+import ModalContent_Masu from "./ModalContent_Masu";
+import ModalContent_Goal from "./ModalContent_Goal";
+import ModalContent_Finish from "./ModalContent_Finish";
+import ModalContent_GameStart from "./ModalContent_GameStart";
+import ModalContent_BackToMenu from "./ModalContent_BackToMenu";
+import ModalContent_Dice from "./ModalContent_Dice";
 
-
+import sound_good from './sound/good_action.mp3';
+import sound_bad from './sound/bad_action.mp3';
 
 
 
@@ -36,13 +34,13 @@ const BACKEND_HOST = "https://es4.eedept.kobe-u.ac.jp/miraisugoroku";
 // const BACKEND_HOST = "http://localhost:2289";
 
 //プレイヤーのステータスを持つオブジェクト
-function Player(playerId, sugorokuId, icon, name, order, point, position, isGoaled, isBreak) {
+function Player(playerId, sugorokuId, icon, name, order, points, position, isGoaled, isBreak) {
     this.playerId = playerId;
     this.sugorokuId = sugorokuId;
     this.icon = icon;
     this.name = name;
     this.order = order;
-    this.point = point;
+    this.points = points;
     this.position = position;
     this.isGoaled = isGoaled;
     this.isBreak = isBreak;
@@ -55,47 +53,47 @@ export default class Game extends React.Component {
     constructor(props) {
         super(props);
 
-        
+
         //state
         this.state = this.getState();//すごろくゲームに関するstateを取得
-        this.state["isEventModalVisible"] = false;//イベント処理時のモーダルの表示フラグのstate
-        this.state["isGoalModalVisible"] = false;
-        this.state["isFinishModalVisible"] = false;
-        this.state["isCancelModalVisible"] = false;
-        this.state["onModalClosedMethod"] = null;//モーダルを閉じたときの処理
+        this.state["isModalOpen"] = false;//モーダルの表示状態
         this.state["modalContent"] = null;//モーダルの中身
+        this.state["isDiceButtonVisible"] = false;//メニューバーのサイコロを振るボタンの表示状態
 
         //子コンポーネントに渡す関数をバインド
-        this.setState = this.setState.bind(this);
         this.requestDiceRoll = this.requestDiceRoll.bind(this);
         this.setModalContent = this.setModalContent.bind(this);
-        this.switchIsVisible = this.switchIsVisible.bind(this);
-        this.setModalClosedMethod = this.setModalClosedMethod.bind(this);
-        this.setCancelModalClosedMethod = this.setCancelModalClosedMethod.bind(this);
-        this.setEventModalClosedMethod = this.setEventModalClosedMethod.bind(this);
+        this.switchIsModalOpen = this.switchIsModalOpen.bind(this);
 
-        //ref
-        this.diceRef = React.createRef();
     }
+
+    componentDidMount() {
+        this.setModalContent(<ModalContent_GameStart handleClose={() => {
+            this.switchIsModalOpen(false);
+            this.setModalContent(<ModalContent_Dice
+                turnPlayer={this.state.turnPlayer}
+                requestDiceRoll={this.requestDiceRoll}
+                switchIsModalOpen={this.switchIsModalOpen}
+                handleClose={() => {//モーダルが閉じたときの処理をセット
+                    this.switchIsModalOpen(false);
+                    this.setState({ isDiceButtonVisible: true });
+                }} />);
+            setTimeout(() => { //ゲーム終了モーダルを表示する
+                this.setState({ isModalOpen: true })
+            }, 500);
+        }} />);
+        this.switchIsModalOpen(true);
+    }
+
 
     //バックエンドからゲーム設定を受け取ってstateにセットする
     getState() {
         const sugorokuInfo = this.requestSugorokuInfo(this.props.sid);
         const playerList = new Array();//バックエンドから受け取ったplayerオブジェクトを新しいplayerオブジェクトに変換
         sugorokuInfo.players.forEach(player => {
-            let iconImg;
-            switch (player.icon) {//画像をセット
-                case "dog": iconImg = dog; break;
-                case "cat": iconImg = cat; break;
-                case "hiyoko": iconImg = hiyoko; break;
-                case "hamster": iconImg = hamster; break;
-                case "zo": iconImg = zo; break;
-                case "penguin": iconImg = penguin; break;
-                default: break;
-            }
             //オブジェクトを生成してリストに入れる
             playerList.push(new Player(player.playerId, player.sugorokuId,
-                iconImg, player.name, player.order, player.points, player.position, player.isGoaled, player.isBreak));
+                player.icon, player.name, player.order, player.points, player.position, player.isGoaled, player.isBreak));
         })
         const masuList = [...sugorokuInfo.squares];//バックエンドから受け取ったマスリストをそのまま入れる
         return {
@@ -124,20 +122,31 @@ export default class Game extends React.Component {
         xhr.open("GET", URI, false);
         xhr.send();
         let response = JSON.parse(xhr.responseText);//responseはサイコロを振ったターンプレイヤーのステータス
-        console.log(response);
         //サイコロを振って移動するマス数(ゴール時の移動マス数はサイコロの目通りでないため出目とイコールではない)
         let moveCount = response.position - this.state.playerList[response.order - 1].position;
-        this.setModalContent(this.state.masuList[response.position - 1]);//プレイヤーの現在位置のマスをモーダルにセット
-        this.setEventModalClosedMethod();//イベントモーダルが閉じたときの処理をセット
-
-        //移動する数だけ1マスずつコマを動かす．移動終了後にコールバック関数が処理される．
-        this.stepMove(response.order, moveCount, ()=>{
+        let sound_action
+        if (this.state.masuList[response.position - 1].squareEffect >= 0) {
+            sound_action = new Audio(sound_good);
+        } else {
+            sound_action = new Audio(sound_bad);
+        }
+        this.setModalContent(
+            <ModalContent_Masu
+                masuInfo={this.state.masuList[response.position - 1]}//プレイヤーの現在位置をセット
+                handleClose={() => {//イベントモーダルが閉じたときの処理をセット
+                    this.switchIsModalOpen(false);
+                    setTimeout(() => this.requestdoEvent(), 500);
+                }} />
+        )
+        //移動する数だけ1マスずつコマを動かす．移動終了後に第三引数のコールバック関数が処理される．
+        this.stepMove(response.order, moveCount, () => {
             if (response.isGoaled) {
                 console.log("goal!");
                 this.requestdoEvent();
             }
             else {
-                this.setState({ isEventModalVisible: true });//モーダルの表示フラグをtrueにする
+                this.setState({ isModalOpen: true });//モーダルの表示フラグをtrueにする
+                sound_action.play();
             }
         });
     }
@@ -153,23 +162,60 @@ export default class Game extends React.Component {
         //イベントで移動するマス数
         let moveCount = response.position - this.state.playerList[response.order - 1].position;
         //移動する数だけ1マスずつコマを動かす．移動終了後にコールバック関数が処理される．
-        this.stepMove(response.order, moveCount, ()=>{
+        this.stepMove(response.order, moveCount, () => {
             this.setState(newState);
             if (response.isGoaled) {//ゴールした場合
                 const audio_success = new Audio(sound_success);
                 console.log("goal!");
                 let goalCount = this.checkGoalCount(newState.playerList);
-                this.setModalContent({
-                    "title": `${goalCount} 位`,
-                    "description": `${(6 - goalCount) * 100}ポイントゲット!`,
-                    "squareEventId": null
-                });
-                this.setFinishModalClosedMethod(newState.playerList);//モーダルを閉じるときの処理をセット
+                this.setModalContent(
+                    <ModalContent_Goal
+                        goalInfo={{
+                            "title": `${goalCount} 位`,
+                            "description": `${(6 - goalCount) * 100}ポイントゲット!`,
+                            "squareEventId": null
+                        }}
+                        handleClose={() => {
+                            if (this.checkGoalCount(newState.playerList) == this.state.nPlayers) {//全員がゴールした場合
+                                this.setState({ isModalOpen: false });//ゴールモーダルを消す
+                                this.setModalContent(<ModalContent_Finish
+                                    playerList={this.state.playerList}
+                                />)
+                                setTimeout(() => { //ゲーム終了モーダルを表示する
+                                    this.setState({ isModalOpen: true })
+                                }, 500);
+                            }
+                            else {
+                                this.setState({ isModalOpen: false });
+                                this.setModalContent(<ModalContent_Dice
+                                    turnPlayer={this.state.turnPlayer}
+                                    requestDiceRoll={this.requestDiceRoll}
+                                    switchIsModalOpen={this.switchIsModalOpen}
+                                    handleClose={() => {//モーダルが閉じたときの処理をセット
+                                        this.switchIsModalOpen(false);
+                                        this.setState({ isDiceButtonVisible: true });
+                                    }} />);
+                                setTimeout(() => { //ターンが変わってサイコロを表示する
+                                    this.setState({ isModalOpen: true })
+                                }, 500);
+                            }
+                        }
+                        } />
+                )
                 audio_success.play();
-                setTimeout(() => this.setState({ isGoalModalVisible: true }), 500);//モーダルを表示
+                setTimeout(() => this.setState({ isModalOpen: true }), 500);//モーダルを表示
+
             }
             else {//ゴールでない場合，サイコロを有効にして次の人に番が回る
-                setTimeout(() => this.diceRef.current.switchDiceButtonDisabled(false), 500);//サイコロボタンを有効にする．setStateが非同期なため，少し遅延を入れている
+                this.setModalContent(<ModalContent_Dice
+                    turnPlayer={this.state.turnPlayer}
+                    requestDiceRoll={this.requestDiceRoll}
+                    switchIsModalOpen={this.switchIsModalOpen}
+                    handleClose={() => {//モーダルが閉じたときの処理をセット
+                        this.switchIsModalOpen(false);
+                        this.setState({ isDiceButtonVisible: true });
+                    }} />);
+                setTimeout(() => this.setState({ isModalOpen: true }), 500);//モーダルを表示
             }
         });
     }
@@ -178,24 +224,24 @@ export default class Game extends React.Component {
     //orderはターンプレイヤーの順番,moveCountは移動マス数,moveFinishedFuncは進み終えた後に実行するコールバック処理
     stepMove(order, moveCount, moveFinishedFunc) {
         const audio_move = new Audio(sound);
-        console.log("moveCount:"+moveCount);
+        console.log("moveCount:" + moveCount);
         if (moveCount > 0) {
             let playerList_tmp = this.state.playerList;
             playerList_tmp[order - 1].position++;
             this.setState({ playerList: playerList_tmp });
             audio_move.play();
             setTimeout(() => {
-                this.stepMove(order, moveCount - 1,moveFinishedFunc);
-                
+                this.stepMove(order, moveCount - 1, moveFinishedFunc);
+
             }, 500);
         }
-        else if(moveCount < 0){
+        else if (moveCount < 0) {
             let playerList_tmp = this.state.playerList;
             playerList_tmp[order - 1].position--;
             this.setState({ playerList: playerList_tmp });
             setTimeout(() => {
                 audio_move.play();
-                this.stepMove(order, moveCount + 1,moveFinishedFunc);
+                this.stepMove(order, moveCount + 1, moveFinishedFunc);
             }, 500);
         }
         else {
@@ -214,119 +260,115 @@ export default class Game extends React.Component {
 
 
     /***モーダル関連のメソッド****/
-    //EventModalコンポーネントの表示フラグを変更する(EventModalコンポーネントで使用)
-    switchIsVisible(isVisible) { this.setState({ isEventModalVisible: isVisible }); }
+    //モーダルの表示フラグを変更する
+    switchIsModalOpen(isOpen) { this.setState({ isModalOpen: isOpen }); }
     //マス情報をモーダルの中身にセットする
-    setModalContent(masuObj) { this.setState({ "modalContent": masuObj }); }
+    setModalContent(content) { this.setState({ "modalContent": content }); }
 
 
-    //それ以外のモーダルを閉じるときの処理
-    onModalClosed() {
-        this.switchIsVisible(false);
-    }
-    //イベント時に表示されるモーダルを閉じるときの処理をセット．閉じたときにイベントをリクエストする．
-    setEventModalClosedMethod() {
-        this.setState({
-            onModalClosedMethod: () => {
-                this.switchIsVisible(false);
-                setTimeout(() => this.requestdoEvent(), 500);
-            }
-        })
-    }
-    //イベント処理後にゴールした場合のモーダルを閉じるときの処理をセット．閉じたときにサイコロボタンを有効にする．
-    setFinishModalClosedMethod(playerList) {
-        console.log("ゴール人数(stateの方):" + this.checkGoalCount(this.state.playerList))
-        console.log("ゴール人数:" + this.checkGoalCount(playerList))
-        console.log("プレイヤー人数:" + this.state.nPlayers);
-        if (this.checkGoalCount(playerList) == this.state.nPlayers) {//全員がゴールした場合
-            this.setState({
-                onModalClosedMethod: () => {
-                    this.setState({ isGoalModalVisible: false });
-                    setTimeout(() => { this.setState({ isFinishModalVisible: true }) }, 500);//モーダルの表示フラグをtrueにする
-                }
-            })
-        }
-        else {
-            this.setState({
-                onModalClosedMethod: () => {
-                    this.setState({ isGoalModalVisible: false });
-                    this.diceRef.current.switchDiceButtonDisabled(false);
-
-                }
-            })
-        }
-
-    }
-    //それ以外のモーダルを閉じるときの処理をセット．ただ閉じるだけ
-    setModalClosedMethod() {
-        this.setState({ onModalClosedMethod: () => this.switchIsVisible(false) })
-    }
-
-    // ゲーム中止モーダルを閉じる時の処理
-    setCancelModalClosedMethod() {
-        this.setState({ onModalClosedMethod: () => this.setState({ isCancelModalVisible: false }) })
-    }
-
-    play_music(){
-        const bgm_music = new Audio(bgm);
-        bgm_music.play();
-
-        console.log("bgmstart");
-    }
     render() {
         return (
-            
             <div>
+
                 {/*サイドメニュー */}
-                <Drawer variant="permanent" anchor="left" sx={{'& .MuiDrawer-paper': { boxSizing: 'border-box', width: "300px", background: "linear-gradient(to bottom, white, 75%, cyan)" } }}>
-                    <div style={{ "textAlign": "center", "height": "300px" }}>
-                        <Dice2 ref={this.diceRef} sugorokuId={this.props.sid} requestDiceRoll={this.requestDiceRoll}></Dice2>
-                    </div>
-                    <Button style={{ "width":"70%", "margin":"0 auto 20px auto"}} ref={this.diceBtnRef} variant="contained" color="error" onClick={() => { this.setCancelModalClosedMethod();  this.setState({ isCancelModalVisible: true }); }}>メニューに戻る</Button>
-                    <div style={{ "textAlign": "center"}}>
-                        {(this.state.turnPlayer!=null)&& this.state.turnPlayer.name}さんの番です．
+                <Drawer variant="permanent" anchor="left" sx={{ '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "300px", background: "linear-gradient(to bottom, white, 75%, cyan)" } }}>
+                    <Grid container alignItems="center" justifyContent="center" direction="column">
+                        <Box sx={{
+                            height: "200px", width: "200px", display: "flex",justifyContent:"center",alignItems:"center"}}>
+                        {this.state.isDiceButtonVisible &&
+                            <BtnStyle>
+                                <button className="btn" onClick={() => {
+                                    this.setState({isDiceButtonVisible:false});
+                                    this.setModalContent(<ModalContent_Dice
+                                        turnPlayer={this.state.turnPlayer}
+                                        requestDiceRoll={this.requestDiceRoll}
+                                        switchIsModalOpen={this.switchIsModalOpen}
+                                        handleClose={() => {//モーダルが閉じたときの処理をセット
+                                            this.switchIsModalOpen(false);
+                                            this.setState({ isDiceButtonVisible: true });
+                                        }} />);
+                                    this.setState({ isModalOpen: true });
+                                }} style={{height: "150px", width: "150px",backgroundColor:"rgb(181, 241, 148)"}} >
+                                    <Typography fontFamily="'Zen Maru Gothic', sans-serif">サイコロを振る</Typography>
+                                </button>
+                            </BtnStyle>
+
+                        }
+                    </Box>
+
+
+                    <Button style={{ "width": "70%", "margin": "0 auto 20px auto" }} ref={this.diceBtnRef} variant="contained" color="error" onClick={() => {
+                        this.setModalContent(<ModalContent_BackToMenu
+                            handleClose={() => {//イベントモーダルが閉じたときの処理をセット
+                                this.switchIsModalOpen(false);
+                            }} />)
+                        this.switchIsModalOpen(true);
+                    }}>メニューに戻る</Button>
+                    <div style={{ "textAlign": "center" }}>
+                        {(this.state.turnPlayer != null) && this.state.turnPlayer.name}さんの番です．
                     </div>
                     <div style={{ "height": "100px" }}>
                         <PlayerList playerList={this.state.playerList} nowPlayer={this.state.turnPlayer}></PlayerList>
                     </div>
-                    {/* イベントやマスクリックで出てくるモーダル．サイドメニューより前面に出すためにDrawerの子にしている */}
-                    <EventModal
-                        isOpen={this.state.isEventModalVisible}
-                        modalContent={this.state.modalContent}
-                        onClose={this.state.onModalClosedMethod}
-                    />
-                    <GoalModal
-                        isOpen={this.state.isGoalModalVisible}
-                        modalContent={this.state.modalContent}
-                        onClose={this.state.onModalClosedMethod}
-                    />
-                    {/* 全員がゴールしたときに出てくるモーダル */}
-                    <FinishModal
-                        isOpen={this.state.isFinishModalVisible}
-                        playerList={this.state.playerList}
-                    />
-                    <CancelModal
-                        isOpen={this.state.isCancelModalVisible}
-                        onClose={this.state.onModalClosedMethod}
-                    ></CancelModal>
-                </Drawer>
-                {/* 盤面 */}
-                <div style={{
-                   
-                    "height": "200%", "width": "150%", "position": "absolute", "left": "0px", "top": "0px", "textAlign": "center", "zIndex": 10,
-                   
-                }}>
-                    <div style={{ "position": "absolute", "left": "300px", "top": "0px" }}>
-                        <Board masuList={this.state.masuList} playerList={this.state.playerList}
-                            switchIsVisible={this.switchIsVisible}
-                            setModalContent={this.setModalContent}
-                            setModalClosedMethod={this.setModalClosedMethod}
-                            setCancelModalClosedMethod={this.setCancelModalClosedMethod}
-                        ></Board>
-                    </div>
-                </div>
+                    {/* ゲームスタート・イベント・ゴールなどで出てくるモーダル．サイドメニューより前面に出すためにDrawerの子にしている */}
+                    <Modal
+                        sx={{
+                            border: 0, textAlign: "center", verticalAlign: "middle", display: "flex",
+                            backgroundColor: "rgba(255,255,255, 0.1)",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}
+                        open={this.state.isModalOpen}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <>{this.state.modalContent != null && this.state.modalContent}</>
+                    </Modal>
+                </Grid>
+
+            </Drawer>
+                {/* 盤面 */ }
+        <div style={{
+            "backgroundSize": "cover", "backgroundImage": `url(${mizutama})`,
+            "backgroundAttachment": "fixed",
+            "height": "200%", "width": "150%", "position": "absolute", "left": "0px", "top": "0px", "textAlign": "center",
+            "backgroundColor": "rgba(255, 255, 255, 0.45)", "backgroundBlendMode": "lighten"
+        }}>
+            <div style={{ "position": "absolute", "left": "300px", "top": "0px" }}>
+                <Board masuList={this.state.masuList} playerList={this.state.playerList}
+                    switchIsModalOpen={this.switchIsModalOpen}
+                    setModalContent={this.setModalContent}
+                ></Board>
             </div>
+        </div>
+            </div >
         )
     }
+
+}
+const BtnStyle = styled.div`
+.btn {
+    color:inherit;
+    font-family:inherit;
+    font-size: 20px;
+    background: cyan;
+    
+    border: 3px solid black;
+    margin-right: 2.6rem;
+    box-shadow: 0 0 0 black;
+    transition: all 0.2s;
 }
 
+.btn:last-child {
+    margin: 0;
+}
+
+.btn:hover {
+    box-shadow: 0.2rem 0.2rem 0 black;
+    transform: translate(-0.2rem, -0.2rem);
+}
+
+.btn:active {
+    box-shadow: 0 0 0 black;
+    transform: translate(0, 0);
+}`
