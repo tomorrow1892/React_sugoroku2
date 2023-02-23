@@ -94,10 +94,6 @@
         #diceBtn:hover {
             box-shadow: 0.1rem 0.1rem 0 rgb(156, 156, 156);
         }
-        #diceBtn:active {
-            box-shadow: 0 0 0 black;
-            transform: translate(0, 0);
-        }
         
         #dice2d {
             position: absolute;

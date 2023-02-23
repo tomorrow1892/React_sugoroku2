@@ -64,6 +64,7 @@ export default class Game extends React.Component {
         this.requestDiceRoll = this.requestDiceRoll.bind(this);
         this.setModalContent = this.setModalContent.bind(this);
         this.switchIsModalOpen = this.switchIsModalOpen.bind(this);
+        
 
     }
 
@@ -207,15 +208,17 @@ export default class Game extends React.Component {
 
             }
             else {//ゴールでない場合，サイコロを有効にして次の人に番が回る
-                this.setModalContent(<ModalContent_Dice
-                    turnPlayer={this.state.turnPlayer}
-                    requestDiceRoll={this.requestDiceRoll}
-                    switchIsModalOpen={this.switchIsModalOpen}
-                    handleClose={() => {//モーダルが閉じたときの処理をセット
-                        this.switchIsModalOpen(false);
-                        this.setState({ isDiceButtonVisible: true });
-                    }} />);
-                setTimeout(() => this.setState({ isModalOpen: true }), 500);//モーダルを表示
+                setTimeout(
+                    () => {
+                        this.setModalContent(<ModalContent_Dice
+                            turnPlayer={this.state.turnPlayer}
+                            requestDiceRoll={this.requestDiceRoll}
+                            switchIsModalOpen={this.switchIsModalOpen}
+                            handleClose={() => {//モーダルが閉じたときの処理をセット
+                                this.switchIsModalOpen(false);
+                                this.setState({ isDiceButtonVisible: true });
+                            }} />);
+                        this.setState({ isModalOpen: true })}, 500);//モーダルを表示
             }
         });
     }
@@ -239,8 +242,8 @@ export default class Game extends React.Component {
             let playerList_tmp = this.state.playerList;
             playerList_tmp[order - 1].position--;
             this.setState({ playerList: playerList_tmp });
+            audio_move.play();
             setTimeout(() => {
-                audio_move.play();
                 this.stepMove(order, moveCount + 1, moveFinishedFunc);
             }, 500);
         }
@@ -338,6 +341,7 @@ export default class Game extends React.Component {
                 <Board masuList={this.state.masuList} playerList={this.state.playerList}
                     switchIsModalOpen={this.switchIsModalOpen}
                     setModalContent={this.setModalContent}
+                    isDiceButtonVisible={this.state.isDiceButtonVisible}
                 ></Board>
             </div>
         </div>

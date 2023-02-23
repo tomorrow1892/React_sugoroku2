@@ -69,12 +69,6 @@ export const Board = (props) => {
         const lineOptions = {
             path:"straight",
             color:"blue"
-            // color: window.getComputedStyle(document.getElementById("bibliography")).color,
-            //startPlug: "disc",
-            //endPlug: "behind"
-            // size: 2,
-            // startSocket: "left",
-            // endSocket: "right"
         };
        
         //各マス同士を矢印で繋ぐ
@@ -115,6 +109,7 @@ export const Board = (props) => {
                             switchIsModalOpen={props.switchIsModalOpen}
                             setModalContent={props.setModalContent}
                             setModalClosedMethod={props.setModalClosedMethod}
+                            isDiceButtonVisible={props.isDiceButtonVisible}
                         > </Masu>
                     </div>
                 );

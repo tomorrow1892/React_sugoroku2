@@ -8,20 +8,23 @@ import Player from "./Player";
 
 //マスに止まったときにでるイベントモーダル．関数コンポーネント.
 export const DiceModal = (props) => {
-    const [audioconfig, setAudioConfig] = React.useState(true);
+    const [isBoardButtonVisible, setIsBoardButtonVisible] = React.useState(true);
+    
     return (
         <ModalStyle>
             <Card className="modal">
                 <div className="modal_contents">
                     <p className="message">{props.turnPlayer.name}さんの番です!</p>
                     <div className="options">
-                        <Dice requestDiceRoll={props.requestDiceRoll} handleClose={props.switchIsModalOpen}></Dice>
+                        <Dice requestDiceRoll={props.requestDiceRoll} 
+                        handleClose={props.switchIsModalOpen}
+                        setIsBoardButtonVisible={setIsBoardButtonVisible}
+                        />
                         <div>
                         <Player player={props.turnPlayer}></Player>
-                        <button className="btn" onClick={() => props.handleClose()}>
+                        {isBoardButtonVisible && <button className="btn" onClick={() => props.handleClose()}>
                            <Typography fontFamily="'Zen Maru Gothic', sans-serif">ばんめんを見る</Typography> 
-                            </button>
-                        
+                            </button>}
                         </div>
                         
                     </div>

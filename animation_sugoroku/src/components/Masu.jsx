@@ -54,8 +54,12 @@ export default class Masu extends React.Component {
             <>
                 <MasuStyle>
                     <Card className="masu" onClick={() => {
-                        this.props.setModalContent(<ModalContent_Masu masuInfo={this.props.masuInfo} handleClose={() => this.props.switchIsModalOpen(false)} />)
-                        this.props.switchIsModalOpen(true);
+                        
+                        if(this.props.isDiceButtonVisible){
+                            this.props.setModalContent(<ModalContent_Masu masuInfo={this.props.masuInfo} handleClose={() => this.props.switchIsModalOpen(false)} />)
+                            this.props.switchIsModalOpen(true);
+                        }
+                        
                     }}
                         sx={{
                             boxShadow: 2, bgcolor: "#FFFFFF", border: 2, borderColor: "#0000DD", borderRadius: 2, cursor: "hand", cursor: "pointer",
