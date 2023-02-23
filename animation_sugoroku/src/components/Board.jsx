@@ -70,7 +70,7 @@ export const Board = (props) => {
     
     useEffect(() => {
         const lineOptions = {
-            // color: window.getComputedStyle(document.getElementById("bibliography")).color,
+            color:"blue",
             //startPlug: "disc",
             //endPlug: "behind"
             // size: 2,
