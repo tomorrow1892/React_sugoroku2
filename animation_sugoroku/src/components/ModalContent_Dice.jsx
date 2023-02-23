@@ -1,37 +1,73 @@
 import React from "react";
 import styled from "styled-components";
-import { Button, Card, Typography } from "@mui/material";
+import { Button, Card, Typography, Grid } from "@mui/material";
 import { Modal, Dialog, Box, IconButton } from "@mui/material";
 import Dice from "./Dice";
 import { pc, sp, tab } from '../media';
+import ModalContent_BackToMenu from './ModalContent_BackToMenu';
+import ModalContent_Dice from './ModalContent_Dice';
 import Player from "./Player";
 
 //マスに止まったときにでるイベントモーダル．関数コンポーネント.
 export const DiceModal = (props) => {
     const [isBoardButtonVisible, setIsBoardButtonVisible] = React.useState(true);
-    
+
     return (
         <ModalStyle>
             <Card className="modal">
                 <div className="modal_contents">
-                    <p className="message">{props.turnPlayer.name}さんの番です!</p>
-                    <div className="options">
-                        <Dice requestDiceRoll={props.requestDiceRoll} 
-                        handleClose={props.switchIsModalOpen}
-                        setIsBoardButtonVisible={setIsBoardButtonVisible}
-                        />
-                        <div>
-                        <Player player={props.turnPlayer}></Player>
-                        {isBoardButtonVisible && <button className="btn" onClick={() => props.handleClose()}>
-                           <Typography fontFamily="'Zen Maru Gothic', sans-serif">ばんめんを見る</Typography> 
-                            </button>}
-                        </div>
-                        
-                    </div>
+                    <p className="message">{props.turnPlayer.name}さんのターン!</p>
+                    <Grid container spacing={1}>
+                        <Grid item xs={12} sm={8}>
+                            <Dice requestDiceRoll={props.requestDiceRoll}
+                                handleClose={props.switchIsModalOpen}
+                                setIsBoardButtonVisible={setIsBoardButtonVisible}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                            <div>
+                                {/* <Player player={props.turnPlayer}></Player> */}
+                                {isBoardButtonVisible &&<> <button className="btn square" onClick={() => props.handleClose()}>
+                                    <Typography fontFamily="'Zen Maru Gothic', sans-serif">全体を見る</Typography>
+                                </button>
+                                <button className="btn yellow" 
+                                    onClick={() => {
+                                        props.setModalContent(<ModalContent_BackToMenu
+                                            handleClose={() => {//イベントモーダルが閉じたときの処理をセット
+                                                props.setModalContent(<ModalContent_Dice
+                                                    turnPlayer={props.turnPlayer}
+                                                    requestDiceRoll={props.requestDiceRoll}
+                                                    setModalContent={props.setModalContent}
+                                                    switchIsModalOpen={props.switchIsModalOpen}
+                                                    handleClose={() => {//モーダルが閉じたときの処理をセット
+                                                        props.switchIsModalOpen(false);
+                                                        props.switchIsDiceButtonVisible(true);
+                                                    }} />);
+                                            }} />)
+                                        props.switchIsModalOpen(true);
+                                    }}><Typography fontFamily="'Zen Maru Gothic', sans-serif">ゲームを途中でやめる</Typography> </button></>}
+                                    {
+                                        !isBoardButtonVisible &&<> <button disabled className="btn square" >
+                                        <Typography fontFamily="'Zen Maru Gothic', sans-serif">全体を見る</Typography>
+                                    </button>
+                                    <button disabled className="btn yellow" visibility={isBoardButtonVisible ? "visible" : "hidden"}
+                                        ><Typography fontFamily="'Zen Maru Gothic', sans-serif">ゲームを途中でやめる</Typography> </button></>
+                                    }
+                            
+                            </div>
+                        </Grid>
+                    </Grid>
+
+
+
+
                 </div>
 
+
+
+
             </Card>
-        </ModalStyle>
+        </ModalStyle >
 
     );
 }
@@ -76,9 +112,9 @@ const ModalStyle = styled.div`
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        ${pc` width :1000px;height: 90vh `}
+        ${pc` width :800px;height: 90vh `}
         ${tab` width :800px; height: 90vh`}
-        ${sp` width :500px; height: 60vh`}
+        ${sp` width :100wh; height: 100vh`}
         
         display: inline-flex;
         flex-direction: column;
@@ -90,8 +126,7 @@ const ModalStyle = styled.div`
         box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
     }
     .message {
-        ${pc` font-size: 3.0rem; `}
-        ${sp` font-size: 2.1rem; `}
+       font-size: 3.0rem;
         margin-bottom: 1.6rem;
         margin-top: 0;
     }
@@ -100,9 +135,9 @@ const ModalStyle = styled.div`
         font-family:inherit;
         font-size: 20px;
         background: cyan;
-        width:100px;
-        height:100px;
-        
+        width:200px;
+        height:60px;
+        margin-bottom: 1.6rem;
         border: 3px solid black;
         box-shadow: 0 0 0 black;
         transition: all 0.2s;
@@ -113,15 +148,19 @@ const ModalStyle = styled.div`
     }
     
     .btn:hover {
-        box-shadow: 0.2rem 0.2rem 0 black;
-        transform: translate(-0.2rem, -0.2rem);
+        box-shadow: 0.2rem 0.2rem 0 rgb(156, 156, 156);
     }
     
     .btn:active {
-        box-shadow: 0 0 0 black;
-        transform: translate(0, 0);
+        box-shadow: 0.2rem 0.2rem 0 rgb(156, 156, 156);
     }
-    
+    .square{
+        width:200px;
+        height:200px;
+    }
+    .yellow{
+        background-color:yellow;
+    }
     .options {
         display: flex;
         flex-direction: row;

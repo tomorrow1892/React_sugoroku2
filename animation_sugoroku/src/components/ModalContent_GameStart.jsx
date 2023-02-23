@@ -93,8 +93,9 @@ const ModalStyle = styled.div`
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        width :80vw;
-        height : 80vh;
+        ${pc` width :800px;height: 90vh `}
+        ${tab` width :800px; height: 90vh`}
+        ${sp` width :100wh; height: 100vh`}
         display: inline-flex;
         flex-direction: column;
         align-items: center;
@@ -105,8 +106,7 @@ const ModalStyle = styled.div`
         box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
     }
     .message {
-        ${pc` font-size: 5.1rem; `}
-        ${sp` font-size: 2.1rem; `}
+        font-size: 3.1rem;
         margin-bottom: 1.6rem;
         margin-top: 0;
     }
@@ -115,13 +115,12 @@ const ModalStyle = styled.div`
         font-family:inherit;
         font-size: 20px;
         background: cyan;
-        ${pc` padding: 0.3rem 3.4rem; `}
-        ${sp` padding: 0.3rem 1.4rem; `}
-        
         border: 3px solid black;
         margin-right: 2.6rem;
         box-shadow: 0 0 0 black;
         transition: all 0.2s;
+        width:200px;
+        height:100px;
     }
     
     .btn:last-child {
@@ -129,13 +128,11 @@ const ModalStyle = styled.div`
     }
     
     .btn:hover {
-        box-shadow: 0.2rem 0.2rem 0 black;
-        transform: translate(-0.2rem, -0.2rem);
+        box-shadow: 0.2rem 0.2rem 0 rgb(156, 156, 156);
     }
     
     .btn:active {
-        box-shadow: 0 0 0 black;
-        transform: translate(0, 0);
+        box-shadow: 0.2rem 0.2rem 0 rgb(156, 156, 156);
     }
     
     .options {

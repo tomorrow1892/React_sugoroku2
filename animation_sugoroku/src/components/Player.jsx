@@ -26,7 +26,7 @@ export const Player = (props) => {
     return (
         <Card sx={{ "margin": 1, "border": 3, "borderColor": "green", "boxShadow": 2,
             "position":"relative","backgroundColor": "white", 
-            "width": "200px", "height": "120px", "marginLeft": "auto", "marginRight": "auto" }}
+            "width": "200px", "height": "100px", "marginLeft": "auto", "marginRight": "auto" }}
                 >
                 <CardHeader sx={{"opacity":0.8,"positon":"absolute","top":"10px"}}
                     avatar={<Avatar sx={{ border: 2, borderColor: "#9933DD", width: 50, height: 50, bgcolor: 'background.paper' }}><img src={iconSrc} style={{ width: 40 }} /></Avatar>}

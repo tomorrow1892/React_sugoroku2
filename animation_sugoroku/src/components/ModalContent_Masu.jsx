@@ -221,8 +221,9 @@ const ModalStyle = styled.div`
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        width :80vw;
-        height : 80vh;
+        ${pc` width :800px;height: 90vh `}
+        ${tab` width :800px; height: 90vh`}
+        ${sp` width :100wh; height: 100vh`}
         display: inline-flex;
         flex-direction: column;
         align-items: center;
