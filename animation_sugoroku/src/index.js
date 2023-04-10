@@ -12,9 +12,6 @@ root.render(
     <Routes>
       <Route path="/:sid"  element={<App/>}/> {/*パスパラメータにsid(sugorokuId)を受ける*/}
       <Route path="/" element={<App/>}></Route>
-      <Route path="/test" element={<>testpage</>}></Route>
- 
-
       </Routes>
   </BrowserRouter>
 
