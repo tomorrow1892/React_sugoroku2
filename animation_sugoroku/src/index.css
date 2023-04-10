@@ -1,3 +1,5 @@
+
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +7,19 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: url(./components/img/background1.png);
+  /* background: url(./components/img/mizutamahaikei-illust2.png); */
+}
+
+
+html {
+  background: url(./components/img/background1.png);
+  /* background: url(./components/img/mizutamahaikei-illust2.png); */
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+

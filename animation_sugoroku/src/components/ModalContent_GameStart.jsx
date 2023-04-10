@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Button, Card } from "@mui/material";
 import { Modal, Dialog, Box, IconButton } from "@mui/material";
-import bgm from './sound/dizzy.mp3';
+import bgm from './sound/bgm.mp3';
 import audio_on_img from './img/audio_on.png';
 import audio_off_img from './img/audio_off.png';
 import { pc, sp, tab } from '../media';
@@ -12,10 +12,10 @@ export const GoalModal = (props) => {
     const [audioconfig, setAudioConfig] = React.useState(true);
     return (
         <ModalStyle>
-            <Card className="modal">
+            <Card className="contents">
                 <div className="modal_contents">
                     <p className="message">ゲームスタート!</p>
-                    <div>音楽を流すか選んでね</div>
+                    <div>音楽を流す？</div>
                     <AudioConfig>
                         <div className="audio_config_area" id="makeImg">
                             <input type="radio" id="audio_on" checked={audioconfig} onChange={() => setAudioConfig(true)} />
@@ -30,12 +30,13 @@ export const GoalModal = (props) => {
                             </label>
                         </div>
                     </AudioConfig>
-
+                    <div style={{color:"red"}}>スマートフォンやタブレットは横向きで遊んでね</div>
                     <div>
                         <button className="btn" onClick={() => {
                             if (audioconfig) {
                                 const bgm_music = new Audio(bgm);
                                 bgm_music.play();
+                                bgm_music.loop = true;
                             }
 
                             props.handleClose();
@@ -58,26 +59,6 @@ export default GoalModal
 
 const ModalStyle = styled.div`
 
-.modal_flame{
-    
-    width :80vw;
-    height : 80vh;
-    margin: 2em auto;
-    padding:2em;/*内側余白*/
-    border-radius: 30px 60px/60px 30px;
-    border: solid 8px #ccc7be;
-        position: relative;
-    }
-    .modal_contents{
-       ${pc` font-size: 30px; `}
-       ${sp` font-size: 10px; `}
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translateY(-50%) translateX(-50%);
-        -webkit- transform: translateY(-50%) translateX(-50%);
-            font-family: 'Zen Maru Gothic', sans-serif;
-        }
     @keyframes slide {
         from {
         background-position: 0 0;
@@ -87,39 +68,45 @@ const ModalStyle = styled.div`
         background-position: -120px 60px;
         }
     }
-    
-    .modal {
+
+    .contents {
+        
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        width :80vw;
-        height : 80vh;
-        display: inline-flex;
-        flex-direction: column;
+        display: flex;
+        justify-content: center;
         align-items: center;
-        padding: 1.6rem 3rem;
+        ${pc` width :80vw; height:80vh `}
+        ${tab` width :80vw; height:80vh`}
+        ${sp` width :80vw; height: 80vh`}
+        ${pc` font-size: 30px; `}
+       ${sp` font-size: 20px; `}
+        font-family: 'Zen Maru Gothic', sans-serif;
+        overflow:auto;
         border: 3px solid black;
-        border-radius: 5px;
+        border-radius: 10px;
         background: white;
         box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
     }
     .message {
-        ${pc` font-size: 5.1rem; `}
-        ${sp` font-size: 2.1rem; `}
-        margin-bottom: 1.6rem;
-        margin-top: 0;
+       ${pc` font-size: 3.0rem;`}
+        ${tab` font-size: 2.0rem;`}
+        ${sp` font-size: 2.0rem;`}
+        
+        
     }
     .btn {
         color:inherit;
         font-family:inherit;
         font-size: 20px;
         background: cyan;
-        ${pc` padding: 0.3rem 3.4rem; `}
-        ${sp` padding: 0.3rem 1.4rem; `}
-        
+        ${pc` width:200px;`}
+        ${tab` width:200px;`}
+        ${sp` width:200px;`}
+        margin-bottom: 1.6rem;
         border: 3px solid black;
-        margin-right: 2.6rem;
         box-shadow: 0 0 0 black;
         transition: all 0.2s;
     }
@@ -129,15 +116,22 @@ const ModalStyle = styled.div`
     }
     
     .btn:hover {
-        box-shadow: 0.2rem 0.2rem 0 black;
-        transform: translate(-0.2rem, -0.2rem);
+        box-shadow: 0.2rem 0.2rem 0 rgb(156, 156, 156);
     }
     
     .btn:active {
-        box-shadow: 0 0 0 black;
-        transform: translate(0, 0);
+        box-shadow: 0.2rem 0.2rem 0 rgb(156, 156, 156);
     }
-    
+    .square{
+        width:200px;
+        height:200px;
+        ${pc` width:200px; height:200px;`}
+        ${tab` width:150px; height:150px;`}
+        ${sp` width:150px; height:150px;`}
+    }
+    .yellow{
+        background-color:yellow;
+    }
     .options {
         display: flex;
         flex-direction: row;
@@ -146,13 +140,14 @@ const ModalStyle = styled.div`
 
     
 `;
+
 const AudioConfig = styled.div`
 /* === ボタンを表示するエリア ============================== */
     .audio_config_area {
     position       : relative;            /* 親要素が基点       */
     margin         : auto;                /* 中央寄せ           */
-    width          : 160px;               /* ボタンの横幅       */
-    height         : 100px;                /* ボタンの高さ       */
+    width          : 120px;               /* ボタンの横幅       */
+    height         : 80px;                /* ボタンの高さ       */
     }
     
     /* === ラジオボタン ======================================== */
@@ -165,7 +160,7 @@ const AudioConfig = styled.div`
     display        : block;               /* ボックス要素に変更 */
     position       : absolute;            /* 親要素からの相対位置*/
     
-    font-size      : 18pt;                /* 文字サイズ         */
+    font-size      : 15pt;                /* 文字サイズ         */
     font-weight    : bold;                /* 太字               */
     border: 3px solid black;
         border-radius: 5px;

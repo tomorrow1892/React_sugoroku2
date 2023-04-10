@@ -1,34 +1,78 @@
 import React from "react";
 import styled from "styled-components";
-import { Button, Card, Typography } from "@mui/material";
+import { Button, Card, Typography, Grid } from "@mui/material";
 import { Modal, Dialog, Box, IconButton } from "@mui/material";
 import Dice from "./Dice";
 import { pc, sp, tab } from '../media';
+import ModalContent_BackToMenu from './ModalContent_BackToMenu';
+import ModalContent_Dice from './ModalContent_Dice';
 import Player from "./Player";
 
 //マスに止まったときにでるイベントモーダル．関数コンポーネント.
 export const DiceModal = (props) => {
-    const [audioconfig, setAudioConfig] = React.useState(true);
-    return (
-        <ModalStyle>
-            <Card className="modal">
-                <div className="modal_contents">
-                    <p className="message">{props.turnPlayer.name}さんの番です!</p>
-                    <div className="options">
-                        <Dice requestDiceRoll={props.requestDiceRoll} handleClose={props.switchIsModalOpen}></Dice>
-                        <div>
-                        <Player player={props.turnPlayer}></Player>
-                        <button className="btn" onClick={() => props.handleClose()}>
-                           <Typography fontFamily="'Zen Maru Gothic', sans-serif">ばんめんを見る</Typography> 
-                            </button>
-                        
-                        </div>
-                        
-                    </div>
-                </div>
+    const [isBoardButtonVisible, setIsBoardButtonVisible] = React.useState(true);
 
+    return (
+        <ModalStyle_Dice>
+            <Card className="contents">
+                <Grid container direction="row" spacing={1}
+                    justifyContent="center"
+                    alignItems="center">
+                    <Grid item xs={12} sm={12} md={12} >
+                        <p className="message">{props.turnPlayer.name}さんのターン!</p>
+                    </Grid>
+
+                    <Grid item xs={12} sm={5}>
+                        <Dice requestDiceRoll={props.requestDiceRoll}
+                            handleClose={props.switchIsModalOpen}
+                            setIsBoardButtonVisible={setIsBoardButtonVisible}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={5}>
+                        <div style={{ "display": "flex", "flexFlow": "column" }}>
+
+                            {isBoardButtonVisible && <> <button className="btn square" onClick={() => props.handleClose()}>
+                                <Typography fontFamily="'Zen Maru Gothic', sans-serif">全体を見る</Typography>
+                            </button>
+                                <button className="btn yellow"
+                                    onClick={() => {
+                                        props.setModalContent(<ModalContent_BackToMenu
+                                            handleClose={() => {//イベントモーダルが閉じたときの処理をセット
+                                                props.setModalContent(<ModalContent_Dice
+                                                    turnPlayer={props.turnPlayer}
+                                                    requestDiceRoll={props.requestDiceRoll}
+                                                    setModalContent={props.setModalContent}
+                                                    switchIsModalOpen={props.switchIsModalOpen}
+                                                    handleClose={() => {//モーダルが閉じたときの処理をセット
+                                                        props.switchIsModalOpen(false);
+                                                        props.switchIsDiceButtonVisible(true);
+                                                    }} />);
+                                            }} />)
+                                        props.switchIsModalOpen(true);
+                                    }}><Typography fontFamily="'Zen Maru Gothic', sans-serif">ゲームを途中でやめる</Typography> </button></>}
+                            {
+                                !isBoardButtonVisible && <> <button disabled className="btn square" >
+                                    <Typography fontFamily="'Zen Maru Gothic', sans-serif">全体を見る</Typography>
+                                </button>
+                                    <button disabled className="btn yellow" visibility={isBoardButtonVisible ? "visible" : "hidden"}
+                                    ><Typography fontFamily="'Zen Maru Gothic', sans-serif">ゲームを途中でやめる</Typography> </button></>
+                            }
+                        </div>
+                    </Grid>
+                    {(props.playerList != null) &&
+                        props.playerList.map((player,index) => {
+                            return(
+                                <Grid item xs={12} sm={6} md={4} key={index}> 
+                                <Player player={player}></Player>
+                            </Grid>
+                            )
+                            
+                        })
+                    }
+
+                </Grid>
             </Card>
-        </ModalStyle>
+        </ModalStyle_Dice >
 
     );
 }
@@ -36,28 +80,8 @@ export const DiceModal = (props) => {
 
 export default DiceModal
 
-const ModalStyle = styled.div`
+const ModalStyle_Dice = styled.div`
 
-.modal_flame{
-    
-    width :80vw;
-    height : 80vh;
-    margin: 2em auto;
-    padding:2em;/*内側余白*/
-    border-radius: 30px 60px/60px 30px;
-    border: solid 8px #ccc7be;
-        position: relative;
-    }
-    .modal_contents{
-       ${pc` font-size: 30px; `}
-       ${sp` font-size: 20px; `}
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translateY(-50%) translateX(-50%);
-        -webkit- transform: translateY(-50%) translateX(-50%);
-            font-family: 'Zen Maru Gothic', sans-serif;
-        }
     @keyframes slide {
         from {
         background-position: 0 0;
@@ -67,39 +91,40 @@ const ModalStyle = styled.div`
         background-position: -120px 60px;
         }
     }
-    
-    .modal {
+    .contents {
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        ${pc` width :1000px;height: 90vh `}
+        
+        ${pc` width :800px;height: 90vh `}
         ${tab` width :800px; height: 90vh`}
-        ${sp` width :500px; height: 60vh`}
-        
-        display: inline-flex;
-        flex-direction: column;
-        align-items: center;
-        
+        ${sp` width :100wh; height: 100vh`}
+        ${pc` font-size: 30px; `}
+       ${sp` font-size: 20px; `}
+        font-family: 'Zen Maru Gothic', sans-serif;
+        overflow:auto;
         border: 3px solid black;
         border-radius: 10px;
         background: white;
         box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
     }
     .message {
-        ${pc` font-size: 3.0rem; `}
-        ${sp` font-size: 2.1rem; `}
-        margin-bottom: 1.6rem;
-        margin-top: 0;
+       ${pc` font-size: 3.0rem;`}
+        ${tab` font-size: 2.0rem;`}
+        ${sp` font-size: 2.0rem;`}
+        
+        margin-top: 30px;
     }
     .btn {
         color:inherit;
         font-family:inherit;
         font-size: 20px;
         background: cyan;
-        width:100px;
-        height:100px;
-        
+        ${pc` width:200px;`}
+        ${tab` width:150px;`}
+        ${sp` width:150px;`}
+        margin-bottom: 1.6rem;
         border: 3px solid black;
         box-shadow: 0 0 0 black;
         transition: all 0.2s;
@@ -110,15 +135,22 @@ const ModalStyle = styled.div`
     }
     
     .btn:hover {
-        box-shadow: 0.2rem 0.2rem 0 black;
-        transform: translate(-0.2rem, -0.2rem);
+        box-shadow: 0.2rem 0.2rem 0 rgb(156, 156, 156);
     }
     
     .btn:active {
-        box-shadow: 0 0 0 black;
-        transform: translate(0, 0);
+        box-shadow: 0.2rem 0.2rem 0 rgb(156, 156, 156);
     }
-    
+    .square{
+        width:200px;
+        height:200px;
+        ${pc` width:200px; height:200px;`}
+        ${tab` width:150px; height:150px;`}
+        ${sp` width:150px; height:150px;`}
+    }
+    .yellow{
+        background-color:yellow;
+    }
     .options {
         display: flex;
         flex-direction: row;

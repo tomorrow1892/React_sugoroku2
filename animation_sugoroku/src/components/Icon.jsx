@@ -1,17 +1,12 @@
 
 import React from 'react';
-import anime from '../lib/anime.js';
 import { Avatar } from '@mui/material';
-
-import breakImg from "./img/break.png";
-import goalImg from "./img/goal.png";
 import dog from "./img/dog.png";
 import cat from "./img/cat.png";
 import hiyoko from "./img/hiyoko.png";
 import hamster from "./img/hamster.png";
 import zo from "./img/zo.png";
 import penguin from "./img/penguin.png";
-import { useState } from 'react';
 //プレイヤーアイコンのコンポーネント
 
 export const Icon = (props) => {

@@ -53,7 +53,7 @@
 
 
         .diceContent {
-            width: 300px;
+            width: 250px;
             margin-left: auto;
             margin-right: auto;
             margin-top: auto;
@@ -92,11 +92,7 @@
             margin: 0;
         }
         #diceBtn:hover {
-            box-shadow: 0.1rem 0.1rem 0 rgb(156, 156, 156);
-        }
-        #diceBtn:active {
-            box-shadow: 0 0 0 black;
-            transform: translate(0, 0);
+            box-shadow: 0.2rem 0.2rem 0 rgb(156, 156, 156);
         }
         
         #dice2d {

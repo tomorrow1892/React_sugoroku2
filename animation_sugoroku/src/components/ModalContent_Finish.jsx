@@ -11,8 +11,8 @@ export const FinishModal = (props) => {
   const rankSort = (playerList) => {
     let playerList_sort = Array.from(playerList);
     playerList_sort.sort((a, b) => {
-      if (a.point > b.point) return -1;
-      if (a.point < b.point) return 1;
+      if (a.points > b.points) return -1;
+      if (a.points < b.points) return 1;
       return 0;
     })
     return playerList_sort;
@@ -25,20 +25,20 @@ export const FinishModal = (props) => {
     <ModalStyle>
       <Card className="modal">
         <div className="modal_contents">
-        <div className="content">{/* マスタイトル */}
+        <div className="content message">{/* マスタイトル */}
           ゲーム終了!
         </div>
         <ResultTable>
           <table>
             {rankSort(props.playerList).map((player, index) => {
-              if (player.point == rankedPoint) samePointCount++;//前の人とポイントが同じ場合，同順位となるようカウントに+1
+              if (player.points == rankedPoint) samePointCount++;//前の人とポイントが同じ場合，同順位となるようカウントに+1
               else samePointCount = 0;//前の人とポイントが違う場合，カウントをリセット
               rankedPoint = player.point;
               return (
                 <tr>
                   <th>{index + 1 - samePointCount}位</th>
                   <td>{player.name}</td>
-                  <td>{player.point}ポイント</td>
+                  <td>{player.points}ポイント</td>
                 </tr>
               );
             })
@@ -54,7 +54,7 @@ export const FinishModal = (props) => {
           //     })
         }
 
-        <button className="close" onClick={() => { window.location.href = "https://es4.eedept.kobe-u.ac.jp/miraisugoroku/" }}>メニューに戻る</button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
+        <button className="btn" onClick={() => { window.location.href = "https://es4.eedept.kobe-u.ac.jp/miraisugoroku/" }}>始めの画面に戻る</button>{/*//propsに渡されたonCloseメソッドを実行.モーダルを閉じてイベントをリクエストする．*/}
         </div>
         
       </Card>
@@ -76,7 +76,7 @@ const ModalStyle = styled.div`
         position: relative;
     }
     .modal_contents{
-       ${pc` font-size: 30px; `}
+       ${pc` font-size: 20px; `}
        ${sp` font-size: 10px; `}
         position: absolute;
         top: 50%;
@@ -100,8 +100,9 @@ const ModalStyle = styled.div`
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        width :80vw;
-        height : 80vh;
+        ${pc` width :800px;height: 90vh `}
+        ${tab` width :800px; height: 90vh`}
+        ${sp` width :100wh; height: 100vh`}
         display: inline-flex;
         flex-direction: column;
         align-items: center;
@@ -112,7 +113,7 @@ const ModalStyle = styled.div`
         box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
     }
     .message {
-        ${pc` font-size: 5.1rem; `}
+        ${pc` font-size: 3.1rem; `}
         ${sp` font-size: 2.1rem; `}
         margin-bottom: 1.6rem;
         margin-top: 0;
@@ -122,28 +123,25 @@ const ModalStyle = styled.div`
         font-family:inherit;
         font-size: 20px;
         background: cyan;
-        ${pc` padding: 0.3rem 3.4rem; `}
-        ${sp` padding: 0.3rem 1.4rem; `}
-        
         border: 3px solid black;
         margin-right: 2.6rem;
         box-shadow: 0 0 0 black;
         transition: all 0.2s;
+        width:200px;
+        height:100px;
     }
     
     .btn:last-child {
-        margin: 0;
-    }
-    
-    .btn:hover {
-        box-shadow: 0.2rem 0.2rem 0 black;
-        transform: translate(-0.2rem, -0.2rem);
-    }
-    
-    .btn:active {
-        box-shadow: 0 0 0 black;
-        transform: translate(0, 0);
-    }
+      margin: 0;
+  }
+  
+  .btn:hover {
+      box-shadow: 0.2rem 0.2rem 0 rgb(156, 156, 156);
+  }
+  
+  .btn:active {
+      box-shadow: 0.2rem 0.2rem 0 rgb(156, 156, 156);
+  }
     
     .options {
         display: flex;

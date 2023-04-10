@@ -13,7 +13,7 @@ export default class PlayerList extends React.Component {
     }
     render() {
         let border = 'primary.main';
-        console.log(this.props.nowPlayer);
+        // console.log(this.props.nowPlayer);
         return (
             <>
             {this.props.playerList.map(player => {

@@ -26,6 +26,7 @@ export default class DiceImage extends React.Component {
 
   componentDidMount() {
   this.diceContentsRef.current.addEventListener("click",(e)=>{
+    this.props.setIsBoardButtonVisible(false);
     this.changeDice();
   },{"once":true});
 }

@@ -52,8 +52,6 @@ const masuPositionList = [
 export const Board = (props) => {
 
     const masuListRefs = [];
-    const masuListRef1 = useRef();
-    const masuListRef2 = useRef();
     const coma1Ref = useRef();
     const coma2Ref = useRef();
     const coma3Ref = useRef();
@@ -69,12 +67,6 @@ export const Board = (props) => {
         const lineOptions = {
             path:"straight",
             color:"blue"
-            // color: window.getComputedStyle(document.getElementById("bibliography")).color,
-            //startPlug: "disc",
-            //endPlug: "behind"
-            // size: 2,
-            // startSocket: "left",
-            // endSocket: "right"
         };
        
         //各マス同士を矢印で繋ぐ
@@ -90,17 +82,7 @@ export const Board = (props) => {
     return (
         <div style={{ "positon": "relative", "top": "100px", "left": "100px" }}>
             {props.playerList.map((player, index) => {
-                let comaRef;
-                switch (player.order) {
-                    case 1: comaRef = coma1Ref; break;
-                    case 2: comaRef = coma2Ref; break;
-                    case 3: comaRef = coma3Ref; break;
-                    case 4: comaRef = coma4Ref; break;
-                    case 5: comaRef = coma5Ref; break;
-                    case 6: comaRef = coma6Ref; break;
-                    default: break;
-                }
-                return (<Icon ref={comaRef} key={player.order} icon={player.icon}
+                return (<Icon  key={player.order} icon={player.icon}
                     x={masuPositionList[player.position].left + Math.floor(index / 2) * 30 + (index % 2) * 10} y={masuPositionList[player.position].top + (index % 2) * 35 + 30}></Icon>)
             })}
             <div ref={masuListRefs[0]} id="start" style={{ position: "absolute", top: masuPositionList[0].top, left: masuPositionList[0].left, width: "120px", height: "120px" }}>
@@ -115,6 +97,7 @@ export const Board = (props) => {
                             switchIsModalOpen={props.switchIsModalOpen}
                             setModalContent={props.setModalContent}
                             setModalClosedMethod={props.setModalClosedMethod}
+                            isDiceButtonVisible={props.isDiceButtonVisible}
                         > </Masu>
                     </div>
                 );
